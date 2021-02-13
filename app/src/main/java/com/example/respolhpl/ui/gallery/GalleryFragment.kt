@@ -6,21 +6,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.respolhpl.R
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class GalleryFragment : Fragment() {
 
-    private lateinit var galleryViewModel: GalleryViewModel
+    @Inject
+    lateinit var vmGalleryViewModelFactory : GalleryViewModel.GalleryViewModelFactory
+
+    private val galleryViewModel: GalleryViewModel by viewModels {
+        GalleryViewModel.provideFactory(vmGalleryViewModelFactory,2)
+    }
+
+
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        galleryViewModel =
-                ViewModelProvider(this).get(GalleryViewModel::class.java)
+//        galleryViewModel =
+//                ViewModelProvider(this).get(GalleryViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_gallery, container, false)
         val textView: TextView = root.findViewById(R.id.text_gallery)
         galleryViewModel.text.observe(viewLifecycleOwner, Observer {
