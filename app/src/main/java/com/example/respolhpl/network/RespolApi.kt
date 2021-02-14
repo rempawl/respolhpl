@@ -9,8 +9,10 @@ import retrofit2.http.Query
 
 interface RespolApi {
 
-    @GET("/wp-json/wc/v3")
-    fun getIndex() : Deferred<String>
+    //todo woocommerce auth error
+
+    @GET("/wp-json/wc/v3/products")
+    fun getAllProducts() : Deferred<String>
 
     companion object{
 
