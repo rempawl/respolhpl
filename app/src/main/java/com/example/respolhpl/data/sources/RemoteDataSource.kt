@@ -1,7 +1,7 @@
-package com.example.respolhpl.data
+package com.example.respolhpl.data.sources
 
 import kotlinx.coroutines.Deferred
 
-interface DataSource {
+interface RemoteDataSource {
     fun getAllProductsAsync() : Deferred<String>
 }

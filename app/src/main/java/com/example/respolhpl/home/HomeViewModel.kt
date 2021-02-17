@@ -1,4 +1,4 @@
-package com.example.respolhpl.ui.home
+package com.example.respolhpl.home
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

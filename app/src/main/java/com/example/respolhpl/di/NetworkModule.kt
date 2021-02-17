@@ -10,11 +10,14 @@ import dagger.hilt.android.components.ViewModelComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import javax.inject.Singleton
 
 @InstallIn(ViewModelComponent::class)
 @Module
 object NetworkModule {
+
     @Provides
+    @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -24,11 +27,14 @@ object NetworkModule {
             .client(client)
             .build()
 
+    @Singleton
     @Provides
     fun provideOKHTTPClient(): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(BasicAuthInterceptor(CLI, PRIV))
         .build()
 
+
+    @Singleton
     @Provides
     fun provideRespolAPI(retrofit: Retrofit): RespolApi = retrofit.create(RespolApi::class.java)
 

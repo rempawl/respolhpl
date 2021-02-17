@@ -9,6 +9,7 @@ import com.example.respolhpl.data.product.ProductEntity
 @Database(version = 1, entities = [ProductEntity::class])
 abstract class AppDataBase : RoomDatabase() {
 
+    abstract fun productDao() : ProductDao
     companion object {
         const val DB_NAME = "RespolHPLDataBase"
 

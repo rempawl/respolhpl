@@ -1,4 +1,4 @@
-package com.example.respolhpl.ui.home
+package com.example.respolhpl.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

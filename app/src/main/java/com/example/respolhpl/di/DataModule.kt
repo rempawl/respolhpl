@@ -1,16 +1,21 @@
 package com.example.respolhpl.di
 
-import com.example.respolhpl.data.DataSource
-import com.example.respolhpl.data.NetworkDataSource
+import com.example.respolhpl.data.sources.*
 import dagger.Binds
 import dagger.Module
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 
 @InstallIn(ViewModelComponent::class)
 @Module
 interface DataModule {
-    @Binds
-    fun provideDataSource(dataSource: NetworkDataSource) : DataSource
 
+    @Binds
+    @Reusable
+    fun provideRemoteDataSource(dataSourceDefault: MockRemoteDataSource) : RemoteDataSource
+
+    @Reusable
+    @Binds
+    fun provideLocalDataSource(localDataSourceImpl: LocalDataSourceImpl) : LocalDataSource
 }
