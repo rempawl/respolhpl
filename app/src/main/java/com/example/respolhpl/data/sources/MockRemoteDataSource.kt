@@ -13,15 +13,17 @@ class MockRemoteDataSource @Inject constructor() : RemoteDataSource {
         return CoroutineScope(Dispatchers.IO).async {
             delay(1500)
             RemoteProduct(
+
+                id = 132,
                 name = "Antybakteryjna deska do krojenia Orzech",
                 price = 42.99,
-                listOf(
+                images = listOf(
                     ImageRemote(
                         "https://i0.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/12/IMG-20201217-WA0016.jpg?fit=768%2C1212&ssl=1",
                         name = "deska_img"
                     )
                 ),
-                listOf(
+                categories = listOf(
                     RemoteCategory(
                         ANTIBAC_BOARD_ID
                     )
