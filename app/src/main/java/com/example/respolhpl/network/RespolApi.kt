@@ -1,5 +1,6 @@
 package com.example.respolhpl.network
 
+import com.example.respolhpl.data.product.remote.RemoteProduct
 import kotlinx.coroutines.Deferred
 import okhttp3.Credentials
 import okhttp3.Interceptor
@@ -12,7 +13,7 @@ interface RespolApi {
     //todo woocommerce auth error
 
     @GET("/wp-json/wc/v3/products")
-    fun getAllProducts() : Deferred<String>
+    fun getAllProducts() : Deferred<RemoteProduct>
 
     companion object{
 

@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val homeViewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,6 +21,7 @@ class HomeFragment : Fragment() {
     ): View? {
 
         val binding = FragmentHomeBinding.inflate(inflater)
+        binding.viewModel = viewModel
         return binding.root
     }
 }
