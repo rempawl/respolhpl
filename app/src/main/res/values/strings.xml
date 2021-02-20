@@ -11,5 +11,7 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="image_desc">product image</string>
-    <string name="price">Cena: %1$f</string>
+    <string name="price">Cena: %1$.2f zł</string>
+    <string name="buy_now">Kup teraz</string>
+    <string name="add_to_cart">add_to_cart</string>
 </resources>

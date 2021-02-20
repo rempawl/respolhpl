@@ -6,6 +6,7 @@ import android.view.View.VISIBLE
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.example.respolhpl.R
 
  object BindingAdapters {
 
@@ -14,10 +15,16 @@ import com.bumptech.glide.Glide
      fun ImageView.loadThumbnail(src: String?) {
         src?.let {
             Glide.with(this)
+
                 .load(src)
                 .override(THUMB_WIDTH, THUMB_HEIGHT)
                 .centerCrop()
+                .apply {
+                    placeholder(R.drawable.loading)
+                    error(R.drawable.ic_baseline_error_24)
+                }
                 .into(this)
+
         }
      }
 
