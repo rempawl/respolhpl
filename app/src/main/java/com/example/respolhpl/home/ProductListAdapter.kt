@@ -8,27 +8,36 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.databinding.ProductItemBinding
 
-class ProductListAdapter :
+typealias OnItemClickListener = (id: Long) -> Unit
+
+class ProductListAdapter(private val onItemClickListener: (id: Long) -> Unit) :
     ListAdapter<Product, ProductListAdapter.ProductViewHolder>(ProductDiff()) {
 
-    class ProductViewHolder private constructor(private val binding: ProductItemBinding) :
+
+    class ProductViewHolder private constructor(
+        private val binding: ProductItemBinding,
+        private val onItemClickListener: OnItemClickListener
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(product: Product){
+
+        fun bind(product: Product) {
             binding.product = product
+            binding.productCard.setOnClickListener { onItemClickListener(product.id) }
         }
+
         companion object {
-            fun from(parent: ViewGroup): ProductViewHolder {
+            fun from(parent: ViewGroup, clickListener: OnItemClickListener): ProductViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
                 val binding = ProductItemBinding.inflate(inflater, parent, false)
-                return ProductViewHolder(binding)
+                return ProductViewHolder(binding, clickListener)
 
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        return ProductViewHolder.from(parent)
+        return ProductViewHolder.from(parent, onItemClickListener)
     }
 
 

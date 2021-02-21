@@ -9,7 +9,22 @@
         android:id="@+id/nav_home"
         android:name="com.example.respolhpl.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action android:id="@+id/navigation_home_to_product_details"
+            app:destination="@id/product_details"
 
+            />
+
+    </fragment>
+
+    <fragment
+        android:name="com.example.respolhpl.productDetails.ProductDetailsFragment"
+        android:id="@+id/product_details"
+        android:label="">
+        <argument
+            android:name="productId"
+            app:argType="java.lang.Long"
+            />
+    </fragment>
 
 </navigation>
