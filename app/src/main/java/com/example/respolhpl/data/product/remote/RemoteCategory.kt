@@ -6,5 +6,6 @@ import com.squareup.moshi.Json
 data class RemoteCategory(val id : Int){
     companion object{
         const val ANTIBAC_BOARD_ID = 21
+        const val LAMINAT_HPL = 12
     }
 }

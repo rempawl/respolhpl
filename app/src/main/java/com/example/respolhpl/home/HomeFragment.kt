@@ -51,8 +51,8 @@ class HomeFragment : Fragment() {
 
     private fun submitProducts(res: Result<*>?) {
         @Suppress("UNCHECKED_CAST")
-        res as Result.Success<Product>
-        adapter.submitList(listOf(res.data))
+        res as Result.Success<List<Product>>
+        adapter.submitList(res.data)
     }
 
     private fun setupBinding(binding: FragmentHomeBinding) {

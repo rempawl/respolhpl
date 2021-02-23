@@ -2,15 +2,17 @@ package com.example.respolhpl.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.databinding.ProductItemBinding
+import com.example.respolhpl.utils.ProductDiff
 
 typealias OnItemClickListener = (id: Long) -> Unit
 
-class ProductListAdapter(private val onItemClickListener: (id: Long) -> Unit) :
+class ProductListAdapter constructor(
+    private val onItemClickListener: (id: Long) -> Unit
+) :
     ListAdapter<Product, ProductListAdapter.ProductViewHolder>(ProductDiff()) {
 
 
@@ -44,17 +46,6 @@ class ProductListAdapter(private val onItemClickListener: (id: Long) -> Unit) :
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
-    }
-
-}
-
-private class ProductDiff : DiffUtil.ItemCallback<Product>() {
-    override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
-        return oldItem === newItem
-    }
-
-    override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
-        return oldItem == newItem
     }
 
 }

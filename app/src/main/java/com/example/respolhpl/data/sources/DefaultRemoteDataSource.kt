@@ -6,7 +6,7 @@ import kotlinx.coroutines.Deferred
 import javax.inject.Inject
 
 class DefaultRemoteDataSource @Inject constructor(private val api : RespolApi): RemoteDataSource {
-    override fun getAllProductsAsync(): Deferred<RemoteProduct> =        api.getAllProducts()
+    override fun getAllProductsAsync(): Deferred<List<RemoteProduct>> =        api.getAllProducts()
 
 
 

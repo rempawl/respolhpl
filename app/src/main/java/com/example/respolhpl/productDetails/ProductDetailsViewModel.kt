@@ -18,14 +18,6 @@ class ProductDetailsViewModel @AssistedInject constructor(
     }
 
     companion object {
-        fun provideFactory(
-            assistedFactory: ProductDetailsViewModelFactory,
-            productId: Long
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return assistedFactory.create(productId) as T
-            }
-        }
+
     }
 }

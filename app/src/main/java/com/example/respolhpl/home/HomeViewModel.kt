@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.Product
+import com.example.respolhpl.data.product.remote.RemoteProduct
 import com.example.respolhpl.data.sources.RemoteDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -29,12 +30,14 @@ class HomeViewModel @Inject constructor(private val remoteDataSource: RemoteData
             _data.value = Result.Loading
             try {
                 val res = remoteDataSource.getAllProductsAsync().await()
-                val prod = Product.from(res)
-                _data.value = Result.Success(prod)
+                _data.value = Result.Success(transformRemoteProducts(res))
             } catch (e: Exception) {
                 _data.value = Result.Error(e)
             }
         }
     }
+
+    private fun transformRemoteProducts(res: List<RemoteProduct>) =
+        res.map { remoteProduct -> Product.from(remoteProduct) }
 
 }

@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
+import com.example.respolhpl.di.viewModel
 import com.example.respolhpl.productDetails.ProductDetailsViewModel.ProductDetailsViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -19,9 +19,13 @@ class ProductDetailsFragment : Fragment() {
     private val arg: ProductDetailsFragmentArgs by navArgs()
 
     @Inject
+    lateinit var imagesAdapter: ImagesAdapter
+
+    @Inject
     lateinit var productDetailsViewModelFactory: ProductDetailsViewModelFactory
-    private val viewModel: ProductDetailsViewModel by viewModels {
-        ProductDetailsViewModel.provideFactory(productDetailsViewModelFactory, arg.productId)
+
+    private val viewModel: ProductDetailsViewModel by viewModel {
+        productDetailsViewModelFactory.create(arg.productId)
     }
 
     override fun onCreateView(
@@ -29,6 +33,7 @@ class ProductDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = ProductDetailsFragmentBinding.inflate(inflater)
+
         setupBinding(binding)
         return binding.root
 
@@ -36,6 +41,8 @@ class ProductDetailsFragment : Fragment() {
 
     private fun setupBinding(binding: ProductDetailsFragmentBinding) {
         binding.viewModel = viewModel
+        binding.viewPager.adapter = imagesAdapter
+
     }
 
 

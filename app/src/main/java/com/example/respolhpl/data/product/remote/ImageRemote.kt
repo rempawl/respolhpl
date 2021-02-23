@@ -4,7 +4,6 @@ import com.squareup.moshi.Json
 
 @Json(name = "image")
 data class ImageRemote(
-    val src : String,
-    val name: String
+    val src : String
 )
 
