@@ -24,21 +24,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
+
         val toolbar: Toolbar = binding.toolbar
         setSupportActionBar(toolbar)
 
-
         val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment)
+
+        binding.navView.setupWithNavController(navController)
 
         appBarConfiguration = AppBarConfiguration(setOf(
                 R.id.nav_home ), drawerLayout)
         toolbar.setupWithNavController(navController,appBarConfiguration)
-
-        navView.setupWithNavController(navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

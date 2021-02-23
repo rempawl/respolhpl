@@ -7,7 +7,9 @@ import javax.inject.Inject
 
 class DefaultRemoteDataSource @Inject constructor(private val api : RespolApi): RemoteDataSource {
     override fun getAllProductsAsync(): Deferred<List<RemoteProduct>> =        api.getAllProducts()
-
+    override fun getProductByIdAsync(id: Long): Deferred<RemoteProduct> {
+        TODO("Not yet implemented")
+    }
 
 
 }

@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.example.respolhpl.data.Result
+import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
 import com.example.respolhpl.di.viewModel
 import com.example.respolhpl.productDetails.ProductDetailsViewModel.ProductDetailsViewModelFactory
@@ -33,10 +35,19 @@ class ProductDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = ProductDetailsFragmentBinding.inflate(inflater)
-
+        setupObservers()
         setupBinding(binding)
         return binding.root
 
+    }
+
+    private fun setupObservers() {
+        viewModel.product.observe(viewLifecycleOwner) { prod ->
+            prod.takeIf { it.isSuccess }?.let {
+                it as Result.Success<Product>
+                imagesAdapter.submitList(it.data.images)
+            }
+        }
     }
 
     private fun setupBinding(binding: ProductDetailsFragmentBinding) {

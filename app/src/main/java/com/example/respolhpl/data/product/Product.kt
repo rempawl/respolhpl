@@ -2,6 +2,9 @@ package com.example.respolhpl.data.product
 
 import com.example.respolhpl.data.product.remote.RemoteProduct
 
+
+//todo product minimal(id,name,thumb,price)
+
 data class Product(
     val id: Long,
     val name: String,

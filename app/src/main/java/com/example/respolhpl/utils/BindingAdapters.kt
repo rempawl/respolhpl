@@ -39,8 +39,6 @@ object BindingAdapters {
 
         Glide.with(this)
             .load(src)
-            .override(IMG_HEIGHT)
-            .centerCrop()
             .apply(opts)
             .into(this)
 
