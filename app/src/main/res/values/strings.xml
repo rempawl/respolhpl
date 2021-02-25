@@ -1,17 +1,15 @@
 <resources>
     <string name="app_name">RespolHPL</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">RespolHPL</string>
+    <string name="nav_header_subtitle">www.respolhpl.pl</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_home">Strona Główna</string>
+
     <string name="image_desc">product image</string>
-    <string name="price">Cena: %1$.2f zł</string>
+    <string name="price"> %1$.2f zł</string>
     <string name="buy_now">Kup teraz</string>
     <string name="add_to_cart">add_to_cart</string>
+    <string name="product_image_desc">product_image</string>
 </resources>

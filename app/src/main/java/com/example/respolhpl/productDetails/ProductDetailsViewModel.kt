@@ -1,5 +1,6 @@
 package com.example.respolhpl.productDetails
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,10 +28,15 @@ class ProductDetailsViewModel @AssistedInject constructor(
         get() = _product
 
     init {
-        viewModelScope.launch { getProduct(id) }
+        viewModelScope.launch {
+            getProduct(id)
+//            Log.d("kruci",)
+        }
+
     }
 
-    suspend fun getProduct(id: Long) {
+    private suspend fun getProduct(id: Long) {
+        _product.value = Result.Loading
         try {
             val res = remoteDataSource.getProductByIdAsync(id).await()
             _product.value = Result.Success(Product.from(res))

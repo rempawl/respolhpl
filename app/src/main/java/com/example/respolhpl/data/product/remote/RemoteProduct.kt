@@ -8,6 +8,7 @@ data class RemoteProduct(
     val name: String,
     val price: Double,
     val images: List<ImageRemote>,
-    val categories: List<RemoteCategory>
+    val categories: List<RemoteCategory>,
+    val description: String
 )
 

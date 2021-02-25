@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.respolhpl.productDetails.ProductDetailsViewModel" />
@@ -13,10 +15,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".productDetails.ProductDetailsFragment">
-        <androidx.viewpager2.widget.ViewPager2
+
+        <include
+            layout="@layout/loading_layout"
+            app:showWhen="@{viewModel.product.loading}" />
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:id="@+id/view_pager"/>
+            android:layout_height="wrap_content"
+            app:showWhen="@{viewModel.product.success}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+
+                <TextView
+                    android:id="@+id/prod_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/def_margin"
+                    android:fontFamily="sans-serif-black"
+                    android:textSize="30sp"
+                    app:bindProductName="@{viewModel.product}"
+                    tools:text="Antybakteryjna Deska do Krojenia Natura" />
+
+                <TextView
+                    android:id="@+id/prod_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/def_margin"
+                    android:fontFamily="sans-serif-black"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    app:bindProductPrice="@{viewModel.product}"
+                    tools:text="42.99 zł" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:layout_margin="@dimen/def_margin"
+                        android:fontFamily="sans-serif-black"
+                        android:id="@+id/prod_desc"
+                        app:bindProductDescription="@{viewModel.product}"
+                        />
+            </LinearLayout>
+        </ScrollView>
 
     </FrameLayout>
 </layout>

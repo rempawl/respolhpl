@@ -11,7 +11,8 @@ data class Product(
     val images: List<Image>,
 //    val productCategories: List<ProductCategory>, todo
     val thumbnailSrc: String?,
-    val price: Double
+    val price: Double,
+    val description : String
 ) {
     companion object {
         fun from(remoteProduct: RemoteProduct): Product {
@@ -20,7 +21,8 @@ data class Product(
                 name = remoteProduct.name,
                 images = remoteProduct.images.map { Image.from(it) },
                 thumbnailSrc = remoteProduct.images.first().src,
-                price = remoteProduct.price
+                price = remoteProduct.price,
+                description = remoteProduct.description
             )
         }
 //        fun from(entity: ProductEntity) : Product{

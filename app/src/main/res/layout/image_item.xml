@@ -11,18 +11,32 @@
     </data>
 
     <androidx.cardview.widget.CardView
+        app:cardCornerRadius="@dimen/card_radius"
+        android:layout_margin="@dimen/def_margin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-     app:cardCornerRadius="@dimen/card_radius"   >
+        android:layout_height="match_parent">
 
-    <ImageView
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/product_image_desc"
+            android:scaleType="centerCrop"
+            app:loadImage="@{img.src}"
+            tools:layout_height="300dp"
+            tools:src="@drawable/natura" />
+        <TextView
+            android:layout_margin="@dimen/def_margin"
+            android:layout_gravity="end|top"
+            tools:text="1/3"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:id="@+id/img_counter"
+            android:fontFamily="sans-serif-black"
+            />
 
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:src="@drawable/natura"
-        app:loadImage="@{img.src}"
-        />
     </androidx.cardview.widget.CardView>
 
 </layout>

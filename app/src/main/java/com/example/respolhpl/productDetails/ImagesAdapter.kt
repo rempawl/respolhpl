@@ -14,8 +14,12 @@ class ImagesAdapter @Inject constructor() : ListAdapter<Image, ImagesAdapter.Ima
     class ImageViewHolder private constructor(private val binding: ImageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(image: Image) {
-            binding.img = image
+        fun bind(image: Image,count : String) {
+            binding.apply {
+                img = image
+                imgCounter.text = count
+            }
+
         }
 
         companion object {
@@ -33,8 +37,9 @@ class ImagesAdapter @Inject constructor() : ListAdapter<Image, ImagesAdapter.Ima
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position),"${position + 1}/$itemCount")
     }
+
 
 
 }

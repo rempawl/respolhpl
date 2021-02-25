@@ -43,9 +43,9 @@ class ProductDetailsFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.product.observe(viewLifecycleOwner) { prod ->
-            prod.takeIf { it.isSuccess }?.let {
-                it as Result.Success<Product>
-                imagesAdapter.submitList(it.data.images)
+            prod.takeIf { it.isSuccess }?.let { res ->
+                check(res is Result.Success<*> && res.data is Product)
+                imagesAdapter.submitList(res.data.images)
             }
         }
     }
@@ -53,7 +53,7 @@ class ProductDetailsFragment : Fragment() {
     private fun setupBinding(binding: ProductDetailsFragmentBinding) {
         binding.viewModel = viewModel
         binding.viewPager.adapter = imagesAdapter
-
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
 
