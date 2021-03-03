@@ -35,37 +35,115 @@
                     android:layout_width="match_parent"
                     android:layout_height="400dp" />
 
-                <TextView
-                    android:id="@+id/prod_name"
+                <androidx.cardview.widget.CardView
+                    style="@style/cardStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/def_margin"
-                    android:fontFamily="sans-serif-black"
-                    android:textSize="30sp"
-                    app:bindProductName="@{viewModel.product}"
-                    tools:text="Antybakteryjna Deska do Krojenia Natura" />
+                    android:layout_height="200dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/def_margin">
+
+                        <TextView
+                            android:id="@+id/prod_name"
+                            style="@style/DefaultHeader"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:bindProductName="@{viewModel.product}"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Antybakteryjna Deska do Krojenia Natura" />
+
+
+                        <TextView
+                            android:id="@+id/prod_price"
+                            style="@style/DefaultHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:bindProductPrice="@{viewModel.product}"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/prod_name"
+                            tools:text="42.99 zł" />
+
+                        <GridLayout
+                            android:id="@+id/quantity_picker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent">
+
+                            <Button
+                                android:id="@+id/minus_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_margin="0dp"
+                                android:minHeight="0dp"
+                                android:padding="0dp"
+                                android:text="-"
+                                android:textSize="@dimen/def_text_size" />
+
+                            <EditText
+                                android:id="@+id/quantity"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_columnWeight="1"
+                                android:text="1"
+                                android:inputType="number"
+                                tools:text="32" />
+
+                            <Button
+                                android:id="@+id/plus_btn"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_margin="0dp"
+                                android:minHeight="0dp"
+                                android:padding="0dp"
+                                android:text="+"
+                                android:textSize="@dimen/def_text_size" />
+                        </GridLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
 
                 <TextView
-                    android:id="@+id/prod_price"
+                    android:id="@+id/prod_desc"
+                    style="@style/DescTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/def_margin"
-                    android:fontFamily="sans-serif-black"
-                    android:textAlignment="center"
-                    android:textSize="30sp"
-                    app:bindProductPrice="@{viewModel.product}"
-                    tools:text="42.99 zł" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:layout_margin="@dimen/def_margin"
-                        android:fontFamily="sans-serif-black"
-                        android:id="@+id/prod_desc"
-                        app:bindProductDescription="@{viewModel.product}"
-                        />
+                    android:background="@color/white"
+                    app:bindProductDescription="@{viewModel.product}"
+                    tools:text="@string/tools_desc" />
             </LinearLayout>
         </ScrollView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="?attr/colorAccent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/def_padding">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cartButton"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/def_margin"
+                android:text="@string/add_to_cart" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buy_now_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/def_margin"
+                android:text="@string/buy_now" />
+        </LinearLayout>
     </FrameLayout>
 </layout>

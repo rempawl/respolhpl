@@ -8,11 +8,13 @@ import com.example.respolhpl.data.product.remote.RemoteProduct
 data class Product(
     val id: Long,
     val name: String,
+    val quantity: Int,
+    val shipping: Shipping,
     val images: List<Image>,
 //    val productCategories: List<ProductCategory>, todo
     val thumbnailSrc: String?,
     val price: Double,
-    val description : String
+    val description: String
 ) {
     companion object {
         fun from(remoteProduct: RemoteProduct): Product {
@@ -22,7 +24,9 @@ data class Product(
                 images = remoteProduct.images.map { Image.from(it) },
                 thumbnailSrc = remoteProduct.images.first().src,
                 price = remoteProduct.price,
-                description = remoteProduct.description
+                description = remoteProduct.description,
+                shipping = Shipping.from(remoteProduct.shipping),
+                quantity = remoteProduct.quantity
             )
         }
 //        fun from(entity: ProductEntity) : Product{

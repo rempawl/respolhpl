@@ -10,6 +10,18 @@
     <string name="image_desc">product image</string>
     <string name="price"> %1$.2f zł</string>
     <string name="buy_now">Kup teraz</string>
-    <string name="add_to_cart">add_to_cart</string>
+    <string name="add_to_cart">Dodaj do koszyka</string>
     <string name="product_image_desc">product_image</string>
+    <string name="tools_desc"><h2>Właściwości:</h2>\n
+                    <ul>                    " \t<li>Wysoka odporność na ścieranie, zadrapania, uderzenia,zginanie</li>\n" +
+                    " \t<li>Odporne na temperaturę do 230°C</li>\n" +
+                    " \t<li>Łatwe do czyszczenia</li>\n" +
+                    " \t<li>Bezpieczne w bezpośrednim kontakcie z żywnością</li>\n" +
+                    " \t<li>Antybakteryjna w całym przekroju</li>\n" +
+                    " \t<li>Światłoodporna</li>\n" +
+                    " \t<li>Obustronny kolor</li>\n" +
+                    "</ul>\n" +
+                    "Deski do krojenia, które oferujemy Państwu są wykonane z najwyższej jakości płyt kompakt HPL marki Polyrey®.Materiał jest niezwykle sztywny i odporny mechanicznie,a dzięki zastosowaniu technologii Sanitized® są one antybakteryjne w całym przekroju przez co zwiększają bezpieczeństwo użytkowania.\n" +
+                    "\n" +
+                    " Są łatwe w czyszczenia, do ich wyczyszczenia wystarczy woda i gąbka lub woda z detergentem w przypadku silniejszych zabrudzeń. Nie potrzeba ich wyparzać w zmywarce, aby pozbyć  się bakterii z ich powierzchni."</string>
 </resources>

@@ -8,6 +8,7 @@ import dagger.hilt.android.HiltAndroidApp
 //todo details layout
 //todo add to cart
 //todo order
-//
+//todo caching
+
 @HiltAndroidApp
 class RespolApp : Application()
