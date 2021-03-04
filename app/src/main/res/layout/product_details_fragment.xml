@@ -18,12 +18,12 @@
 
         <include
             layout="@layout/loading_layout"
-            app:showWhen="@{viewModel.product.loading}" />
+            app:showWhen="@{viewModel.result.loading}" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:showWhen="@{viewModel.product.success}">
+            app:showWhen="@{viewModel.result.success}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                             style="@style/DefaultHeader"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:bindProductName="@{viewModel.product}"
+                            app:bindProductName="@{viewModel.result}"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="Antybakteryjna Deska do Krojenia Natura" />
 
@@ -60,7 +60,7 @@
                             style="@style/DefaultHeader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:bindProductPrice="@{viewModel.product}"
+                            app:bindProductPrice="@{viewModel.result}"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/prod_name"
                             tools:text="42.99 zł" />
@@ -86,10 +86,10 @@
 
                             <EditText
                                 android:id="@+id/quantity"
+                                android:text="@={viewModel.orderModel.quantity}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_columnWeight="1"
-                                android:text="1"
                                 android:inputType="number"
                                 tools:text="32" />
 
@@ -104,8 +104,18 @@
                                 android:padding="0dp"
                                 android:text="+"
                                 android:textSize="@dimen/def_text_size" />
-                        </GridLayout>
 
+                            <TextView
+                                style="@style/DefaultBodyText"
+                                bindQuantity="@{viewModel.result}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="0dp"
+                                android:padding="@dimen/def_padding"
+                                tools:text="z 10 sztuk" />
+
+
+                        </GridLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
@@ -116,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    app:bindProductDescription="@{viewModel.product}"
+                    app:bindProductDescription="@{viewModel.result}"
                     tools:text="@string/tools_desc" />
             </LinearLayout>
         </ScrollView>

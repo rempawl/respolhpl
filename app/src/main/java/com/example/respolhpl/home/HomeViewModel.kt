@@ -5,39 +5,30 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.respolhpl.data.Result
-import com.example.respolhpl.data.product.Product
-import com.example.respolhpl.data.product.remote.RemoteProduct
 import com.example.respolhpl.data.sources.RemoteDataSource
+import com.example.respolhpl.data.sources.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val remoteDataSource: RemoteDataSource) :
+class HomeViewModel @Inject constructor(private val repository: Repository) :
     ViewModel() {
 
-    private val _data = MutableLiveData<Result<*>>()
+    private val _data = MutableLiveData<Result<*>>(Result.Loading)
     val data: LiveData<Result<*>>
         get() = _data
 
 
     init {
-        dosth()
+        getProducts()
     }
 
-    private fun dosth() {
+    private fun getProducts() {
         viewModelScope.launch {
-            _data.value = Result.Loading
-            try {
-                val res = remoteDataSource.getAllProductsAsync().await()
-                _data.value = Result.Success(transformRemoteProducts(res))
-            } catch (e: Exception) {
-                _data.value = Result.Error(e)
-            }
+            _data.value = repository.getProducts()
         }
     }
 
-    private fun transformRemoteProducts(res: List<RemoteProduct>) =
-        res.map { remoteProduct -> Product.from(remoteProduct) }
 
 }

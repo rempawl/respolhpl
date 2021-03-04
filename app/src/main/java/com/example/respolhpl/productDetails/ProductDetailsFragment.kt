@@ -42,7 +42,7 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.product.observe(viewLifecycleOwner) { prod ->
+        viewModel.result.observe(viewLifecycleOwner) { prod ->
             prod.takeIf { it.isSuccess }?.let { res ->
                 check(res is Result.Success<*> && res.data is Product)
                 imagesAdapter.submitList(res.data.images)
