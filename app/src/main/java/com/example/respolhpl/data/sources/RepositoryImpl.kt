@@ -15,15 +15,12 @@ class RepositoryImpl @Inject constructor(
 
 
     override suspend fun getProducts(): Result<*> {
-
         return try {
             val res = remoteDataSource.getAllProductsAsync().await()
             Result.Success(transformRemoteProducts(res))
         } catch (e: Exception) {
             Result.Error(e)
         }
-
-
     }
 
     override suspend fun getProductById(id: Long): Result<*> {

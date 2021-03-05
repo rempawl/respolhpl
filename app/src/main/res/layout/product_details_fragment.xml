@@ -9,11 +9,15 @@
             name="viewModel"
             type="com.example.respolhpl.productDetails.ProductDetailsViewModel" />
 
+        <import type="com.example.respolhpl.utils.Converter" />
+
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         tools:context=".productDetails.ProductDetailsFragment">
 
         <include
@@ -74,35 +78,44 @@
                             app:layout_constraintLeft_toLeftOf="parent">
 
                             <Button
+                                android:enabled="@{viewModel.minusBtnEnabled}"
                                 android:id="@+id/minus_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_columnWeight="1"
                                 android:layout_margin="0dp"
                                 android:minHeight="0dp"
+                                android:onClick="@{() ->viewModel.onMinusBtnClick()}"
                                 android:padding="0dp"
-                                android:text="-"
+                                android:text="@string/minus"
                                 android:textSize="@dimen/def_text_size" />
 
                             <EditText
                                 android:id="@+id/quantity"
-                                android:text="@={viewModel.orderModel.quantity}"
+                                clearTextOnFocus="@{true}"
+                                hideKeyboardOnInputDone="@{true}"
+                                orderQuantity="@={Converter.intToString(viewModel.orderQuantity)}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_columnWeight="1"
+                                android:digits="0123456789"
+                                android:imeOptions="actionDone"
                                 android:inputType="number"
-                                tools:text="32" />
+                                android:paddingHorizontal="@dimen/def_padding"
+                                android:textSize="@dimen/def_text_size"
+                                tools:text="5" />
 
                             <Button
+                                android:enabled="@{viewModel.isPlusBtnEnabled}"
                                 android:id="@+id/plus_btn"
-
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_columnWeight="1"
                                 android:layout_margin="0dp"
                                 android:minHeight="0dp"
+                                android:onClick="@{() -> viewModel.onPlusBtnClick()}"
                                 android:padding="0dp"
-                                android:text="+"
+                                android:text="@string/plus"
                                 android:textSize="@dimen/def_text_size" />
 
                             <TextView
@@ -126,6 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:focusable="true"
                     app:bindProductDescription="@{viewModel.result}"
                     tools:text="@string/tools_desc" />
             </LinearLayout>

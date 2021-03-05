@@ -1,28 +1,78 @@
 package com.example.respolhpl.utils
 
+import android.content.Context
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.core.text.HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import com.example.respolhpl.R
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.Product
 
 
-
 object BindingAdapters {
-    private val opts: RequestOptions
-        get() = RequestOptions().placeholder(R.drawable.loading)
-            .error(R.drawable.ic_baseline_error_24)
+    @BindingAdapter("orderQuantity")
+    @JvmStatic fun setOrderQuantity(view: EditText, value: String) {
+        view.setText(value)
+    }
 
+    @InverseBindingAdapter(attribute = "orderQuantity")
+    @JvmStatic fun getOrderQuantity(editText: EditText): String {
+        return editText.text.toString()
+    }
+
+    @BindingAdapter("orderQuantityAttrChanged")
+    @JvmStatic fun setListener(view: EditText, listener: InverseBindingListener?) {
+        view.onFocusChangeListener = View.OnFocusChangeListener { focusedView, hasFocus ->
+            val textView = focusedView as TextView
+            if (hasFocus) {
+                textView.text = ""
+            } else {
+                listener?.onChange()
+            }
+        }
+    }
+    @BindingAdapter("hideKeyboardOnInputDone")
+    @JvmStatic fun hideKeyboardOnInputDone(view: EditText, enabled: Boolean) {
+        if (!enabled) return
+        val listener = TextView.OnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                view.clearFocus()
+                val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE)
+                        as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+            false
+        }
+        view.setOnEditorActionListener(listener)
+    }
+
+
+    @JvmStatic()
+    @BindingAdapter("clearTextOnFocus")
+    fun EditText.clearTextOnFocus(enabled : Boolean) {
+        if(!enabled) return
+        onFocusChangeListener = View.OnFocusChangeListener{ view,isFocused ->
+            view as TextView
+            view.setTag(R.id.previous_value,view.text)
+            if(isFocused){
+                view.text = ""
+            }else{
+                if(view.text.isBlank()) {
+                    view.text = view.getTag(R.id.previous_value).toString() ?: ""
+                }
+            }
+        }
+    }
 
     @JvmStatic
     @BindingAdapter("bindQuantity")
@@ -65,27 +115,6 @@ object BindingAdapters {
         }
     }
 
-    @JvmStatic
-    @BindingAdapter("loadThumbnail")
-    fun ImageView.loadThumbnail(src: String?) {
-        src?.let {
-            Glide.with(this)
-                .load(src)
-                .apply(opts)
-                .into(this)
-        }
-    }
-
-    @JvmStatic
-    @BindingAdapter("loadImage")
-    fun ImageView.loadImage(src: String?) {
-        src?.let {
-            Glide.with(this)
-                .load(src)
-                .apply(opts)
-                .into(this)
-        }
-    }
 
     @JvmStatic
     @BindingAdapter("showWhen")

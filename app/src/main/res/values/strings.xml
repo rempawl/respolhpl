@@ -25,4 +25,6 @@
                     "\n" +
                     " Są łatwe w czyszczenia, do ich wyczyszczenia wystarczy woda i gąbka lub woda z detergentem w przypadku silniejszych zabrudzeń. Nie potrzeba ich wyparzać w zmywarce, aby pozbyć  się bakterii z ich powierzchni."</string>
     <string name="quantity">z %1$d sztuk</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
 </resources>
