@@ -1,7 +1,6 @@
 package com.example.respolhpl.utils
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -21,28 +20,33 @@ import com.example.respolhpl.data.product.Product
 
 object BindingAdapters {
     @BindingAdapter("orderQuantity")
-    @JvmStatic fun setOrderQuantity(view: EditText, value: String) {
+    @JvmStatic
+    fun setOrderQuantity(view: EditText, value: String) {
         view.setText(value)
     }
 
     @InverseBindingAdapter(attribute = "orderQuantity")
-    @JvmStatic fun getOrderQuantity(editText: EditText): String {
+    @JvmStatic
+    fun getOrderQuantity(editText: EditText): String {
         return editText.text.toString()
     }
 
     @BindingAdapter("orderQuantityAttrChanged")
-    @JvmStatic fun setListener(view: EditText, listener: InverseBindingListener?) {
+    @JvmStatic
+    fun setListener(view: EditText, listener: InverseBindingListener?) {
         view.onFocusChangeListener = View.OnFocusChangeListener { focusedView, hasFocus ->
-            val textView = focusedView as TextView
+            focusedView as TextView
             if (hasFocus) {
-                textView.text = ""
+                focusedView.text = ""
             } else {
                 listener?.onChange()
             }
         }
     }
+
     @BindingAdapter("hideKeyboardOnInputDone")
-    @JvmStatic fun hideKeyboardOnInputDone(view: EditText, enabled: Boolean) {
+    @JvmStatic
+    fun hideKeyboardOnInputDone(view: EditText, enabled: Boolean) {
         if (!enabled) return
         val listener = TextView.OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -59,18 +63,10 @@ object BindingAdapters {
 
     @JvmStatic()
     @BindingAdapter("clearTextOnFocus")
-    fun EditText.clearTextOnFocus(enabled : Boolean) {
-        if(!enabled) return
-        onFocusChangeListener = View.OnFocusChangeListener{ view,isFocused ->
-            view as TextView
-            view.setTag(R.id.previous_value,view.text)
-            if(isFocused){
-                view.text = ""
-            }else{
-                if(view.text.isBlank()) {
-                    view.text = view.getTag(R.id.previous_value).toString() ?: ""
-                }
-            }
+    fun EditText.clearTextOnFocus(enabled: Boolean) {
+        if (!enabled) return
+        onFocusChangeListener = View.OnFocusChangeListener { view, isFocused ->
+
         }
     }
 

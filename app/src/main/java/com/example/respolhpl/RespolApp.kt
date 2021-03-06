@@ -10,5 +10,6 @@ import dagger.hilt.android.HiltAndroidApp
 //todo order
 //todo caching
 //todo repository
+//todo user
 @HiltAndroidApp
 class RespolApp : Application()

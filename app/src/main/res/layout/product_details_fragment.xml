@@ -92,7 +92,6 @@
 
                             <EditText
                                 android:id="@+id/quantity"
-                                clearTextOnFocus="@{true}"
                                 hideKeyboardOnInputDone="@{true}"
                                 orderQuantity="@={Converter.intToString(viewModel.orderQuantity)}"
                                 android:layout_width="wrap_content"

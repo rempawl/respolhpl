@@ -15,7 +15,10 @@ object Converter {
     fun stringToInt(
         value: String
     ): Int {
-
+        if(value.isBlank())
+            return 1
+        if(value.startsWith("0"))
+            return 1
         return value.toInt()
 
     }

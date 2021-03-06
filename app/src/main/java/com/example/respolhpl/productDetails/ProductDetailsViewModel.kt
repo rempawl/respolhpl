@@ -4,27 +4,22 @@ package com.example.respolhpl.productDetails
 import androidx.databinding.Bindable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.respolhpl.BR
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.data.sources.Repository
 import com.example.respolhpl.utils.ObservableViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class ProductDetailsViewModel @AssistedInject constructor(
-    @Assisted id: Long, private val repository: Repository
+@HiltViewModel
+class ProductDetailsViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
+    private val repository: Repository
 ) : ObservableViewModel() {
-
-    @AssistedFactory
-    interface ProductDetailsViewModelFactory {
-        fun create(id: Long): ProductDetailsViewModel
-    }
-
 
     private var maxQuantity = 1
 
@@ -35,7 +30,6 @@ class ProductDetailsViewModel @AssistedInject constructor(
     val isPlusBtnEnabled: Boolean
         @Bindable
         get() = orderQuantity < maxQuantity
-
 
     @Bindable
     var orderQuantity: Int = 1
@@ -62,7 +56,7 @@ class ProductDetailsViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            getProduct(id)
+            getProduct(savedStateHandle.get<Long>("productId") ?: -1)
         }
     }
 
@@ -75,7 +69,7 @@ class ProductDetailsViewModel @AssistedInject constructor(
     private fun setMaxQuantity(res: Result<*>) {
         res.takeIf { it.isSuccess }?.let {
             res as Result.Success
-            check(res.data is Product) { "data should be product"}
+            check(res.data is Product) { "data should be product" }
             maxQuantity = res.data.quantity
             notifyPropertyChanged(BR.plusBtnEnabled)
         }

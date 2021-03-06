@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
-import com.example.respolhpl.di.viewModel
-import com.example.respolhpl.productDetails.ProductDetailsViewModel.ProductDetailsViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -23,12 +22,7 @@ class ProductDetailsFragment : Fragment() {
     @Inject
     lateinit var imagesAdapter: ImagesAdapter
 
-    @Inject
-    lateinit var productDetailsViewModelFactory: ProductDetailsViewModelFactory
-
-    private val viewModel: ProductDetailsViewModel by viewModel {
-        productDetailsViewModelFactory.create(arg.productId)
-    }
+    private val viewModel: ProductDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
