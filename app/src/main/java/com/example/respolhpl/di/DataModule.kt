@@ -11,6 +11,7 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 @Module
 interface DataModule {
 
+
     @Binds
     @Reusable
     fun provideRemoteDataSource(dataSource: MockRemoteDataSource): RemoteDataSource
@@ -21,7 +22,7 @@ interface DataModule {
 
     @Reusable
     @Binds
-    fun provideRepository(repository: RepositoryImpl): Repository
+    fun provideRepository(repository: ProductRepositoryImpl): ProductRepository
 
 
 }

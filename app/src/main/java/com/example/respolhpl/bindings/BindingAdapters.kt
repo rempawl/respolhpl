@@ -1,4 +1,4 @@
-package com.example.respolhpl.utils
+package com.example.respolhpl.bindings
 
 import android.content.Context
 import android.view.View

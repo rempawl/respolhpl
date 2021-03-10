@@ -1,4 +1,4 @@
-package com.example.respolhpl.utils
+package com.example.respolhpl.bindings
 
 import androidx.databinding.InverseMethod
 

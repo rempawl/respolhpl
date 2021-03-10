@@ -1,4 +1,4 @@
-package com.example.respolhpl.utils
+package com.example.respolhpl.home
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.respolhpl.data.product.Product

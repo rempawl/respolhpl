@@ -1,4 +1,4 @@
-package com.example.respolhpl.utils
+package com.example.respolhpl.bindings
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

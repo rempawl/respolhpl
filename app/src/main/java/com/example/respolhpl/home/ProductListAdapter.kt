@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.databinding.ProductItemBinding
-import com.example.respolhpl.utils.ProductDiff
 
 typealias OnItemClickListener = (id: Long) -> Unit
 

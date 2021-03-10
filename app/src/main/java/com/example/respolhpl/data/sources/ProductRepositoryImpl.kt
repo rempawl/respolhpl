@@ -5,10 +5,10 @@ import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.data.product.remote.RemoteProduct
 import javax.inject.Inject
 
-class RepositoryImpl @Inject constructor(
+class ProductRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
-) : Repository {
+) : ProductRepository {
 
     private fun transformRemoteProducts(res: List<RemoteProduct>) =
         res.map { remoteProduct -> Product.from(remoteProduct) }

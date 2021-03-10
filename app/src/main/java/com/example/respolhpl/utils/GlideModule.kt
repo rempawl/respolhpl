@@ -9,7 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.respolhpl.R
 
 @GlideModule
-class GlideModule() : AppGlideModule() {
+class GlideModule : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         super.applyOptions(context, builder)
         builder.apply {

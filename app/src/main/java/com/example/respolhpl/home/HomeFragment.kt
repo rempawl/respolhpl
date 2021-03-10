@@ -12,16 +12,15 @@ import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.IllegalStateException
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
 
-    private val adapter: ProductListAdapter by lazy {
-        ProductListAdapter(onItemClickListener = { id -> navigateToProductDetails(id) })
-    }
-
+    private var adapter: ProductListAdapter? = null
+    private var binding: FragmentHomeBinding? = null
 
     private fun navigateToProductDetails(id: Long) {
         findNavController().navigate(
@@ -36,13 +35,20 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val binding = FragmentHomeBinding.inflate(inflater)
-        setupBinding(binding)
+        adapter = ProductListAdapter(onItemClickListener = { id -> navigateToProductDetails(id) })
+
+         binding = FragmentHomeBinding.inflate(inflater)
+        setupBinding()
         setupObservers()
 
-        return binding.root
+        return binding?.root ?: throw IllegalStateException("Binding should be initialized")
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        adapter = null
+        binding = null
+    }
     private fun setupObservers() {
         viewModel.data.observe(viewLifecycleOwner) { res ->
             res.takeIf { it.isSuccess }?.let { submitProducts(res) }
@@ -52,11 +58,11 @@ class HomeFragment : Fragment() {
     private fun submitProducts(res: Result<*>?) {
         @Suppress("UNCHECKED_CAST")
         res as Result.Success<List<Product>>
-        adapter.submitList(res.data)
+        adapter?.submitList(res.data)
     }
 
-    private fun setupBinding(binding: FragmentHomeBinding) {
-        binding.apply {
+    private fun setupBinding() {
+        binding?.apply {
             productList.apply {
                 adapter = this@HomeFragment.adapter
                 layoutManager = LinearLayoutManager(context)
@@ -64,7 +70,6 @@ class HomeFragment : Fragment() {
             }
             viewModel = this@HomeFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
-
         }
     }
 }

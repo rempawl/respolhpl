@@ -9,7 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.respolhpl.BR
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.Product
-import com.example.respolhpl.data.sources.Repository
+import com.example.respolhpl.data.sources.ProductRepository
+import com.example.respolhpl.utils.DispatchersProvider
 import com.example.respolhpl.utils.ObservableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val repository: Repository
+    private val productRepository: ProductRepository
 ) : ObservableViewModel() {
 
     private var maxQuantity = 1
@@ -61,7 +62,7 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private suspend fun getProduct(id: Long) {
-        val res = repository.getProductById(id)
+        val res = productRepository.getProductById(id)
         setMaxQuantity(res)
         _result.value = res
     }
