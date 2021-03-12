@@ -7,7 +7,7 @@ import com.example.respolhpl.data.product.remote.RemoteProduct
 import com.example.respolhpl.data.product.remote.ShippingRemote
 
 object FakeData {
-    private val remoteProducts: List<RemoteProduct> = listOf(
+     val remoteProducts: List<RemoteProduct> = listOf(
         RemoteProduct(
             description = "<h2>Właściwości:</h2>\n" +
                     "<ul>\n" +
@@ -77,6 +77,6 @@ object FakeData {
             quantity = 10
         )
     )
-    private val productEntites = remoteProducts.map { prod ->  ProductEntity.from(prod)}
+     val productEntities = remoteProducts.map { prod ->  ProductEntity.from(prod)}
 
 }
