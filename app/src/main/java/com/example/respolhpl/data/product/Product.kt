@@ -3,13 +3,12 @@ package com.example.respolhpl.data.product
 import com.example.respolhpl.data.product.remote.RemoteProduct
 
 
-//todo product minimal(id,name,thumb,price)
 
 data class Product(
-    val id: Long,
+    val id: Int,
     val name: String,
     val quantity: Int,
-    val shipping: Shipping,
+//    val shipping: Shipping,
     val images: List<Image>,
 //    val productCategories: List<ProductCategory>, todo
     val thumbnailSrc: String?,
@@ -25,8 +24,8 @@ data class Product(
                 thumbnailSrc = remoteProduct.images.first().src,
                 price = remoteProduct.price,
                 description = remoteProduct.description,
-                shipping = Shipping.from(remoteProduct.shipping),
-                quantity = remoteProduct.quantity
+//                shipping = Shipping.from(remoteProduct.shipping),
+                quantity = remoteProduct.stock_quantity
             )
         }
 //        fun from(entity: ProductEntity) : Product{

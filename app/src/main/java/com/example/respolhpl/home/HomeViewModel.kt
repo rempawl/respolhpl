@@ -3,6 +3,7 @@ package com.example.respolhpl.home
 import androidx.lifecycle.*
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.sources.ProductRepository
+import com.example.respolhpl.utils.ResultViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -10,13 +11,12 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository,
-    private val savedStateHandle: SavedStateHandle
-) :
-    ViewModel() {
+    private val savedStateHandle: SavedStateHandle,
+) :ResultViewModel() {
 
-    private val _data = MutableLiveData<Result<*>>(Result.Loading)
-    val data: LiveData<Result<*>>
-        get() = _data
+    private val _result = MutableLiveData<Result<*>>(Result.Loading)
+    override val result: LiveData<Result<*>>
+        get() = _result
 
 
     init {
@@ -25,7 +25,8 @@ class HomeViewModel @Inject constructor(
 
     private fun getProducts() {
         viewModelScope.launch {
-            _data.value = productRepository.getProducts()
+            _result.value = productRepository.getProducts()
+
         }
     }
 

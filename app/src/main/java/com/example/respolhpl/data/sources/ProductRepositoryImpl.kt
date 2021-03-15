@@ -1,5 +1,6 @@
 package com.example.respolhpl.data.sources
 
+import android.util.Log
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.data.product.remote.RemoteProduct
@@ -19,15 +20,17 @@ class ProductRepositoryImpl @Inject constructor(
             val res = remoteDataSource.getAllProductsAsync().await()
             Result.Success(transformRemoteProducts(res))
         } catch (e: Exception) {
+            Log.d("kruci",e.toString())
             Result.Error(e)
         }
     }
 
-    override suspend fun getProductById(id: Long): Result<*> {
+    override suspend fun getProductById(id: Int): Result<*> {
         return try {
             val res = remoteDataSource.getProductByIdAsync(id).await()
             Result.Success(Product.from(res))
         } catch (e: Exception) {
+            Log.d("kruci",e.toString())
             Result.Error(e)
         }
     }

@@ -6,5 +6,5 @@ import kotlinx.coroutines.Deferred
 interface RemoteDataSource {
     fun getAllProductsAsync(): Deferred<List<RemoteProduct>>
 
-    fun getProductByIdAsync(id: Long): Deferred<RemoteProduct>
+    fun getProductByIdAsync(id: Int): Deferred<RemoteProduct>
 }

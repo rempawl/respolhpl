@@ -14,7 +14,7 @@ interface DataModule {
 
     @Binds
     @Reusable
-    fun provideRemoteDataSource(dataSource: MockRemoteDataSource): RemoteDataSource
+    fun provideRemoteDataSource(dataSource: DefaultRemoteDataSource): RemoteDataSource
 
     @Reusable
     @Binds

@@ -5,10 +5,11 @@ import com.example.respolhpl.network.RespolApi
 import kotlinx.coroutines.Deferred
 import javax.inject.Inject
 
-class DefaultRemoteDataSource @Inject constructor(private val api : RespolApi): RemoteDataSource {
-    override fun getAllProductsAsync(): Deferred<List<RemoteProduct>> =        api.getAllProducts()
-    override fun getProductByIdAsync(id: Long): Deferred<RemoteProduct> {
-        TODO("Not yet implemented")
+class DefaultRemoteDataSource @Inject constructor(private val api: RespolApi) : RemoteDataSource {
+    override fun getAllProductsAsync(): Deferred<List<RemoteProduct>> = api.getAllProductsAsync()
+
+    override fun getProductByIdAsync(id: Int): Deferred<RemoteProduct> {
+        return api.getProductByIDAsync(id)
     }
 
 

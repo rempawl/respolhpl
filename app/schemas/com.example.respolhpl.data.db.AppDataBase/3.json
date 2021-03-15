@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "47a76f7f73cfc144735511e8e2cc3ed1",
+    "identityHash": "cdd4bc74b5288949679f27c502f89a41",
     "entities": [
       {
         "tableName": "products",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `price` REAL NOT NULL, `quantity` INTEGER NOT NULL, `description` TEXT NOT NULL, `cost` REAL NOT NULL, `maxQuantity` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `price` REAL NOT NULL, `quantity` INTEGER NOT NULL, `description` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -37,25 +37,13 @@
             "columnName": "description",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "shipping.cost",
-            "columnName": "cost",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "shipping.maxQuantity",
-            "columnName": "maxQuantity",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
             "id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -64,7 +52,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '47a76f7f73cfc144735511e8e2cc3ed1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cdd4bc74b5288949679f27c502f89a41')"
     ]
   }
 }

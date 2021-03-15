@@ -23,7 +23,7 @@
         android:label="">
         <argument
             android:name="productId"
-            app:argType="java.lang.Long"
+            app:argType="java.lang.Integer"
             />
     </fragment>
 

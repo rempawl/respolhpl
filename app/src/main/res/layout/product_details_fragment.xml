@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -23,6 +24,9 @@
         <include
             layout="@layout/loading_layout"
             app:showWhen="@{viewModel.result.loading}" />
+        <include
+            layout="@layout/error_layout"
+            app:showWhen="@{viewModel.result.error}"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -141,6 +145,13 @@
                     android:focusable="true"
                     app:bindProductDescription="@{viewModel.result}"
                     tools:text="@string/tools_desc" />
+
+                    <TextView
+                        android:id="@+id/footer"
+                        android:layout_marginTop="@dimen/def_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?attr/actionBarSize"
+                        />
             </LinearLayout>
         </ScrollView>
 

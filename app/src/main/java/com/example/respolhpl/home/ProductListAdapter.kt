@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.databinding.ProductItemBinding
 
-typealias OnItemClickListener = (id: Long) -> Unit
+typealias OnItemClickListener = (id: Int) -> Unit
 
 class ProductListAdapter constructor(
-    private val onItemClickListener: (id: Long) -> Unit
+    private val onItemClickListener: (id: Int) -> Unit
 ) :
     ListAdapter<Product, ProductListAdapter.ProductViewHolder>(ProductDiff()) {
 

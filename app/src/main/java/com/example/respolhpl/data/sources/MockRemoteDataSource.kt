@@ -35,9 +35,9 @@ class MockRemoteDataSource @Inject constructor() : RemoteDataSource {
                 ),
                 ImageRemote("https://i2.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/12/IMG-20201217-WA0010-rotated.jpg?fit=777%2C1202&ssl=1")
             ),
-            categories = listOf(RemoteCategory(ANTIBAC_BOARD_ID)),
-            quantity = 60,
-            shipping = ShippingRemote(11.99, 10)
+//            categories = listOf(RemoteCategory(ANTIBAC_BOARD_ID)),
+            stock_quantity = 60,
+//            shipping = ShippingRemote(11.99, 10)
 
         ),
         RemoteProduct(
@@ -76,9 +76,9 @@ class MockRemoteDataSource @Inject constructor() : RemoteDataSource {
                     "https://i1.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/11/4134_EM.jpg?fit=1440%2C1440&ssl=1"
                 )
             ),
-            categories = listOf(RemoteCategory(LAMINAT_HPL)),
-            shipping = ShippingRemote(30.0, 5),
-            quantity = 10
+//            categories = listOf(RemoteCategory(LAMINAT_HPL)),
+//            shipping = ShippingRemote(30.0, 5),
+            stock_quantity = 10
         )
     )
 
@@ -89,7 +89,7 @@ class MockRemoteDataSource @Inject constructor() : RemoteDataSource {
         }
     }
 
-    override fun getProductByIdAsync(id: Long): Deferred<RemoteProduct> {
+    override fun getProductByIdAsync(id: Int): Deferred<RemoteProduct> {
         return CoroutineScope(Dispatchers.IO).async {
             delayDef()
             products.first { prod -> prod.id == id }

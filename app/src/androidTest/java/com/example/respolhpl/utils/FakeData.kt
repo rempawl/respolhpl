@@ -32,7 +32,7 @@ object FakeData {
                 ImageRemote("https://i2.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/12/IMG-20201217-WA0010-rotated.jpg?fit=777%2C1202&ssl=1")
             ),
             categories = listOf(RemoteCategory(RemoteCategory.ANTIBAC_BOARD_ID)),
-            quantity = 60,
+            stock_quantity = 60,
             shipping = ShippingRemote(11.99, 10)
 
         ),
@@ -74,7 +74,7 @@ object FakeData {
             ),
             categories = listOf(RemoteCategory(RemoteCategory.LAMINAT_HPL)),
             shipping = ShippingRemote(30.0, 5),
-            quantity = 10
+            stock_quantity = 10
         )
     )
      val productEntities = remoteProducts.map { prod ->  ProductEntity.from(prod)}

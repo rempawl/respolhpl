@@ -22,7 +22,7 @@ class HomeFragment : Fragment() {
     private var adapter: ProductListAdapter? = null
     private var binding: FragmentHomeBinding? = null
 
-    private fun navigateToProductDetails(id: Long) {
+    private fun navigateToProductDetails(id: Int) {
         findNavController().navigate(
             HomeFragmentDirections.navigationHomeToProductDetails(id)
         )
@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
         binding = null
     }
     private fun setupObservers() {
-        viewModel.data.observe(viewLifecycleOwner) { res ->
+        viewModel.result.observe(viewLifecycleOwner) { res ->
             res.takeIf { it.isSuccess }?.let { submitProducts(res) }
         }
     }
