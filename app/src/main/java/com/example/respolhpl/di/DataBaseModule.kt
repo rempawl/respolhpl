@@ -1,7 +1,7 @@
 package com.example.respolhpl.di
 
 import android.content.Context
-import com.example.respolhpl.data.db.AppDataBase
+import com.example.respolhpl.data.sources.local.AppDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable

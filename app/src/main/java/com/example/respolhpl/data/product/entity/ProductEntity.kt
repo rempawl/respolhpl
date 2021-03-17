@@ -14,18 +14,20 @@ data class ProductEntity constructor(
     val name: String,
     val price: Double,
     val quantity: Int,
+    val thumbnailSrc: String,
+
 //    @Embedded val shipping: Shipping,
     val description: String,
 ) {
 
     companion object {
         fun from(remoteProduct: RemoteProduct): ProductEntity {
-
             return ProductEntity(
                 id = remoteProduct.id,
                 name = remoteProduct.name,
                 price = remoteProduct.price,
                 quantity = remoteProduct.stock_quantity,
+                thumbnailSrc = remoteProduct.images.first().src,
 //                categories = remoteProduct.categories.map { cat -> ProductCategory.from(cat) },
 //                images = remoteProduct.images.map { img -> Image.from(img) },
 //                shipping = Shipping.from(remoteProduct.shipping),

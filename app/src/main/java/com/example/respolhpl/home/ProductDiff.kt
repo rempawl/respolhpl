@@ -1,15 +1,15 @@
 package com.example.respolhpl.home
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.respolhpl.data.product.Product
+import com.example.respolhpl.data.product.ProductMinimal
 
 
-class ProductDiff : DiffUtil.ItemCallback<Product>() {
-    override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+class ProductDiff : DiffUtil.ItemCallback<ProductMinimal>() {
+    override fun areItemsTheSame(oldItem: ProductMinimal, newItem: ProductMinimal): Boolean {
         return oldItem === newItem
     }
 
-    override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+    override fun areContentsTheSame(oldItem: ProductMinimal, newItem: ProductMinimal): Boolean {
         return oldItem == newItem
     }
 

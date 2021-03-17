@@ -6,7 +6,7 @@
     <data>
         <variable
             name="product"
-            type="com.example.respolhpl.data.product.Product" />
+            type="com.example.respolhpl.data.product.ProductMinimal" />
     </data>
 
     <androidx.cardview.widget.CardView

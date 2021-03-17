@@ -10,8 +10,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
+import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProductDetailsFragment : Fragment() {
@@ -19,21 +19,22 @@ class ProductDetailsFragment : Fragment() {
 
     private val arg: ProductDetailsFragmentArgs by navArgs()
 
-    @Inject
-    lateinit var imagesAdapter: ImagesAdapter
-
+    private var imagesAdapter: ImagesAdapter by autoCleared()
+    private var binding: ProductDetailsFragmentBinding by autoCleared()
     private val viewModel: ProductDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = ProductDetailsFragmentBinding.inflate(inflater)
-        setupObservers()
-        setupBinding(binding)
-        return binding.root
+        binding = ProductDetailsFragmentBinding.inflate(inflater)
+        imagesAdapter = ImagesAdapter()
 
+        setupObservers()
+        setupBinding()
+        return binding.root
     }
+
 
     private fun setupObservers() {
         viewModel.result.observe(viewLifecycleOwner) { prod ->
@@ -44,7 +45,7 @@ class ProductDetailsFragment : Fragment() {
         }
     }
 
-    private fun setupBinding(binding: ProductDetailsFragmentBinding) {
+    private fun setupBinding() {
         binding.viewModel = viewModel
         binding.viewPager.adapter = imagesAdapter
         binding.lifecycleOwner = viewLifecycleOwner

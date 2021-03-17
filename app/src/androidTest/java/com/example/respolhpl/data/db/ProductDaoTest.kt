@@ -5,10 +5,11 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
+import com.example.respolhpl.data.sources.local.AppDataBase
+import com.example.respolhpl.data.sources.local.ProductDao
 import com.example.respolhpl.utils.FakeData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
@@ -17,7 +18,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.lang.NullPointerException
 
 
 @ExperimentalCoroutinesApi
@@ -51,7 +51,7 @@ class ProductDaoTest {
         runBlockingTest {
             val prod = products.first()
             dao.insert(prod)
-            val res = dao.getAllProducts().first().first()
+            val res = dao.getAllProductsMinimal().first().first()
             assertThat(res, `is`(prod))
         }
     }
@@ -71,7 +71,7 @@ class ProductDaoTest {
         runBlockingTest {
             val prods = products
             dao.insert(prods)
-            val res = dao.getAllProducts().first()
+            val res = dao.getAllProductsMinimal().first()
             println(res)
             assertThat(res, `is`(prods))
         }
@@ -94,7 +94,7 @@ class ProductDaoTest {
         runBlockingTest {
             dao.insert(products)
             dao.delete(products)
-            val res = dao.getAllProducts().first()
+            val res = dao.getAllProductsMinimal().first()
             assert(res.isEmpty())
         }
     }

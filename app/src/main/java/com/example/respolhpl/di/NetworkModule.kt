@@ -1,7 +1,8 @@
 package com.example.respolhpl.di
 
+import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.network.BasicAuthInterceptor
-import com.example.respolhpl.network.RespolApi
+import com.example.respolhpl.data.sources.remote.WooCommerceApi
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -17,6 +18,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
+
 
     @Provides
     @Singleton
@@ -41,7 +43,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRespolAPI(retrofit: Retrofit): RespolApi = retrofit.create(RespolApi::class.java)
+    fun provideRemoteDataSource(retrofit: Retrofit): RemoteDataSource = retrofit.create(WooCommerceApi::class.java)
 
     private const val CLI = "ck_07ce9301bc3d1cad02dc4fe9de33eed0a2704ab0"
     private const val PRIV = "cs_c495e920282576a06ebbe89872c6469ac58df2ff"

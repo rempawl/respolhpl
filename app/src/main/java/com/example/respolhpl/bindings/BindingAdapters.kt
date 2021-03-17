@@ -16,6 +16,7 @@ import androidx.databinding.InverseBindingListener
 import com.example.respolhpl.R
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.Product
+import com.example.respolhpl.data.product.ProductMinimal
 
 
 object BindingAdapters {
@@ -90,8 +91,7 @@ object BindingAdapters {
     @BindingAdapter("bindProductDescription")
     fun TextView.bindProductDescription(result: Result<*>) {
         checkIfIsSuccessAndProduct(result)?.let { product ->
-            text =
-                HtmlCompat.fromHtml(product.description, FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH)
+            text = HtmlCompat.fromHtml(product.description, FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH)
         }
     }
 

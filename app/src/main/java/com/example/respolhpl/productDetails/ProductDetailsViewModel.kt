@@ -9,8 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.respolhpl.BR
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.Product
-import com.example.respolhpl.data.sources.ProductRepository
-import com.example.respolhpl.utils.ObservableViewModel
+import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.utils.ResultViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

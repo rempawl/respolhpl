@@ -1,4 +1,4 @@
-package com.example.respolhpl.data.db
+package com.example.respolhpl.data.sources.local
 
 import androidx.room.Delete
 import androidx.room.Insert

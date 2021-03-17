@@ -1,30 +1,30 @@
 package com.example.respolhpl.data.product
 
-import com.example.respolhpl.data.product.Converters.ANTIBAC_CUTTING_BOARD
-import com.example.respolhpl.data.product.Converters.LAMINATHPL
-import com.example.respolhpl.data.product.Converters.MODERNBOX
-import com.example.respolhpl.data.product.remote.RemoteCategory
+import com.example.respolhpl.data.product.remote.RemoteCategory.Companion.ANTIBAC_BOARD_ID
+import com.example.respolhpl.data.product.remote.RemoteCategory.Companion.LAMINAT_HPL_ID
+import com.example.respolhpl.data.product.remote.RemoteCategory.Companion.MODERNBOX_ID
 
 sealed class ProductCategory {
+    abstract fun toCategoryID(): Int
 
-    object AntibacCuttingBoard : ProductCategory()
-    object LaminatHPL : ProductCategory()
-    object ModernBox : ProductCategory()
+    object AntibacCuttingBoard : ProductCategory() {
+        override fun toCategoryID(): Int = ANTIBAC_BOARD_ID
+    }
+
+    object LaminatHPL : ProductCategory() {
+        override fun toCategoryID(): Int = LAMINAT_HPL_ID
+    }
+
+    object ModernBox : ProductCategory() {
+        override fun toCategoryID(): Int = MODERNBOX_ID
+    }
 
     companion object {
-        fun from(remoteCategory: RemoteCategory): ProductCategory = when (remoteCategory.id) {
-            RemoteCategory.ANTIBAC_BOARD_ID -> AntibacCuttingBoard
-            RemoteCategory.LAMINAT_HPL -> LaminatHPL
-            else -> throw IllegalStateException("wrong value of remoteCategory")
+        fun from(categoryID: Int): ProductCategory = when (categoryID) {
+            ANTIBAC_BOARD_ID -> AntibacCuttingBoard
+            LAMINAT_HPL_ID -> LaminatHPL
+            MODERNBOX_ID -> ModernBox
+            else -> throw IllegalStateException("wrong value of categoryID")
         }
-
-        fun from(entityCategory: Int): ProductCategory = when (entityCategory) {
-            ANTIBAC_CUTTING_BOARD -> AntibacCuttingBoard
-            LAMINATHPL -> LaminatHPL
-            MODERNBOX -> ModernBox
-            else -> throw IllegalArgumentException("Wrong value of category")
-        }
-
-
     }
 }

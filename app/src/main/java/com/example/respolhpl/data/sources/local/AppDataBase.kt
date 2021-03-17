@@ -1,11 +1,9 @@
-package com.example.respolhpl.data.db
+package com.example.respolhpl.data.sources.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.example.respolhpl.data.product.Converters
 import com.example.respolhpl.data.product.entity.ProductEntity
 
 @Database(version = 3, entities = [ProductEntity::class])

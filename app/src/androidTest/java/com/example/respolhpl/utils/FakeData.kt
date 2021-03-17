@@ -1,14 +1,13 @@
 package com.example.respolhpl.utils
 
 import com.example.respolhpl.data.product.entity.ProductEntity
-import com.example.respolhpl.data.product.remote.ImageRemote
-import com.example.respolhpl.data.product.remote.RemoteCategory
-import com.example.respolhpl.data.product.remote.RemoteProduct
-import com.example.respolhpl.data.product.remote.ShippingRemote
+import com.example.respolhpl.data.product.remote.*
 
 object FakeData {
      val remoteProducts: List<RemoteProduct> = listOf(
         RemoteProduct(
+            tags = listOf(RemoteTag("deska do krojenia")),
+            shipping_class_id = 80,
             description = "<h2>Właściwości:</h2>\n" +
                     "<ul>\n" +
                     " \t<li>Wysoka odporność na ścieranie, zadrapania, uderzenia,zginanie</li>\n" +
@@ -31,9 +30,9 @@ object FakeData {
                 ),
                 ImageRemote("https://i2.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/12/IMG-20201217-WA0010-rotated.jpg?fit=777%2C1202&ssl=1")
             ),
-            categories = listOf(RemoteCategory(RemoteCategory.ANTIBAC_BOARD_ID)),
+//            categories = listOf(RemoteCategory(RemoteCategory.ANTIBAC_BOARD_ID)),
             stock_quantity = 60,
-            shipping = ShippingRemote(11.99, 10)
+//            shipping = ShippingRemote(11.99, 10)
 
         ),
         RemoteProduct(
@@ -72,9 +71,11 @@ object FakeData {
                     "https://i1.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/11/4134_EM.jpg?fit=1440%2C1440&ssl=1"
                 )
             ),
-            categories = listOf(RemoteCategory(RemoteCategory.LAMINAT_HPL)),
-            shipping = ShippingRemote(30.0, 5),
-            stock_quantity = 10
+//            categories = listOf(RemoteCategory(RemoteCategory.LAMINAT_HPL)),
+//            shipping = ShippingRemote(30.0, 5),
+            stock_quantity = 10,
+            tags = listOf(RemoteTag("laminat hpl")),
+            shipping_class_id = 73
         )
     )
      val productEntities = remoteProducts.map { prod ->  ProductEntity.from(prod)}
