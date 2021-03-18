@@ -7,6 +7,7 @@ sealed class Shipping {
 
     abstract fun toShippingClassID(): Int
 
+    //abstract fun calculateCost() : Double todo
     data class Shipping5pcsLaminat(
         override val cost: Double = 30.0, override val maxQuantity: Int = 5
     ) : Shipping() {
@@ -27,6 +28,7 @@ sealed class Shipping {
                 else -> throw IllegalArgumentException("Wrong value of shippingClassID")
             }
         }
+
         const val SHIPPING_LAMINAT_ID = 80
         const val SHIPPING_10PCS_DEF_ID = 73
     }

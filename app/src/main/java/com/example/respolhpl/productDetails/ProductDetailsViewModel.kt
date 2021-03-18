@@ -12,6 +12,7 @@ import com.example.respolhpl.data.product.Product
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.utils.ResultViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -61,9 +62,10 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private suspend fun getProduct(id: Int) {
-        val res = productRepository.getProductById(id)
-        setMaxQuantity(res)
-        _result.value = res
+        productRepository.getProductById(id).collect { res ->
+            setMaxQuantity(res)
+            _result.value = res
+        }
     }
 
     private fun setMaxQuantity(res: Result<*>) {

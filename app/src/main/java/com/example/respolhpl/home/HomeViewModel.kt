@@ -5,6 +5,8 @@ import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.utils.ResultViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,9 +27,9 @@ class HomeViewModel @Inject constructor(
 
     private fun getProducts() {
         viewModelScope.launch {
-            _result.value = productRepository.getProducts()
-
+            productRepository.getProducts().collect { _result.value = it }
         }
+
     }
 
 
