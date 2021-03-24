@@ -8,6 +8,8 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.ToggleButton
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.text.HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH
 import androidx.databinding.BindingAdapter
@@ -15,11 +17,14 @@ import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.example.respolhpl.R
 import com.example.respolhpl.data.Result
-import com.example.respolhpl.data.product.Product
-import com.example.respolhpl.data.product.ProductMinimal
+import com.example.respolhpl.data.product.domain.Product
 
 
 object BindingAdapters {
+    fun ToggleButton.setDrawable() {
+
+    }
+
     @BindingAdapter("orderQuantity")
     @JvmStatic
     fun setOrderQuantity(view: EditText, value: String) {
@@ -91,7 +96,8 @@ object BindingAdapters {
     @BindingAdapter("bindProductDescription")
     fun TextView.bindProductDescription(result: Result<*>) {
         checkIfIsSuccessAndProduct(result)?.let { product ->
-            text = HtmlCompat.fromHtml(product.description, FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH)
+            text =
+                HtmlCompat.fromHtml(product.description, FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH)
         }
     }
 

@@ -7,7 +7,7 @@
 
         <variable
             name="img"
-            type="com.example.respolhpl.data.product.Image" />
+            type="com.example.respolhpl.data.product.domain.Image" />
     </data>
 
     <androidx.cardview.widget.CardView

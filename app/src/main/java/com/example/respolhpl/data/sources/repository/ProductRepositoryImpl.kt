@@ -1,12 +1,14 @@
 package com.example.respolhpl.data.sources.repository
 
-import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.respolhpl.data.Result
-import com.example.respolhpl.data.product.Product
-import com.example.respolhpl.data.product.ProductMinimal
-import com.example.respolhpl.data.product.remote.RemoteProductMinimal
+import com.example.respolhpl.data.product.domain.Product
+import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.sources.local.ProductDao
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
+import com.example.respolhpl.data.sources.repository.ProductPagingSource.Companion.NETWORK_PAGE_SIZE
 import com.example.respolhpl.utils.DispatchersProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,29 +17,25 @@ import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: ProductDao,
+//    private val localDataSource: ProductDao, todo favs
     private val dispatchersProvider: DispatchersProvider
 ) : ProductRepository {
-    //TODO REFACTOR
-
-    private fun transformRemoteProducts(res: List<RemoteProductMinimal>) =
-        res.map { remoteProduct -> ProductMinimal.from(remoteProduct) }
-
-
     private fun flowBuilder(block: suspend () -> Result<*>) = flow {
+        emit(Result.Loading)
         emit(block())
     }
 
-    override suspend fun getProducts(): Flow<Result<*>> = withContext(dispatchersProvider.io) {
-        flowBuilder {
-            try {
-                val res = remoteDataSource.getAllProductsAsync().await()
-                Result.Success(transformRemoteProducts(res))
-            } catch (e: Exception) {
-                Result.Error(e)
+    override suspend fun getProducts(): Flow<PagingData<ProductMinimal>> {
+        return Pager(config = PagingConfig(
+            pageSize = NETWORK_PAGE_SIZE,
+            enablePlaceholders = false
+        ),
+            pagingSourceFactory = {
+                ProductPagingSource(remoteDataSource) { res -> ProductMinimal.from(res )}
             }
-        }
+        ).flow
     }
+
 
     override suspend fun getProductById(id: Int): Flow<Result<*>> =
         withContext(dispatchersProvider.io) {

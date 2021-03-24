@@ -1,23 +1,6 @@
-package com.example.respolhpl.data.product
+package com.example.respolhpl.data.product.domain
 
 import com.example.respolhpl.data.product.remote.RemoteProduct
-import com.example.respolhpl.data.product.remote.RemoteProductMinimal
-
-data class ProductMinimal(
-    val id: Int,
-    val name: String,
-    val price: Double,
-    val thumbnailSrc: String?
-) {
-    companion object {
-        fun from(remoteProduct: RemoteProductMinimal) = ProductMinimal(
-            id = remoteProduct.id,
-            name = remoteProduct.name,
-            price = remoteProduct.price,
-            thumbnailSrc = remoteProduct.images.first().src,
-        )
-    }
-}
 
 data class Product(
     val id: Int,
@@ -28,7 +11,8 @@ data class Product(
 //    val productCategories: List<ProductCategory>, todo
     val thumbnailSrc: String?,
     val price: Double,
-    val description: String
+    val description: String,
+    val liked : Boolean = false
 ) {
     companion object {
         //todo from entity

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.respolhpl.data.product.Image
+import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.databinding.ImageItemBinding
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ class ImagesAdapter @Inject constructor() : ListAdapter<Image, ImagesAdapter.Ima
     class ImageViewHolder private constructor(private val binding: ImageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(image: Image,count : String) {
+        fun bind(image: Image, count : String) {
             binding.apply {
                 img = image
                 imgCounter.text = count

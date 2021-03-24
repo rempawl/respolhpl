@@ -7,18 +7,12 @@ data class RemoteProduct(
     val id: Int,
     val name: String,
     val stock_quantity: Int,
-    val shipping_class_id: Int,
+//    val shipping_class_id: Int,
     val price: Double,
     val images: List<ImageRemote>,
 //    val categories: List<RemoteCategory>,
-    val tags : List<RemoteTag>,
+//    val tags : List<RemoteTag>,
     val description: String
 )
+//todo variants
 
-@Json(name = "minimal_product")
-data class RemoteProductMinimal(
-    val id : Int,
-    val name : String,
-    val price: Double,
-    val images: List<ImageRemote>
-)

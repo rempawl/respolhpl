@@ -20,11 +20,12 @@
 
         <include
             layout="@layout/loading_layout"
-            app:showWhen="@{viewModel.result.loading}"
+            android:id="@+id/loading"
              />
         <include
             layout="@layout/error_layout"
-            app:showWhen="@{viewModel.result.error}"/>
+            android:id="@+id/error"
+            />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/product_list"
             android:layout_width="match_parent"

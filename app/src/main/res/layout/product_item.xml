@@ -6,7 +6,7 @@
     <data>
         <variable
             name="product"
-            type="com.example.respolhpl.data.product.ProductMinimal" />
+            type="com.example.respolhpl.data.product.domain.ProductMinimal" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -56,11 +56,12 @@
 
 
             <ImageButton
+                android:background="@color/white"
+                android:src="@drawable/ic_baseline_star_outline_24"
+                android:id="@+id/fav_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/def_margin"
-                android:background="@color/white"
-                android:src="@drawable/ic_baseline_star_outline_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
 

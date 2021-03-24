@@ -1,4 +1,4 @@
-package com.example.respolhpl.data.product
+package com.example.respolhpl.data.product.domain
 
 import com.example.respolhpl.data.product.remote.ImageRemote
 

@@ -1,4 +1,4 @@
-package com.example.respolhpl.data.product
+package com.example.respolhpl.data.product.domain
 
 
 sealed class Shipping {

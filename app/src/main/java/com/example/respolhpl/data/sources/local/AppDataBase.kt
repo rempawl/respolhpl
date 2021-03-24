@@ -4,11 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.respolhpl.data.product.entity.ProductEntity
+import com.example.respolhpl.data.product.entity.FavProductEntity
 
-@Database(version = 3, entities = [ProductEntity::class])
+@Database(version = 3, entities = [FavProductEntity::class])
 abstract class AppDataBase : RoomDatabase() {
-
     abstract fun productDao(): ProductDao
 
     companion object {

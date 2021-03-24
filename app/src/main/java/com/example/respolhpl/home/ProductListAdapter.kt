@@ -2,16 +2,16 @@ package com.example.respolhpl.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.respolhpl.data.product.ProductMinimal
+import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.databinding.ProductItemBinding
 
 typealias OnItemClickListener = (id: Int) -> Unit
 
 class ProductListAdapter constructor(
     private val onItemClickListener: (id: Int) -> Unit
-) : ListAdapter<ProductMinimal, ProductListAdapter.ProductViewHolder>(ProductDiff()) {
+) : PagingDataAdapter<ProductMinimal, ProductListAdapter.ProductViewHolder>(ProductDiff()) {
 
 
     class ProductViewHolder private constructor(
@@ -28,7 +28,6 @@ class ProductListAdapter constructor(
             fun from(parent: ViewGroup, clickListener: OnItemClickListener): ProductViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
                 val binding = ProductItemBinding.inflate(inflater, parent, false)
-
                 return ProductViewHolder(binding, clickListener)
             }
         }
@@ -39,7 +38,7 @@ class ProductListAdapter constructor(
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val item = getItem(position)
+        val item = getItem(position) ?: return
         holder.bind(item)
     }
 

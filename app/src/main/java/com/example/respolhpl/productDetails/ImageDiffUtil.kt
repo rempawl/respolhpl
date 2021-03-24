@@ -2,7 +2,7 @@ package com.example.respolhpl.productDetails
 
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.respolhpl.data.product.Image
+import com.example.respolhpl.data.product.domain.Image
 
 class ImageDiffUtil : DiffUtil.ItemCallback<Image>() {
     override fun areItemsTheSame(oldItem: Image, newItem: Image): Boolean {

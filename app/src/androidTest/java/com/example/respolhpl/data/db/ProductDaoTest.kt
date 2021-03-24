@@ -27,7 +27,7 @@ class ProductDaoTest {
     private lateinit var dataBase: AppDataBase
     private lateinit var dao: ProductDao
 
-    private val products = FakeData.productEntities
+//    private val products = FakeData.productEntities
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -46,7 +46,7 @@ class ProductDaoTest {
         dataBase.close()
     }
 
-    @Test
+    /*@Test
     fun insertAndGetProduct() {
         runBlockingTest {
             val prod = products.first()
@@ -98,5 +98,5 @@ class ProductDaoTest {
             assert(res.isEmpty())
         }
     }
-
+*/
 }

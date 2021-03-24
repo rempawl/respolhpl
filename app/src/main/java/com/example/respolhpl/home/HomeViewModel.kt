@@ -1,36 +1,26 @@
 package com.example.respolhpl.home
 
-import androidx.lifecycle.*
-import com.example.respolhpl.data.Result
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.sources.repository.ProductRepository
-import com.example.respolhpl.utils.ResultViewModel
+import com.example.respolhpl.utils.DispatchersProvider
+import com.example.respolhpl.utils.ObservableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository,
     private val savedStateHandle: SavedStateHandle,
-) :ResultViewModel() {
+    private val dispatchersProvider: DispatchersProvider
+) : ObservableViewModel() {
 
-    private val _result = MutableLiveData<Result<*>>(Result.Loading)
-    override val result: LiveData<Result<*>>
-        get() = _result
-
-
-    init {
-        getProducts()
+    suspend fun getProducts(): Flow<PagingData<ProductMinimal>> {
+        return productRepository.getProducts()
+            .cachedIn(viewModelScope)
     }
-
-    private fun getProducts() {
-        viewModelScope.launch {
-            productRepository.getProducts().collect { _result.value = it }
-        }
-
-    }
-
-
 }

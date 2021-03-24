@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.respolhpl.data.Result
-import com.example.respolhpl.data.product.Product
+import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
 import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
