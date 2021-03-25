@@ -2,17 +2,17 @@ package com.example.respolhpl.data.db
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.respolhpl.data.sources.local.AppDataBase
-import com.example.respolhpl.data.sources.local.ProductDao
+import com.example.respolhpl.data.sources.local.FavProductDao
 import com.example.respolhpl.utils.FakeData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.`is`
+import org.hamcrest.CoreMatchers.`is`
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -23,11 +23,11 @@ import org.junit.runner.RunWith
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class ProductDaoTest {
+class FavProductDaoTest {
     private lateinit var dataBase: AppDataBase
-    private lateinit var dao: ProductDao
+    private lateinit var dao: FavProductDao
 
-//    private val products = FakeData.productEntities
+    private val products = FakeData.favProductEntities
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -38,7 +38,7 @@ class ProductDaoTest {
         dataBase = Room.inMemoryDatabaseBuilder(ctx, AppDataBase::class.java)
             .allowMainThreadQueries()
             .build()
-        dao = dataBase.productDao()
+        dao = dataBase.favProductDao()
     }
 
     @After
@@ -46,57 +46,36 @@ class ProductDaoTest {
         dataBase.close()
     }
 
-    /*@Test
+    @Test
     fun insertAndGetProduct() {
         runBlockingTest {
             val prod = products.first()
             dao.insert(prod)
-            val res = dao.getAllProductsMinimal().first().first()
+            val res = dao.getFavProducts().first().first()
             assertThat(res, `is`(prod))
         }
     }
 
-    @Test
-    fun insertAndGetProductById() {
-        runBlockingTest {
-            val prod = products.first()
-            dao.insert(prod)
-            val res = dao.getProductById(prod.id).first()
-            assertThat(res, `is`(prod))
-        }
-    }
 
     @Test
     fun insertAndGetProducts() {
         runBlockingTest {
-            val prods = products
-            dao.insert(prods)
-            val res = dao.getAllProductsMinimal().first()
+            dao.insert(products)
+            val res = dao.getFavProducts().first()
             println(res)
-            assertThat(res, `is`(prods))
+            assertThat(res, `is`(products))
         }
     }
 
-    @Test
-    fun insertAndDeleteProduct() {
-        runBlockingTest {
-            val prod = products.first()
-            dao.insert(prod)
-            dao.delete(prod)
-            val res  = dao.getProductById(prod.id).first()
-            assert(res == null)
-
-        }
-    }
 
     @Test
-    fun insertAndDeleteItems(){
+    fun insertAndDeleteItems() {
         runBlockingTest {
             dao.insert(products)
             dao.delete(products)
-            val res = dao.getAllProductsMinimal().first()
+            val res = dao.getFavProducts().first()
             assert(res.isEmpty())
         }
     }
-*/
+
 }

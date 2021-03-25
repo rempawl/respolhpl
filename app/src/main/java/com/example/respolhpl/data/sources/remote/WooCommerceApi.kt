@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface WooCommerceApi : RemoteDataSource {
 
 
-    @GET("$PRODUCTS_PATH")
+    @GET(PRODUCTS_PATH)
     override fun getProductsAsync(@Query("per_page")perPage: Int, @Query("page") page: Int): Deferred<List<RemoteProductMinimal>>
 
     @GET("$PRODUCTS_PATH/{id}")

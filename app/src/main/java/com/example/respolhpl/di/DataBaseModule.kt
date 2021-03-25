@@ -20,6 +20,6 @@ object DataBaseModule {
 
     @Provides
     @Reusable
-    fun provideProductDao(dataBase: AppDataBase) = dataBase.productDao()
+    fun provideProductDao(dataBase: AppDataBase) = dataBase.favProductDao()
 
 }

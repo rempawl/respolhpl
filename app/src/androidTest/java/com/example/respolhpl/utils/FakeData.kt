@@ -1,10 +1,11 @@
 package com.example.respolhpl.utils
 
 import com.example.respolhpl.data.product.entity.FavProductEntity
-import com.example.respolhpl.data.product.remote.*
+import com.example.respolhpl.data.product.remote.ImageRemote
+import com.example.respolhpl.data.product.remote.RemoteProduct
 
 object FakeData {
-     val remoteProducts: List<RemoteProduct> = listOf(
+    val remoteProducts: List<RemoteProduct> = listOf(
         RemoteProduct(
 //            tags = listOf(RemoteTag("deska do krojenia")),
 //            shipping_class_id = 80,
@@ -78,6 +79,13 @@ object FakeData {
 //            shipping_class_id = 73
         )
     )
-//     val productEntities = remoteProducts.map { prod ->  FavProductEntity.from(prod)}
+    val favProductEntities = remoteProducts.map { prod ->
+        FavProductEntity(
+            price = prod.price,
+            id = prod.id,
+            name = prod.name,
+            thumbnailSrc = prod.images.first().src
+        )
+    }
 
 }

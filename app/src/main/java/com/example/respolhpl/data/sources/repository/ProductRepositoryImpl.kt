@@ -6,7 +6,6 @@ import androidx.paging.PagingData
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.product.domain.ProductMinimal
-import com.example.respolhpl.data.sources.local.ProductDao
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.sources.repository.ProductPagingSource.Companion.NETWORK_PAGE_SIZE
 import com.example.respolhpl.utils.DispatchersProvider
