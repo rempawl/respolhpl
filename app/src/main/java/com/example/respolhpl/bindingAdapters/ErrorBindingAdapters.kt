@@ -1,4 +1,4 @@
-package com.example.respolhpl.bindings
+package com.example.respolhpl.bindingAdapters
 
 import android.content.Context
 import android.widget.TextView

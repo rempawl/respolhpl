@@ -10,17 +10,25 @@ import com.example.respolhpl.utils.DispatchersProvider
 import com.example.respolhpl.utils.ObservableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository,
-    private val savedStateHandle: SavedStateHandle,
-    private val dispatchersProvider: DispatchersProvider
+    private val savedStateHandle: SavedStateHandle
 ) : ObservableViewModel() {
 
-    suspend fun getProducts(): Flow<PagingData<ProductMinimal>> {
-        return productRepository.getProducts()
+    var result: Flow<PagingData<ProductMinimal>>? = null
+
+    init {
+        viewModelScope.launch {
+            getProducts()
+        }
+    }
+
+    private suspend fun getProducts() {
+        result = productRepository.getProducts()
             .cachedIn(viewModelScope)
     }
 }

@@ -63,6 +63,26 @@ class WooCommerceApiTest {
         }
     }
 
+    @Test
+    fun getProductById() {
+        val id = 956
+        runBlocking {
+            enqueueResponse("product_${id}.json")
+            val product = api.getProductByIDAsync(id).await()
+            val request = mockServer.takeRequest()
+            assertThat(product.id, `is`(id))
+            assertThat(product.name, `is`("Antybakteryjna  Deska do krojenia Orzech"))
+            assertThat(product.price, `is`(42.99))
+            assertThat(product.images.size, `is`(5))
+            assertThat(product.stock_quantity, `is`(30))
+            assertThat(
+                product.images.first().src,
+                `is`("https://i0.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/12/IMG-20201217-WA0016.jpg?fit=768%2C1212&ssl=1")
+            )
+
+        }
+    }
+
 
     private fun enqueueResponse(fileName: String, headers: Map<String, String> = emptyMap()) {
         val inputStream = javaClass.classLoader!!

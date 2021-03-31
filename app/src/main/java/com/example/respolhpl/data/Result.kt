@@ -5,6 +5,14 @@ sealed class Result<R> {
     object Loading : Result<Any>()
     data class Error(val exception: Exception) : Result<Nothing>()
 
+    inline fun <reified T> checkIfIsSuccessAndType(): T? {
+        return this.takeIf { it.isSuccess }?.let { res ->
+            res as Success
+            check(res.data is T) { "data should be ${res.javaClass}" }
+            return res.data
+        }
+    }
+
     val isSuccess: Boolean
         get() = this is Success
     val isError: Boolean

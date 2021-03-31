@@ -1,4 +1,4 @@
-package com.example.respolhpl.bindings
+package com.example.respolhpl.bindingAdapters
 
 import android.content.Context
 import android.view.View
@@ -8,8 +8,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.ToggleButton
-import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.text.HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH
 import androidx.databinding.BindingAdapter
@@ -21,9 +19,6 @@ import com.example.respolhpl.data.product.domain.Product
 
 
 object BindingAdapters {
-    fun ToggleButton.setDrawable() {
-
-    }
 
     @BindingAdapter("orderQuantity")
     @JvmStatic
@@ -79,7 +74,7 @@ object BindingAdapters {
     @JvmStatic
     @BindingAdapter("bindQuantity")
     fun TextView.bindProductQuantity(result: Result<*>) {
-        checkIfIsSuccessAndProduct(result)?.let { product ->
+        result.checkIfIsSuccessAndType<Product>()?.let { product ->
             text = context.getString(R.string.quantity, product.quantity)
         }
     }
@@ -87,7 +82,7 @@ object BindingAdapters {
     @JvmStatic
     @BindingAdapter("bindProductName")
     fun TextView.bindProductName(result: Result<*>) {
-        checkIfIsSuccessAndProduct(result)?.let { product ->
+        result.checkIfIsSuccessAndType<Product>()?.let { product ->
             text = product.name
         }
     }
@@ -95,24 +90,17 @@ object BindingAdapters {
     @JvmStatic
     @BindingAdapter("bindProductDescription")
     fun TextView.bindProductDescription(result: Result<*>) {
-        checkIfIsSuccessAndProduct(result)?.let { product ->
+        result.checkIfIsSuccessAndType<Product>()?.let { product ->
             text =
                 HtmlCompat.fromHtml(product.description, FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH)
         }
     }
 
-    private fun checkIfIsSuccessAndProduct(result: Result<*>): Product? {
-        return if (result.isSuccess) {
-            result as Result.Success
-            check(result.data is Product) { "data type  should be product " }
-            result.data
-        } else null
-    }
 
     @JvmStatic
     @BindingAdapter("bindProductPrice")
     fun TextView.bindProductPrice(result: Result<*>) {
-        checkIfIsSuccessAndProduct(result)?.let { product ->
+        result.checkIfIsSuccessAndType<Product>()?.let { product ->
             text = context.getString(R.string.price, product.price)
         }
     }

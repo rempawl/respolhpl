@@ -19,9 +19,9 @@ class ProductRepositoryImpl @Inject constructor(
 //    private val localDataSource: ProductDao, todo favs
     private val dispatchersProvider: DispatchersProvider
 ) : ProductRepository {
-    private fun flowBuilder(block: suspend () -> Result<*>) = flow {
+    private fun flowBuilder(getter: suspend () -> Result<*>) = flow {
         emit(Result.Loading)
-        emit(block())
+        emit(getter())
     }
 
     override suspend fun getProducts(): Flow<PagingData<ProductMinimal>> {

@@ -1,16 +1,19 @@
-package com.example.respolhpl.utils
+package com.example.respolhpl
 
-//
-//import com.example.respolhpl.data.product.remote.ImageRemote
-//import com.example.respolhpl.data.product.remote.RemoteCategory
-//import com.example.respolhpl.data.product.remote.RemoteCategory.Companion.ANTIBAC_BOARD_ID
-//import com.example.respolhpl.data.product.remote.RemoteCategory.Companion.LAMINAT_HPL
-//import com.example.respolhpl.data.product.remote.RemoteProduct
-//import com.example.respolhpl.data.product.remote.ShippingRemote
-//import kotlinx.coroutines.*
-//import javax.inject.Inject
-//
-//class MockRemoteDataSource @Inject constructor() : RemoteDataSource {
+import com.example.respolhpl.data.product.remote.RemoteProduct
+import com.example.respolhpl.data.product.remote.RemoteProductMinimal
+import com.example.respolhpl.data.sources.remote.RemoteDataSource
+import kotlinx.coroutines.Deferred
+import javax.inject.Inject
+
+class FakeRemoteDataSource @Inject constructor() : RemoteDataSource {
+    override fun getProductByIDAsync(id: Int): Deferred<RemoteProduct> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getProductsAsync(perPage: Int, page: Int): Deferred<List<RemoteProductMinimal>> {
+        TODO("Not yet implemented")
+    }
 //
 //    private val products: List<RemoteProduct> = listOf(
 //        RemoteProduct(
@@ -99,6 +102,6 @@ package com.example.respolhpl.utils
 //
 //    private suspend fun delayDef() {
 //        delay(1500)
-//
-//    }
 //}
+
+}

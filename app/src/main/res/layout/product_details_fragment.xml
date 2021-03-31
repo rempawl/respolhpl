@@ -10,7 +10,7 @@
             name="viewModel"
             type="com.example.respolhpl.productDetails.ProductDetailsViewModel" />
 
-        <import type="com.example.respolhpl.bindings.Converter" />
+        <import type="com.example.respolhpl.bindingAdapters.Converter" />
 
     </data>
 

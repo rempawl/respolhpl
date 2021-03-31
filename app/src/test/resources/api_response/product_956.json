@@ -1,0 +1,209 @@
+{
+  "id": 956,
+  "name": "Antybakteryjna  Deska do krojenia Orzech",
+  "slug": "antybakteryjna-deska-do-krojenia-orzech",
+  "permalink": "https:\/\/respolhpl-sklep.pl\/produkt\/antybakteryjna-deska-do-krojenia-orzech\/",
+  "date_created": "2020-12-18T14:39:10",
+  "date_created_gmt": "2020-12-18T13:39:10",
+  "date_modified": "2020-12-18T14:50:01",
+  "date_modified_gmt": "2020-12-18T13:50:01",
+  "type": "variable",
+  "status": "publish",
+  "featured": true,
+  "catalog_visibility": "visible",
+  "description": "<h2>Właściwości:<\/h2>\n<ul>\n<li>Wysoka odporność na ścieranie, zadrapania, uderzenia,zginanie<\/li>\n<li>Odporne na temperaturę do 230°C<\/li>\n<li>Łatwe do czyszczenia<\/li>\n<li>Bezpieczne w bezpośrednim kontakcie z żywnością<\/li>\n<li>Antybakteryjna w całym przekroju<\/li>\n<li>Światłoodporna<\/li>\n<li>Obustronny kolor<\/li>\n<\/ul>\n<p>Deski do krojenia, które oferujemy Państwu są wykonane z najwyższej jakości płyt kompakt HPL marki Polyrey®.Materiał jest niezwykle sztywny i odporny mechanicznie,a dzięki zastosowaniu technologii Sanitized® są one antybakteryjne w całym przekroju przez co zwiększają bezpieczeństwo użytkowania.<\/p>\n<p><span class=\"polyreyHeading\"><span class=\"registered\"> Są łatwe w czyszczenia, do ich wyczyszczenia wystarczy woda i gąbka lub woda z detergentem w przypadku silniejszych zabrudzeń. Nie potrzeba ich wyparzać w zmywarce, aby pozbyć  się bakterii z ich powierzchni.<\/span><\/span><\/p>\n<p>&nbsp;<\/p>\n<p><a href=\"http:\/\/respolhpl.pl\/docs\/sanitized.pdf\">Więcej o Sanitized<span class=\"polyreyHeading\"><span class=\"registered\">®<\/span><\/span><\/a><\/p>\n",
+  "short_description": "",
+  "sku": "",
+  "price": "42.99",
+  "regular_price": "",
+  "sale_price": "",
+  "date_on_sale_from": null,
+  "date_on_sale_from_gmt": null,
+  "date_on_sale_to": null,
+  "date_on_sale_to_gmt": null,
+  "on_sale": false,
+  "purchasable": true,
+  "total_sales": 0,
+  "virtual": false,
+  "downloadable": false,
+  "downloads": [],
+  "download_limit": -1,
+  "download_expiry": -1,
+  "external_url": "",
+  "button_text": "",
+  "tax_status": "taxable",
+  "tax_class": "",
+  "manage_stock": true,
+  "stock_quantity": 30,
+  "backorders": "no",
+  "backorders_allowed": false,
+  "backordered": false,
+  "sold_individually": false,
+  "weight": "",
+  "dimensions": {
+    "length": "",
+    "width": "",
+    "height": ""
+  },
+  "shipping_required": true,
+  "shipping_taxable": true,
+  "shipping_class": "10pcs_def",
+  "shipping_class_id": 80,
+  "reviews_allowed": false,
+  "average_rating": "0.00",
+  "rating_count": 0,
+  "upsell_ids": [],
+  "cross_sell_ids": [],
+  "parent_id": 0,
+  "purchase_note": "",
+  "categories": [
+    {
+      "id": 21,
+      "name": "Antybakteryjne Deski do krojenia",
+      "slug": "deski-do-krojenia"
+    }
+  ],
+  "tags": [
+    {
+      "id": 77,
+      "name": "antybakteryjna",
+      "slug": "antybakteryjna"
+    },
+    {
+      "id": 67,
+      "name": "deska do krojenia",
+      "slug": "deska-do-krojenia"
+    },
+    {
+      "id": 76,
+      "name": "kompakt hpl",
+      "slug": "kompakt-hpl"
+    },
+    {
+      "id": 69,
+      "name": "polyrey",
+      "slug": "polyrey"
+    },
+    {
+      "id": 78,
+      "name": "sanitized",
+      "slug": "sanitized"
+    }
+  ],
+  "images": [
+    {
+      "id": 963,
+      "date_created": "2020-12-18T15:40:00",
+      "date_created_gmt": "2020-12-18T13:40:00",
+      "date_modified": "2020-12-18T15:40:00",
+      "date_modified_gmt": "2020-12-18T13:40:00",
+      "src": "https:\/\/i0.wp.com\/respolhpl-sklep.pl\/wp-content\/uploads\/2020\/12\/IMG-20201217-WA0016.jpg?fit=768%2C1212&ssl=1",
+      "name": "IMG-20201217-WA0016",
+      "alt": ""
+    },
+    {
+      "id": 959,
+      "date_created": "2020-12-18T15:39:53",
+      "date_created_gmt": "2020-12-18T13:39:53",
+      "date_modified": "2020-12-18T15:39:53",
+      "date_modified_gmt": "2020-12-18T13:39:53",
+      "src": "https:\/\/i1.wp.com\/respolhpl-sklep.pl\/wp-content\/uploads\/2020\/12\/IMG-20201217-WA0012.jpg?fit=769%2C1146&ssl=1",
+      "name": "IMG-20201217-WA0012",
+      "alt": ""
+    },
+    {
+      "id": 960,
+      "date_created": "2020-12-18T15:39:54",
+      "date_created_gmt": "2020-12-18T13:39:54",
+      "date_modified": "2020-12-18T15:39:54",
+      "date_modified_gmt": "2020-12-18T13:39:54",
+      "src": "https:\/\/i2.wp.com\/respolhpl-sklep.pl\/wp-content\/uploads\/2020\/12\/IMG-20201217-WA0013.jpg?fit=1069%2C777&ssl=1",
+      "name": "IMG-20201217-WA0013",
+      "alt": ""
+    },
+    {
+      "id": 961,
+      "date_created": "2020-12-18T15:39:56",
+      "date_created_gmt": "2020-12-18T13:39:56",
+      "date_modified": "2020-12-18T15:39:56",
+      "date_modified_gmt": "2020-12-18T13:39:56",
+      "src": "https:\/\/i1.wp.com\/respolhpl-sklep.pl\/wp-content\/uploads\/2020\/12\/IMG-20201217-WA0014.jpg?fit=777%2C1600&ssl=1",
+      "name": "IMG-20201217-WA0014",
+      "alt": ""
+    },
+    {
+      "id": 962,
+      "date_created": "2020-12-18T15:39:58",
+      "date_created_gmt": "2020-12-18T13:39:58",
+      "date_modified": "2020-12-18T15:39:58",
+      "date_modified_gmt": "2020-12-18T13:39:58",
+      "src": "https:\/\/i2.wp.com\/respolhpl-sklep.pl\/wp-content\/uploads\/2020\/12\/IMG-20201217-WA0015-rotated.jpg?fit=777%2C1600&ssl=1",
+      "name": "IMG-20201217-WA0015",
+      "alt": ""
+    }
+  ],
+  "attributes": [
+    {
+      "id": 1,
+      "name": "Rozmiar deski",
+      "position": 0,
+      "visible": true,
+      "variation": true,
+      "options": [
+        "197x300x4mm",
+        "260x400x4mm"
+      ]
+    }
+  ],
+  "default_attributes": [],
+  "variations": [
+    957,
+    958
+  ],
+  "grouped_products": [],
+  "menu_order": 0,
+  "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi>42.99<span class=\"woocommerce-Price-currencySymbol\">&#122;&#322;<\/span><\/bdi><\/span> &ndash; <span class=\"woocommerce-Price-amount amount\"><bdi>64.99<span class=\"woocommerce-Price-currencySymbol\">&#122;&#322;<\/span><\/bdi><\/span> <small class=\"woocommerce-price-suffix\">brutto<\/small>",
+  "related_ids": [
+    506,
+    946,
+    681,
+    923,
+    921
+  ],
+  "meta_data": [
+    {
+      "id": 13883,
+      "key": "_oembed_49680d5e228e8ad8b81a87a5a06da627",
+      "value": "{{unknown}}"
+    },
+    {
+      "id": 13884,
+      "key": "neve_meta_enable_content_width",
+      "value": "off"
+    },
+    {
+      "id": 13885,
+      "key": "_yoast_wpseo_content_score",
+      "value": "90"
+    },
+    {
+      "id": 13886,
+      "key": "_last_editor_used_jetpack",
+      "value": "classic-editor"
+    }
+  ],
+  "stock_status": "instock",
+  "yoast_head": "<!-- This site is optimized with the Yoast SEO plugin v15.3 - https:\/\/yoast.com\/wordpress\/plugins\/seo\/ -->\n<title>Antybakteryjna Deska do krojenia Orzech - RespolHPL SKLEP<\/title>\n<!-- Uwaga do administratora: ta strona nie wyświetla meta opisu ponieważ go nie posiada. Napisz go dla tej strony lub przejdź do menu [SEO - Wyszukiwarki] i ustaw szablon dla opisów. -->\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" \/>\n<link rel=\"canonical\" href=\"https:\/\/respolhpl-sklep.pl\/produkt\/antybakteryjna-deska-do-krojenia-orzech\/\" \/>\n<meta property=\"og:locale\" content=\"pl_PL\" \/>\n<meta property=\"og:type\" content=\"article\" \/>\n<meta property=\"og:title\" content=\"Antybakteryjna Deska do krojenia Orzech - RespolHPL SKLEP\" \/>\n<meta property=\"og:description\" content=\"Właściwości: Wysoka odporność na ścieranie, zadrapania, uderzenia,zginanie Odporne na temperaturę do 230°C Łatwe do czyszczenia Bezpieczne w bezpośrednim kontakcie z żywnością Antybakteryjna w całym przekroju Światłoodporna Obustronny kolor Deski do krojenia, które oferujemy Państwu są wykonane z najwyższej jakości płyt kompakt HPL marki Polyrey®.Materiał jest niezwykle sztywny i odporny mechanicznie,a dzięki zastosowaniu technologii Sanitized® są&hellip;&nbsp;Czytaj więcej &raquo;\" \/>\n<meta property=\"og:url\" content=\"https:\/\/respolhpl-sklep.pl\/produkt\/antybakteryjna-deska-do-krojenia-orzech\/\" \/>\n<meta property=\"og:site_name\" content=\"RespolHPL SKLEP\" \/>\n<meta property=\"article:modified_time\" content=\"2020-12-18T13:50:01+00:00\" \/>\n<meta property=\"og:image\" content=\"https:\/\/i0.wp.com\/respolhpl-sklep.pl\/wp-content\/uploads\/2020\/12\/IMG-20201217-WA0016.jpg?fit=768%2C1212&#038;ssl=1\" \/>\n\t<meta property=\"og:image:width\" content=\"768\" \/>\n\t<meta property=\"og:image:height\" content=\"1212\" \/>\n<meta name=\"twitter:card\" content=\"summary_large_image\" \/>\n<meta name=\"twitter:label1\" content=\"Written by\">\n\t<meta name=\"twitter:data1\" content=\"respol\">\n\t<meta name=\"twitter:label2\" content=\"Est. reading time\">\n\t<meta name=\"twitter:data2\" content=\"0 minut\">\n<script type=\"application\/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https:\/\/schema.org\",\"@graph\":[{\"@type\":\"WebSite\",\"@id\":\"https:\/\/respolhpl-sklep.pl\/#website\",\"url\":\"https:\/\/respolhpl-sklep.pl\/\",\"name\":\"RespolHPL SKLEP\",\"description\":\"Laminaty HPL Resopal, Polyrey, Wilsonart, Stoliki, Deski do krojenia, Akcesoria kuchenne\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":\"https:\/\/respolhpl-sklep.pl\/?s={search_term_string}\",\"query-input\":\"required name=search_term_string\"}],\"inLanguage\":\"pl-PL\"},{\"@type\":\"ImageObject\",\"@id\":\"https:\/\/respolhpl-sklep.pl\/produkt\/antybakteryjna-deska-do-krojenia-orzech\/#primaryimage\",\"inLanguage\":\"pl-PL\",\"url\":\"https:\/\/i0.wp.com\/respolhpl-sklep.pl\/wp-content\/uploads\/2020\/12\/IMG-20201217-WA0016.jpg?fit=768%2C1212&ssl=1\",\"width\":768,\"height\":1212},{\"@type\":\"WebPage\",\"@id\":\"https:\/\/respolhpl-sklep.pl\/produkt\/antybakteryjna-deska-do-krojenia-orzech\/#webpage\",\"url\":\"https:\/\/respolhpl-sklep.pl\/produkt\/antybakteryjna-deska-do-krojenia-orzech\/\",\"name\":\"Antybakteryjna Deska do krojenia Orzech - RespolHPL SKLEP\",\"isPartOf\":{\"@id\":\"https:\/\/respolhpl-sklep.pl\/#website\"},\"primaryImageOfPage\":{\"@id\":\"https:\/\/respolhpl-sklep.pl\/produkt\/antybakteryjna-deska-do-krojenia-orzech\/#primaryimage\"},\"datePublished\":\"2020-12-18T13:39:10+00:00\",\"dateModified\":\"2020-12-18T13:50:01+00:00\",\"inLanguage\":\"pl-PL\",\"potentialAction\":[{\"@type\":\"ReadAction\",\"target\":[\"https:\/\/respolhpl-sklep.pl\/produkt\/antybakteryjna-deska-do-krojenia-orzech\/\"]}]}]}<\/script>\n<!-- \/ Yoast SEO plugin. -->",
+  "_links": {
+    "self": [
+      {
+        "href": "https:\/\/respolhpl-sklep.pl\/wp-json\/wc\/v3\/products\/956"
+      }
+    ],
+    "collection": [
+      {
+        "href": "https:\/\/respolhpl-sklep.pl\/wp-json\/wc\/v3\/products"
+      }
+    ]
+  }
+}

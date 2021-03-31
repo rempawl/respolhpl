@@ -64,7 +64,7 @@ class HomeFragment : Fragment() {
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getProducts().collect {
+            viewModel.result?.collect {
                 adapter.submitData(it)
             }
         }

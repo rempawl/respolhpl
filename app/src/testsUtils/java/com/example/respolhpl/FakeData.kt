@@ -1,10 +1,24 @@
-package com.example.respolhpl.utils
+package com.example.respolhpl
 
+import com.example.respolhpl.data.Result
+import com.example.respolhpl.data.product.domain.Product
+import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.product.entity.FavProductEntity
 import com.example.respolhpl.data.product.remote.ImageRemote
 import com.example.respolhpl.data.product.remote.RemoteProduct
 
 object FakeData {
+    val resultSuccessProduct = Result.Success(
+        Product(
+            1,
+            "test",
+            2,
+            emptyList(),
+            "src",
+            22.2,
+            ""
+        )
+    )
     val remoteProducts: List<RemoteProduct> = listOf(
         RemoteProduct(
 //            tags = listOf(RemoteTag("deska do krojenia")),
@@ -79,6 +93,8 @@ object FakeData {
 //            shipping_class_id = 73
         )
     )
+    val products = remoteProducts.map { Product.from(it) }
+    val minimalProducts = products.map { ProductMinimal(it.id, it.name, it.price, it.thumbnailSrc) }
     val favProductEntities = remoteProducts.map { prod ->
         FavProductEntity(
             price = prod.price,

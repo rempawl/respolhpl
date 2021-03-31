@@ -20,7 +20,9 @@ class ProductDetailsFragment : Fragment() {
     private val arg: ProductDetailsFragmentArgs by navArgs()
 
     private var imagesAdapter: ImagesAdapter by autoCleared()
+
     private var binding: ProductDetailsFragmentBinding by autoCleared()
+
     private val viewModel: ProductDetailsViewModel by viewModels()
 
     override fun onCreateView(

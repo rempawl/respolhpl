@@ -15,7 +15,6 @@ data class Product(
     val liked : Boolean = false
 ) {
     companion object {
-        //todo from entity
         fun from(remoteProduct: RemoteProduct): Product {
             return Product(
                 id = remoteProduct.id,
