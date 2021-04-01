@@ -10,7 +10,7 @@ import com.example.respolhpl.BR
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.repository.ProductRepository
-import com.example.respolhpl.utils.ResultViewModel
+import com.example.respolhpl.utils.ObservableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val productRepository: ProductRepository
-) : ResultViewModel() {
+) : ObservableViewModel() {
 
     private var maxQuantity = 1
 
@@ -52,7 +52,7 @@ class ProductDetailsViewModel @Inject constructor(
 
 
     private val _result = MutableLiveData<Result<*>>(Result.Loading)
-    override val result: LiveData<Result<*>>
+    val result: LiveData<Result<*>>
         get() = _result
 
     init {
@@ -69,10 +69,8 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun setMaxQuantity(res: Result<*>) {
-        res.takeIf { it.isSuccess }?.let {
-            res as Result.Success
-            check(res.data is Product) { "data should be product" }
-            maxQuantity = res.data.quantity
+        res.checkIfIsSuccessAndType<Product>()?.let { prod ->
+            maxQuantity = prod.quantity
             notifyPropertyChanged(BR.plusBtnEnabled)
         }
     }

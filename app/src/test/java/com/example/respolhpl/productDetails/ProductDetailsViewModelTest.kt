@@ -61,7 +61,7 @@ class ProductDetailsViewModelTest {
     }
 
     @Test
-    fun onPlusBtnClickIncreasesOrderQuantityDisablesPlusBtnAndEnablesMinusBtn() {
+    fun onPlusBtnClickIncreasesOrderQuantityDisablesPlusBtnAndEnablesMinusBtnWithMAxQntEqualToTwo() {
         coroutineTestRule.runBlockingTest {
             assert(product.quantity == 2)
             val qnt = viewModel.orderQuantity

@@ -8,7 +8,7 @@ sealed class Result<R> {
     inline fun <reified T> checkIfIsSuccessAndType(): T? {
         return this.takeIf { it.isSuccess }?.let { res ->
             res as Success
-            check(res.data is T) { "data should be ${res.javaClass}" }
+            check(res.data is T) { "data should be ${T::class.java}" }
             return res.data
         }
     }

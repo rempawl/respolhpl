@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
 import com.example.respolhpl.utils.autoCleared
@@ -39,10 +38,9 @@ class ProductDetailsFragment : Fragment() {
 
 
     private fun setupObservers() {
-        viewModel.result.observe(viewLifecycleOwner) { prod ->
-            prod.takeIf { it.isSuccess }?.let { res ->
-                check(res is Result.Success<*> && res.data is Product)
-                imagesAdapter.submitList(res.data.images)
+        viewModel.result.observe(viewLifecycleOwner) { res ->
+            res.checkIfIsSuccessAndType<Product>()?.let { prod ->
+                imagesAdapter.submitList(prod.images)
             }
         }
     }

@@ -20,7 +20,6 @@ class ImagesAdapter @Inject constructor() : ListAdapter<Image, ImagesAdapter.Ima
                 img = image
                 imgCounter.text = count
             }
-
         }
 
         companion object {
