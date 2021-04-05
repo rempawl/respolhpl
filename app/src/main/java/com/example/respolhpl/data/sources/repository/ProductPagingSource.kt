@@ -19,6 +19,7 @@ class ProductPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductMinimal> {
         val position = params.key ?: STARTING_PAGE_INDEX
         return try {
+
             val response = api.getProductsAsync(params.loadSize, position)
 
             val products = response.map { mapper(it) }
@@ -26,6 +27,7 @@ class ProductPagingSource(
             val nextKey = calculateNextKey(products, position, params.loadSize)
 
             LoadResult.Page(data = products, prevKey = getPrevKey(position), nextKey = nextKey)
+
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {

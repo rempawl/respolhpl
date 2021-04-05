@@ -9,7 +9,8 @@ class FakeRemoteDataSource @Inject constructor() : RemoteDataSource {
 
 
     override suspend fun getProductByIDAsync(id: Int): RemoteProduct {
-        TODO("Not yet implemented")
+        return FakeData.remoteProducts.find { it.id == id }
+            ?: throw IllegalArgumentException("product not found")
     }
 
     override suspend fun getProductsAsync(perPage: Int, page: Int): List<RemoteProductMinimal> {

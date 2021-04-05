@@ -50,7 +50,6 @@ class HomeFragment : Fragment() {
             binding.productList.isVisible = loadState.source.refresh is LoadState.NotLoading
             binding.error.rootView.isVisible = loadState.source.refresh is LoadState.Error
             binding.loading.progressView.isVisible = loadState.source.refresh is LoadState.Loading
-            Log.d("kruci", loadState.toString())
         }
     }
 

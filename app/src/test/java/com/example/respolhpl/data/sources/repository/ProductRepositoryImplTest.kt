@@ -5,13 +5,14 @@ import com.example.respolhpl.CoroutineTestRule
 import com.example.respolhpl.FakeData
 import com.example.respolhpl.FakeRemoteDataSource
 import com.example.respolhpl.TestDispatchersProvider
+import com.example.respolhpl.data.Result
+import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
+import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -33,7 +34,18 @@ class ProductRepositoryImplTest {
 
     @Test
     fun getProductById() {
+        coroutineTestRule.runBlockingTest {
+            val res = repositoryImpl.getProductById(134).first { it is Result.Success }
+            assertNotNull(res.checkIfIsSuccessAndType<Product>())
+        }
+    }
 
+    @Test
+    fun getProductByIdError() {
+        coroutineTestRule.runBlockingTest {
+            val res = repositoryImpl.getProductById(-1).first()
+            Assert.assertTrue(res is Result.Error)
+        }
     }
 
     @Test
