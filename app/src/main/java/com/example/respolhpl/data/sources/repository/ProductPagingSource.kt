@@ -19,7 +19,7 @@ class ProductPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductMinimal> {
         val position = params.key ?: STARTING_PAGE_INDEX
         return try {
-            val response = api.getProductsAsync(params.loadSize, position).await()
+            val response = api.getProductsAsync(params.loadSize, position)
 
             val products = response.map { mapper(it) }
 

@@ -1,6 +1,5 @@
 package com.example.respolhpl.data.sources.remote
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,7 +31,6 @@ class WooCommerceApiTest {
         api = Retrofit.Builder()
             .baseUrl(mockServer.url("/"))
             .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
             .build()
             .create(WooCommerceApi::class.java)
     }
@@ -47,7 +45,7 @@ class WooCommerceApiTest {
         runBlocking {
             enqueueResponse("products.json")
             val products =
-                api.getProductsAsync(10, 1).await()
+                api.getProductsAsync(10, 1)
             val request = mockServer.takeRequest()
 
             assertThat(products.size, `is`(10))
@@ -68,7 +66,7 @@ class WooCommerceApiTest {
         val id = 956
         runBlocking {
             enqueueResponse("product_${id}.json")
-            val product = api.getProductByIDAsync(id).await()
+            val product = api.getProductByIDAsync(id)
             val request = mockServer.takeRequest()
             assertThat(product.id, `is`(id))
             assertThat(product.name, `is`("Antybakteryjna  Deska do krojenia Orzech"))

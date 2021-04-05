@@ -11,6 +11,5 @@ inline fun <reified T : ViewModel> Fragment.viewModel(
 ) = viewModels<T> {
     object : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T = provider() as T
-
     }
 }

@@ -6,6 +6,7 @@ import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.product.entity.FavProductEntity
 import com.example.respolhpl.data.product.remote.ImageRemote
 import com.example.respolhpl.data.product.remote.RemoteProduct
+import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 
 object FakeData {
     val resultSuccessProduct = Result.Success(
@@ -103,5 +104,6 @@ object FakeData {
             thumbnailSrc = prod.images.first().src
         )
     }
+    val minRemoteProds = remoteProducts.map { RemoteProductMinimal(it.id, it.name, it.price, it.images) }
 
 }

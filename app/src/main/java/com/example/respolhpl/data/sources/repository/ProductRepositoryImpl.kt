@@ -19,6 +19,7 @@ class ProductRepositoryImpl @Inject constructor(
 //    private val localDataSource: ProductDao, todo favs
     private val dispatchersProvider: DispatchersProvider
 ) : ProductRepository {
+
     private fun flowBuilder(getter: suspend () -> Result<*>) = flow {
         emit(Result.Loading)
         emit(getter())
@@ -40,7 +41,7 @@ class ProductRepositoryImpl @Inject constructor(
         withContext(dispatchersProvider.io) {
             flowBuilder {
                 try {
-                    val res = remoteDataSource.getProductByIDAsync(id).await()
+                    val res = remoteDataSource.getProductByIDAsync(id)
                     Result.Success(Product.from(res))
                 } catch (e: Exception) {
                     Result.Error(e)

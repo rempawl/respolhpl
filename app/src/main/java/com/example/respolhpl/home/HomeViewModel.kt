@@ -6,7 +6,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.sources.repository.ProductRepository
-import com.example.respolhpl.utils.DispatchersProvider
 import com.example.respolhpl.utils.ObservableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +17,7 @@ class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ObservableViewModel() {
+
 
     var result: Flow<PagingData<ProductMinimal>>? = null
 
@@ -32,3 +32,4 @@ class HomeViewModel @Inject constructor(
             .cachedIn(viewModelScope)
     }
 }
+

@@ -14,6 +14,4 @@ interface RepositoryModule {
     @Reusable
     @Binds
     fun provideRepository(repository: ProductRepositoryImpl): ProductRepository
-
-
 }

@@ -10,7 +10,7 @@ data class FavProductEntity constructor(
     val price: Double,
     val thumbnailSrc: String,
 ) {
-    companion object{}
+    companion object
 }
 
 

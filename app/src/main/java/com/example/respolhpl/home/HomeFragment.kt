@@ -29,13 +29,6 @@ class HomeFragment : Fragment() {
     private var adapter: ProductListAdapter by autoCleared()
     private var binding: FragmentHomeBinding by autoCleared()
 
-    private fun navigateToProductDetails(id: Int) {
-        findNavController().navigate(
-            HomeFragmentDirections.navigationHomeToProductDetails(id)
-        )
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,6 +75,11 @@ class HomeFragment : Fragment() {
             error.retryButton.setOnClickListener { adapter.retry() }
         }
 
+    }
+    private fun navigateToProductDetails(id: Int) {
+        findNavController().navigate(
+            HomeFragmentDirections.navigationHomeToProductDetails(id)
+        )
     }
 
     private fun RecyclerView.chooseLayoutManager(): RecyclerView.LayoutManager =
