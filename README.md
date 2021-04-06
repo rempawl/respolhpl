@@ -1,7 +1,13 @@
 # respolhpl
 It will be E-Commerce Application. Its data is fetched from https://respolhpl-sklep.pl/ using WooCommerce REST API.
 Currently has main Screen with list of all products and details screen of each product.
-![main](https://user-images.githubusercontent.com/54141482/113695068-bf31ad80-96d0-11eb-887f-9ed31eadcbae.png)
-![main_land](https://user-images.githubusercontent.com/54141482/113695078-c1940780-96d0-11eb-9dc9-dda71429776e.png)
-![details1](https://user-images.githubusercontent.com/54141482/113695073-c062da80-96d0-11eb-84fb-d9d5642ee194.png)
-![details2](https://user-images.githubusercontent.com/54141482/113695076-c0fb7100-96d0-11eb-8387-94fc9c61dd7b.png)
+Main screen
+![main](https://user-images.githubusercontent.com/54141482/113695784-8c3be980-96d1-11eb-912b-ba42f22eeae0.png)
+
+In landscape
+![main_land](https://user-images.githubusercontent.com/54141482/113695780-8ba35300-96d1-11eb-89ad-b72d4b72033f.png)
+
+Details screen
+![details1](https://user-images.githubusercontent.com/54141482/113695785-8cd48000-96d1-11eb-8580-ef63acb15ddb.png)
+![details2](https://user-images.githubusercontent.com/54141482/113695786-8cd48000-96d1-11eb-8966-5fe1b5b29c26.png)
+
