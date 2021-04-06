@@ -20,7 +20,7 @@ class ProductRepositoryImpl @Inject constructor(
     private val dispatchersProvider: DispatchersProvider
 ) : ProductRepository {
 
-    private suspend fun flowBuilder(getter: suspend () -> Result<*>) =
+    private suspend fun getData(getter: suspend () -> Result<*>) =
         withContext(dispatchersProvider.io) {
             flow {
                 emit(getter())
@@ -39,7 +39,7 @@ class ProductRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getProductById(id: Int): Flow<Result<*>> = flowBuilder {
+    override suspend fun getProductById(id: Int): Flow<Result<*>> = getData {
         try {
             val res = remoteDataSource.getProductByIDAsync(id)
             Result.Success(Product.from(res))

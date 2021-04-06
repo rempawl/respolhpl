@@ -1,6 +1,5 @@
 package com.example.respolhpl.data.sources.repository
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.respolhpl.data.product.domain.ProductMinimal
@@ -12,6 +11,7 @@ import java.io.IOException
 
 class ProductPagingSource(
     private val api: RemoteDataSource,
+
     private val mapper: (RemoteProductMinimal) -> ProductMinimal
 ) : PagingSource<Int, ProductMinimal>() {
 
@@ -33,9 +33,7 @@ class ProductPagingSource(
         } catch (exception: HttpException) {
             return LoadResult.Error(exception)
         } catch (e: JsonDataException) {
-            Log.d("kruci", e.stackTraceToString())
             return LoadResult.Error(e)
-
         }
 
     }

@@ -27,7 +27,6 @@ class ProductDetailsViewModelTest {
     lateinit var handle: SavedStateHandle
     lateinit var viewModel: ProductDetailsViewModel
 
-    val product = FakeData.resultSuccessProduct.data
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -61,12 +60,15 @@ class ProductDetailsViewModelTest {
     }
 
     @Test
-    fun onPlusBtnClickIncreasesOrderQuantityDisablesPlusBtnAndEnablesMinusBtnWithMAxQntEqualToTwo() {
+    fun whenMaxQuantityIs2onPlusBtnClickIncreasesOrderQuantityDisablesPlusBtnAndEnablesMinusBtn() {
         coroutineTestRule.runBlockingTest {
+            val product = FakeData.resultSuccessProduct.data
             assert(product.quantity == 2)
+
             val qnt = viewModel.orderQuantity
             assertThat(qnt, `is`(1))
             viewModel.onPlusBtnClick()
+
             assertThat(viewModel.orderQuantity, `is`(2))
             assertThat(viewModel.isPlusBtnEnabled, `is`(false))
             assertThat(viewModel.isMinusBtnEnabled, `is`(true))
