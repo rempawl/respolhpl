@@ -10,4 +10,6 @@ interface ProductRepository {
 
     suspend fun getProducts(): Flow<PagingData<ProductMinimal>>
     suspend fun getProductById(id: Int): Flow<Result<*>>
+    suspend fun getProductImages(id : Int): Flow<Result<*>>
+
 }

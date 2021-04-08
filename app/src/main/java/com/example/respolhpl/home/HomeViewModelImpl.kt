@@ -11,9 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-abstract class HomeViewModel{
-    
-}
+
 @HiltViewModel
 class HomeViewModelImpl @Inject constructor(
     private val productRepository: ProductRepository,

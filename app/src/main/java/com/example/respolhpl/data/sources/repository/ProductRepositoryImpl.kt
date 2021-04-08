@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.respolhpl.data.Result
+import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
@@ -46,6 +47,18 @@ class ProductRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.Error(e)
         }
+    }
+
+    override suspend fun getProductImages(id: Int): Flow<Result<*>> = getData {
+        try {
+            val res = remoteDataSource.getProductByIDAsync(id).images
+            val imgs = res.map { Image.from(it) }
+            Result.Success(imgs)
+        } catch (e: java.lang.Exception) {
+            Result.Error(e)
+        }
+
+
     }
 
 }

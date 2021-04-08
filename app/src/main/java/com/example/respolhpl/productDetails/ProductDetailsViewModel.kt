@@ -41,16 +41,6 @@ class ProductDetailsViewModel @Inject constructor(
             notifyPropertyChanged(BR.plusBtnEnabled)
         }
 
-
-    fun onMinusBtnClick() {
-        orderQuantity -= 1
-    }
-
-    fun onPlusBtnClick() {
-        orderQuantity += 1
-    }
-
-
     private val _result = MutableLiveData<Result<*>>(Result.Loading)
     val result: LiveData<Result<*>>
         get() = _result
@@ -59,6 +49,14 @@ class ProductDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             getProduct(savedStateHandle.get<Int>("productId") ?: -1)
         }
+    }
+
+    fun onMinusBtnClick() {
+        orderQuantity -= 1
+    }
+
+    fun onPlusBtnClick() {
+        orderQuantity += 1
     }
 
     private suspend fun getProduct(id: Int) {

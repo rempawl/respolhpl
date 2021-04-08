@@ -2,17 +2,12 @@ package com.example.respolhpl
 
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.example.respolhpl.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,9 +29,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setupWithNavController(navController)
 
-        appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.nav_home ), drawerLayout)
-        toolbar.setupWithNavController(navController,appBarConfiguration)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home
+            ), drawerLayout
+        )
+        toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

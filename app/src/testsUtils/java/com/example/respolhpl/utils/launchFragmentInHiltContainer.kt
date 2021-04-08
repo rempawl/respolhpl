@@ -12,6 +12,7 @@ import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
 import com.example.respolhpl.R
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class HiltTestActivity : AppCompatActivity()
 

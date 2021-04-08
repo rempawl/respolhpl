@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
@@ -16,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProductDetailsFragment : Fragment() {
 
 
-    private val arg: ProductDetailsFragmentArgs by navArgs()
+    private val args: ProductDetailsFragmentArgs by navArgs()
 
     private var imagesAdapter: ImagesAdapter by autoCleared()
 
@@ -28,14 +30,23 @@ class ProductDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ProductDetailsFragmentBinding.inflate(inflater)
-        imagesAdapter = ImagesAdapter()
+        binding = ProductDetailsFragmentBinding.inflate(inflater,container,false)
+        imagesAdapter = ImagesAdapter {
+            image.scaleType = ImageView.ScaleType.CENTER_CROP
+            card.setOnClickListener { navigateToFullScreenImageDialog() }
+        }
 
         setupObservers()
         setupBinding()
         return binding.root
     }
 
+
+    private fun navigateToFullScreenImageDialog() {
+        findNavController().navigate(
+            ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment(args.productId)
+        )
+    }
 
     private fun setupObservers() {
         viewModel.result.observe(viewLifecycleOwner) { res ->

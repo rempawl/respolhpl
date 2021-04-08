@@ -8,17 +8,24 @@ import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.databinding.ImageItemBinding
 import javax.inject.Inject
 
-class ImagesAdapter @Inject constructor() : ListAdapter<Image, ImagesAdapter.ImageViewHolder>(
-    ImageDiffUtil()
-) {
+class ImagesAdapter @Inject constructor(
+//    private val onClick: () -> Unit,
+    private val bindingDecorator: ImageItemBinding.() -> Unit
+) :
+    ListAdapter<Image, ImagesAdapter.ImageViewHolder>(
+        ImageDiffUtil()
+    ) {
 
-    class ImageViewHolder private constructor(private val binding: ImageItemBinding) :
+    class ImageViewHolder private constructor(
+        private val binding: ImageItemBinding,
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(image: Image, count : String) {
+        fun bind(image: Image, count: String, decorate: ImageItemBinding.() -> Unit) {
             binding.apply {
                 img = image
                 imgCounter.text = count
+                decorate()
             }
         }
 
@@ -37,9 +44,8 @@ class ImagesAdapter @Inject constructor() : ListAdapter<Image, ImagesAdapter.Ima
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.bind(getItem(position),"${position + 1}/$itemCount")
+        holder.bind(getItem(position), "${position + 1}/$itemCount", bindingDecorator)
     }
-
 
 
 }
