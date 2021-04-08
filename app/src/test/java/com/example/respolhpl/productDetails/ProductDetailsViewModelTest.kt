@@ -39,7 +39,7 @@ class ProductDetailsViewModelTest {
         repository = mock {
             onBlocking { getProductById(1) } doReturn flow { emit((FakeData.resultSuccessProduct)) }
         }
-        handle = mock { on { get<Int>("productId") } doReturn 1 }
+        handle = mock { on { get<Int>(ProductDetailsFragment.prodId) } doReturn 1 }
 
         viewModel = ProductDetailsViewModel(handle, repository)
     }

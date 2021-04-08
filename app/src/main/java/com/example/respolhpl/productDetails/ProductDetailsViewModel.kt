@@ -47,7 +47,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getProduct(savedStateHandle.get<Int>("productId") ?: -1)
+            getProduct(savedStateHandle.get<Int>(ProductDetailsFragment.prodId) ?: -1)
         }
     }
 

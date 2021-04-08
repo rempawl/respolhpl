@@ -9,16 +9,10 @@ import com.example.respolhpl.databinding.ImageItemBinding
 import javax.inject.Inject
 
 class ImagesAdapter @Inject constructor(
-//    private val onClick: () -> Unit,
     private val bindingDecorator: ImageItemBinding.() -> Unit
-) :
-    ListAdapter<Image, ImagesAdapter.ImageViewHolder>(
-        ImageDiffUtil()
-    ) {
+) :  ListAdapter<Image, ImagesAdapter.ImageViewHolder>(ImageDiffUtil()) {
 
-    class ImageViewHolder private constructor(
-        private val binding: ImageItemBinding,
-    ) :
+    class ImageViewHolder private constructor(private val binding: ImageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(image: Image, count: String, decorate: ImageItemBinding.() -> Unit) {

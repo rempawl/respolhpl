@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FullScreenImagesFragment : Fragment() {
 
-    val viewModel by viewModels<ImagesViewModel>()
+    val viewModel by viewModels<FullScreenImagesViewModel>()
     var imagesAdapter by autoCleared<ImagesAdapter>()
     var binding by autoCleared<FullScreenImagesFragmentBinding>()
 
@@ -42,7 +42,7 @@ class FullScreenImagesFragment : Fragment() {
     private fun setupBinding() {
         binding.viewPager.adapter = imagesAdapter
         binding.lifecycleOwner = viewLifecycleOwner
-
     }
+
 
 }

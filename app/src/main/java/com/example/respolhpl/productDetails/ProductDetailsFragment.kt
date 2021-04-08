@@ -61,6 +61,9 @@ class ProductDetailsFragment : Fragment() {
         binding.viewPager.adapter = imagesAdapter
         binding.lifecycleOwner = viewLifecycleOwner
     }
+    companion object{
+        const val prodId = "productId"
+    }
 
 
 }
