@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class ImagesAdapter @Inject constructor(
     private val bindingDecorator: ImageItemBinding.() -> Unit
-) :  ListAdapter<Image, ImagesAdapter.ImageViewHolder>(ImageDiffUtil()) {
+) : ListAdapter<Image, ImagesAdapter.ImageViewHolder>(ImageDiffUtil()) {
 
     class ImageViewHolder private constructor(private val binding: ImageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

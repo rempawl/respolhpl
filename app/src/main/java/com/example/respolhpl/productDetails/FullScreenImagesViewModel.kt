@@ -9,12 +9,13 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
 class FullScreenImagesViewModel @Inject constructor(
     private val productRepository: ProductRepository,
     private val savedStateHandle: SavedStateHandle,
     currentPageState: CurrentPageState
-) : ViewModel() , CurrentPageState by currentPageState{
+) : ViewModel(), CurrentPageState by currentPageState {
 
     private val _result = MutableLiveData<Result<*>>(Result.Loading)
     val result: LiveData<Result<*>>
