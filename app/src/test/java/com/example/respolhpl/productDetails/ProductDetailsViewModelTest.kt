@@ -5,8 +5,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.respolhpl.CoroutineTestRule
 import com.example.respolhpl.FakeData
 import com.example.respolhpl.data.sources.repository.ProductRepository
-import com.example.respolhpl.data.sources.repository.ProductRepositoryImpl
 import com.example.respolhpl.getOrAwaitValue
+import com.example.respolhpl.productDetails.currentPageState.CurrentPageStateImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -41,7 +41,7 @@ class ProductDetailsViewModelTest {
         }
         handle = mock { on { get<Int>(ProductDetailsFragment.prodId) } doReturn 1 }
 
-        viewModel = ProductDetailsViewModel(handle, repository)
+        viewModel = ProductDetailsViewModel(handle, repository, CurrentPageStateImpl())
     }
 
     @Test

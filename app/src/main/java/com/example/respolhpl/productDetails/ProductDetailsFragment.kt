@@ -9,14 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
+import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ProductDetailsFragment : Fragment() {
-
 
     private val args: ProductDetailsFragmentArgs by navArgs()
 
@@ -30,7 +31,7 @@ class ProductDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ProductDetailsFragmentBinding.inflate(inflater,container,false)
+        binding = ProductDetailsFragmentBinding.inflate(inflater, container, false)
         imagesAdapter = ImagesAdapter {
             image.scaleType = ImageView.ScaleType.CENTER_CROP
             card.setOnClickListener { navigateToFullScreenImageDialog() }
@@ -41,7 +42,11 @@ class ProductDetailsFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
 
+        //todo unregister callback
+    }
     private fun navigateToFullScreenImageDialog() {
         findNavController().navigate(
             ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment(args.productId)
@@ -60,9 +65,17 @@ class ProductDetailsFragment : Fragment() {
         binding.viewModel = viewModel
         binding.viewPager.adapter = imagesAdapter
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                viewModel.saveCurrentPage(position)
+            }
+        }
+        )
     }
-    companion object{
+    companion object {
         const val prodId = "productId"
+        const val CURRENT_VIEW_PAGER_ITEM = "currentItem"
     }
 
 

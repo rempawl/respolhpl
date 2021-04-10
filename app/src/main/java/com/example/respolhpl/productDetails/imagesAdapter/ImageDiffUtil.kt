@@ -1,4 +1,4 @@
-package com.example.respolhpl.productDetails
+package com.example.respolhpl.productDetails.imagesAdapter
 
 
 import androidx.recyclerview.widget.DiffUtil

@@ -1,4 +1,4 @@
-package com.example.respolhpl.productDetails
+package com.example.respolhpl.productDetails.imagesAdapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

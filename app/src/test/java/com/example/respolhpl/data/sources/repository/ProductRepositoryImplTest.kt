@@ -6,6 +6,7 @@ import com.example.respolhpl.FakeData
 import com.example.respolhpl.FakeRemoteDataSource
 import com.example.respolhpl.TestDispatchersProvider
 import com.example.respolhpl.data.Result
+import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import junit.framework.Assert.assertNotNull
@@ -57,6 +58,13 @@ class ProductRepositoryImplTest {
 
         }
 
+    }
+    @Test
+    fun getImages(){
+        coroutineTestRule.runBlockingTest {
+            val res = repositoryImpl.getProductImages(134).first { it is Result.Success }
+            assertNotNull(res.checkIfIsSuccessAndListOf<Image>())
+        }
     }
 
 }

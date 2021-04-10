@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.viewpager2.widget.ViewPager2
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.databinding.FullScreenImagesFragmentBinding
+import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,9 +41,19 @@ class FullScreenImagesFragment : Fragment() {
         }
     }
 
+
+
     private fun setupBinding() {
+        binding.viewModel = viewModel
         binding.viewPager.adapter = imagesAdapter
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                viewModel.saveCurrentPage(position)
+            }
+        }
+        )
     }
 
 

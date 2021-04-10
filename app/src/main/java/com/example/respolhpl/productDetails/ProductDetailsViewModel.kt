@@ -10,6 +10,7 @@ import com.example.respolhpl.BR
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.repository.ProductRepository
+import com.example.respolhpl.productDetails.currentPageState.CurrentPageState
 import com.example.respolhpl.utils.ObservableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -19,10 +20,12 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val productRepository: ProductRepository
-) : ObservableViewModel() {
+    private val productRepository: ProductRepository,
+    currentPageState: CurrentPageState
+) : ObservableViewModel(), CurrentPageState by currentPageState {
 
     private var maxQuantity = 1
+
 
     val isMinusBtnEnabled: Boolean
         @Bindable
@@ -58,6 +61,7 @@ class ProductDetailsViewModel @Inject constructor(
     fun onPlusBtnClick() {
         orderQuantity += 1
     }
+
 
     private suspend fun getProduct(id: Int) {
         productRepository.getProductById(id).collect { res ->
