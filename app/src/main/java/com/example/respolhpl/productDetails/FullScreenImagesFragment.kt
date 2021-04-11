@@ -4,8 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.cardview.widget.CardView
+import androidx.core.view.MarginLayoutParamsCompat
+import androidx.core.view.marginBottom
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavArgs
+import androidx.navigation.fragment.navArgs
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.databinding.FullScreenImagesFragmentBinding
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
@@ -22,13 +29,15 @@ class FullScreenImagesFragment : Fragment() {
 
     private val onPageChangeCallback by lazy { OnPageChangeCallbackImpl(viewModel) }
 
+    private val args by navArgs<FullScreenImagesFragmentArgs>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FullScreenImagesFragmentBinding.inflate(inflater, container, false)
-        imagesAdapter = ImagesAdapter { }
+        imagesAdapter = ImagesAdapter {}
 
         setupObservers()
         setupBinding()

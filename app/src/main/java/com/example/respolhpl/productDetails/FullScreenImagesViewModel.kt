@@ -29,6 +29,7 @@ class FullScreenImagesViewModel @Inject constructor(
         val id = savedStateHandle.get<Int>(ProductDetailsFragment.prodId) ?: -1
         productRepository.getProductImages(id).collect {
             _result.postValue(it)
+            saveCurrentPage(savedStateHandle.get<Int>("currentPage") ?: 0)
         }
     }
 

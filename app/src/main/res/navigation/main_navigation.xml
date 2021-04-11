@@ -36,6 +36,9 @@
         <argument
             android:name="productId"
             app:argType="java.lang.Integer" />
+        <argument
+            android:name="currentPage"
+            app:argType="java.lang.Integer" />
     </fragment>
 
 

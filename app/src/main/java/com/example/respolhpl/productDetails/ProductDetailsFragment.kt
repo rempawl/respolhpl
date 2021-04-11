@@ -45,10 +45,14 @@ class ProductDetailsFragment : Fragment() {
         return binding.root
     }
 
-    private fun navigateToFullScreenImageDialog() {
-        findNavController().navigate(
-            ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment(args.productId)
-        )
+    private fun navigateToFullScreenImageDialog(curPage: Int) {
+        viewModel.currentPage.observe(viewLifecycleOwner) {
+            findNavController().navigate(
+                ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment(
+                    args.productId, curPage
+                )
+            )
+        }
     }
 
     private fun setupObservers() {
@@ -57,8 +61,8 @@ class ProductDetailsFragment : Fragment() {
                 imagesAdapter.submitList(prod.images)
             }
         }
-        viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver {
-            navigateToFullScreenImageDialog()
+        viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver { curPage ->
+            navigateToFullScreenImageDialog(curPage)
         })
     }
 

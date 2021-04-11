@@ -2,10 +2,7 @@ package com.example.respolhpl.productDetails
 
 
 import androidx.databinding.Bindable
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.respolhpl.BR
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Product
@@ -25,8 +22,8 @@ class ProductDetailsViewModel @Inject constructor(
     currentPageState: CurrentPageState
 ) : ObservableViewModel(), CurrentPageState by currentPageState {
 
-    private val _shouldNavigate = MutableLiveData<Event<Unit>>()
-    val shouldNavigate: LiveData<Event<Unit>>
+    private val _shouldNavigate = MediatorLiveData<Event<Int>>()
+    val shouldNavigate: LiveData<Event<Int>>
         get() = _shouldNavigate
 
     private var maxQuantity = 1
@@ -67,7 +64,9 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     fun navigate() {
-        _shouldNavigate.value = Event(Unit)
+        val src = currentPage.map { Event(it) }
+        _shouldNavigate.addSource(src) { _shouldNavigate.value = it }
+        _shouldNavigate.removeSource(src)
     }
 
 

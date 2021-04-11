@@ -2,9 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-<variable
-    name="viewModel"
-    type="com.example.respolhpl.productDetails.FullScreenImagesViewModel" />
+
+        <variable
+            name="viewModel"
+            type="com.example.respolhpl.productDetails.FullScreenImagesViewModel" />
     </data>
 
     <FrameLayout
@@ -12,8 +13,8 @@
         android:layout_height="match_parent">
 
         <androidx.viewpager2.widget.ViewPager2
-            setPage="@{viewModel.currentPage}"
             android:id="@+id/view_pager"
+            setPage="@{viewModel.currentPage}"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
