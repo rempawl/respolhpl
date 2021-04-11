@@ -18,11 +18,11 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verifyBlocking
 
 @ExperimentalCoroutinesApi
-class HomeViewModelImplTest {
+class HomeViewModelTest {
     lateinit var repository: ProductRepository
     lateinit var savedStateHandle: SavedStateHandle
 
-    lateinit var viewModel: HomeViewModelImpl
+    lateinit var viewModel: HomeViewModel
 
     @get:Rule
     val coroutineTestRule = CoroutineTestRule(TestCoroutineDispatcher())
@@ -32,7 +32,7 @@ class HomeViewModelImplTest {
         savedStateHandle = mock<SavedStateHandle>()
         repository =
             mock { onBlocking { getProducts() } doReturn flow { emit(PagingData.from(FakeData.minimalProducts)) } }
-        viewModel = HomeViewModelImpl(repository, savedStateHandle)
+        viewModel = HomeViewModel(repository, savedStateHandle)
     }
 
     @Test

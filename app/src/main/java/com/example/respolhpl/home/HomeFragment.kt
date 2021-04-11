@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.databinding.FragmentHomeBinding
+import com.example.respolhpl.utils.event.EventObserver
 import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeViewModelImpl by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
 
     private var adapter: ProductListAdapter by autoCleared()
     private var binding: FragmentHomeBinding by autoCleared()
@@ -33,7 +34,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        adapter = ProductListAdapter(onItemClickListener = { id -> navigateToProductDetails(id) })
+        adapter = ProductListAdapter(onItemClickListener = { id -> viewModel.navigate(id) })
         binding = FragmentHomeBinding.inflate(inflater)
         setupBinding()
         setupObservers()
@@ -59,6 +60,11 @@ class HomeFragment : Fragment() {
                 adapter.submitData(it)
             }
         }
+        viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver { id ->
+            navigateToProductDetails(id)
+        })
+
+
     }
 
     private fun setupBinding() {
@@ -72,8 +78,8 @@ class HomeFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             error.retryButton.setOnClickListener { adapter.retry() }
         }
-
     }
+
     private fun navigateToProductDetails(id: Int) {
         findNavController().navigate(
             HomeFragmentDirections.navigationHomeToProductDetails(id)

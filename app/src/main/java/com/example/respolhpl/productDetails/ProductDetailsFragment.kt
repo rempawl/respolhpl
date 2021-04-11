@@ -14,6 +14,7 @@ import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.autoCleared
+import com.example.respolhpl.utils.event.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +35,7 @@ class ProductDetailsFragment : Fragment() {
         binding = ProductDetailsFragmentBinding.inflate(inflater, container, false)
         imagesAdapter = ImagesAdapter {
             image.scaleType = ImageView.ScaleType.CENTER_CROP
-            card.setOnClickListener { navigateToFullScreenImageDialog() }
+            card.setOnClickListener { viewModel.navigate() }
         }
 
         setupObservers()
@@ -42,11 +43,6 @@ class ProductDetailsFragment : Fragment() {
         return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        //todo unregister callback
-    }
     private fun navigateToFullScreenImageDialog() {
         findNavController().navigate(
             ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment(args.productId)
@@ -59,13 +55,16 @@ class ProductDetailsFragment : Fragment() {
                 imagesAdapter.submitList(prod.images)
             }
         }
+        viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver {
+            navigateToFullScreenImageDialog()
+        })
     }
 
     private fun setupBinding() {
         binding.viewModel = viewModel
         binding.viewPager.adapter = imagesAdapter
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 viewModel.saveCurrentPage(position)
@@ -73,6 +72,7 @@ class ProductDetailsFragment : Fragment() {
         }
         )
     }
+
     companion object {
         const val prodId = "productId"
         const val CURRENT_VIEW_PAGER_ITEM = "currentItem"

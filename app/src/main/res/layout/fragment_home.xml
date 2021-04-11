@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.respolhpl.home.HomeViewModelImpl" />
+            type="com.example.respolhpl.home.HomeViewModel" />
 
 
     </data>

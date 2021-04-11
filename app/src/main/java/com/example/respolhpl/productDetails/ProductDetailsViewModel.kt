@@ -12,6 +12,7 @@ import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.productDetails.currentPageState.CurrentPageState
 import com.example.respolhpl.utils.ObservableViewModel
+import com.example.respolhpl.utils.event.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -24,8 +25,11 @@ class ProductDetailsViewModel @Inject constructor(
     currentPageState: CurrentPageState
 ) : ObservableViewModel(), CurrentPageState by currentPageState {
 
-    private var maxQuantity = 1
+    private val _shouldNavigate = MutableLiveData<Event<Unit>>()
+    val shouldNavigate: LiveData<Event<Unit>>
+        get() = _shouldNavigate
 
+    private var maxQuantity = 1
 
     val isMinusBtnEnabled: Boolean
         @Bindable
@@ -60,6 +64,10 @@ class ProductDetailsViewModel @Inject constructor(
 
     fun onPlusBtnClick() {
         orderQuantity += 1
+    }
+
+    fun navigate() {
+        _shouldNavigate.value = Event(Unit)
     }
 
 
