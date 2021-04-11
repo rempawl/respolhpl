@@ -7,7 +7,6 @@ import javax.inject.Inject
 
 class CurrentPageStateImpl @Inject constructor() : CurrentPageState {
 
-    //todo test
     private var _currentPage = MutableLiveData(0)
     override val currentPage: LiveData<Int>
         get() = _currentPage

@@ -8,26 +8,23 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.sources.repository.ProductRepository
-import com.example.respolhpl.utils.event.Event
 import com.example.respolhpl.utils.ObservableViewModel
+import com.example.respolhpl.utils.event.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository,
     private val savedStateHandle: SavedStateHandle
-) : ObservableViewModel()  {
-    
+) : ObservableViewModel() {
+
     private val _shouldNavigate = MutableLiveData<Event<Int>>()
-    val shouldNavigate : LiveData<Event<Int>>
-    get() = _shouldNavigate
-
-
+    val shouldNavigate: LiveData<Event<Int>>
+        get() = _shouldNavigate
 
     var result: Flow<PagingData<ProductMinimal>>? = null
 
@@ -37,7 +34,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun navigate(id : Int){
+    fun navigate(id: Int) {
         _shouldNavigate.value = Event(id)
     }
 

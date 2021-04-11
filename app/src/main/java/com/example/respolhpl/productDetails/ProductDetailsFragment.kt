@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager2.widget.ViewPager2
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
+import com.example.respolhpl.utils.OnPageChangeCallbackImpl
 import com.example.respolhpl.utils.autoCleared
 import com.example.respolhpl.utils.event.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +27,8 @@ class ProductDetailsFragment : Fragment() {
     private var binding: ProductDetailsFragmentBinding by autoCleared()
 
     private val viewModel: ProductDetailsViewModel by viewModels()
+
+    private val onPageChangeCallback by lazy { OnPageChangeCallbackImpl(viewModel) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,14 +66,13 @@ class ProductDetailsFragment : Fragment() {
         binding.viewModel = viewModel
         binding.viewPager.adapter = imagesAdapter
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                viewModel.saveCurrentPage(position)
-            }
-        }
-        )
+        binding.viewPager.registerOnPageChangeCallback(onPageChangeCallback)
     }
+
+//    override fun onDestroyView() {
+//        binding.viewPager.unregisterOnPageChangeCallback(onPageChangeCallback)
+//        super.onDestroyView()
+//    }
 
     companion object {
         const val prodId = "productId"
