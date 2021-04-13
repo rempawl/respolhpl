@@ -9,11 +9,6 @@ import com.example.respolhpl.R
 import com.example.respolhpl.bindingAdapters.ImageBindingAdapters.loadThumbnail
 
 object ImageBindingAdapters {
-    private val opts: RequestOptions
-        get() = RequestOptions().placeholder(R.drawable.loading)
-            .error(R.drawable.ic_baseline_error_24)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-
     @JvmStatic
     @BindingAdapter("loadThumbnail")
     fun ImageView.loadThumbnail(src: String?) {

@@ -13,7 +13,6 @@ import com.example.respolhpl.R
 class GlideModule : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         super.applyOptions(context, builder)
-        Log.d("kruci","applying opts")
         builder.apply {
             RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.loading)
