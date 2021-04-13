@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.respolhpl.R
+import com.example.respolhpl.bindingAdapters.ImageBindingAdapters.loadThumbnail
 
 object ImageBindingAdapters {
     private val opts: RequestOptions
@@ -17,9 +18,8 @@ object ImageBindingAdapters {
     @BindingAdapter("loadThumbnail")
     fun ImageView.loadThumbnail(src: String?) {
         src?.let {
-            Glide.with(this)
+            GlideApp.with(this)
                 .load(src)
-                .apply(opts)
                 .into(this)
         }
     }
@@ -28,9 +28,8 @@ object ImageBindingAdapters {
     @BindingAdapter("loadImage")
     fun ImageView.loadImage(src: String?) {
         src?.let {
-            Glide.with(this)
+            GlideApp.with(this)
                 .load(src)
-                .apply(opts)
                 .into(this)
         }
     }
