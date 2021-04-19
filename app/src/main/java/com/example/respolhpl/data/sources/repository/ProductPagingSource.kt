@@ -1,33 +1,36 @@
 package com.example.respolhpl.data.sources.repository
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.squareup.moshi.JsonDataException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import retrofit2.HttpException
 import java.io.IOException
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
 
 class ProductPagingSource(
     private val api: RemoteDataSource,
-
     private val mapper: (RemoteProductMinimal) -> ProductMinimal
 ) : PagingSource<Int, ProductMinimal>() {
-
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductMinimal> {
         val position = params.key ?: STARTING_PAGE_INDEX
         return try {
-
             val response = api.getProductsAsync(params.loadSize, position)
 
-            val products = response.map { mapper(it) }
+
+            val products = (response ).map { mapper(it) }
 
             val nextKey = calculateNextKey(products, position, params.loadSize)
 
             LoadResult.Page(data = products, prevKey = getPrevKey(position), nextKey = nextKey)
-
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {

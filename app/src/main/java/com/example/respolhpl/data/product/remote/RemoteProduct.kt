@@ -14,5 +14,4 @@ data class RemoteProduct(
 //    val tags : List<RemoteTag>,
     val description: String
 )
-//todo variants
 

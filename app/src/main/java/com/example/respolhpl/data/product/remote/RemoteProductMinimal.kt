@@ -4,8 +4,8 @@ import com.squareup.moshi.Json
 
 @Json(name = "minimal_product")
 data class RemoteProductMinimal(
-    val id : Int,
-    val name : String,
+    val id: Int,
+    val name: String,
     val price: Double,
-    val images: List<ImageRemote>
+    val images: List<ImageRemote>,
 )

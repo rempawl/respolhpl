@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/product_image_desc"
             app:loadImage="@{img.src}"
-            android:background="@color/black"
+            android:background="@color/light_gray"
             tools:layout_height="300dp"
             tools:src="@drawable/natura" />
         <TextView

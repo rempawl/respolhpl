@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface WooCommerceApi : RemoteDataSource {
 
 
-    @GET(PRODUCTS_PATH)
+    @GET(PRODUCTS_PATH + STATUS)
     override suspend fun getProductsAsync(
         @Query("per_page") perPage: Int,
         @Query("page") page: Int
@@ -18,7 +18,9 @@ interface WooCommerceApi : RemoteDataSource {
     @GET("$PRODUCTS_PATH/{id}")
     override suspend fun getProductByIDAsync(@Path(value = "id") id: Int): RemoteProduct
 
+
     companion object {
         const val PRODUCTS_PATH = "/wp-json/wc/v3/products"
+        const val STATUS = "?status=publish"
     }
 }
