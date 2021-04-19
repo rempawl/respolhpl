@@ -3,7 +3,7 @@ package com.example.respolhpl.data
 sealed class Result<R> {
     data class Success<T>(val data: T) : Result<T>()
     object Loading : Result<Any>()
-    data class Error(val exception: Exception) : Result<Nothing>()
+    data class Error(val exception: Throwable) : Result<Nothing>()
 
     inline fun <reified T> checkIfIsSuccessAndType(): T? {
         return this.takeIf { it.isSuccess }?.let { res ->
