@@ -46,13 +46,12 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun navigateToFullScreenImageDialog(curPage: Int) {
-        viewModel.currentPage.observe(viewLifecycleOwner) {
-            findNavController().navigate(
-                ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment(
-                    args.productId, curPage
-                )
+        findNavController().navigate(
+            ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment(
+                args.productId, curPage
             )
-        }
+        )
+        viewModel.doneNavigating()
     }
 
     private fun setupObservers() {
@@ -73,10 +72,6 @@ class ProductDetailsFragment : Fragment() {
         binding.viewPager.registerOnPageChangeCallback(onPageChangeCallback)
     }
 
-//    override fun onDestroyView() {
-//        binding.viewPager.unregisterOnPageChangeCallback(onPageChangeCallback)
-//        super.onDestroyView()
-//    }
 
     companion object {
         const val prodId = "productId"

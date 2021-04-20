@@ -20,6 +20,10 @@ object DataBaseModule {
 
     @Provides
     @Reusable
-    fun provideProductDao(dataBase: AppDataBase) = dataBase.favProductDao()
+    fun provideFavProductDao(dataBase: AppDataBase) = dataBase.favProductDao()
+
+    @Provides
+    @Reusable
+    fun provideCartProductDao(dataBase: AppDataBase) = dataBase.cartProductDao()
 
 }

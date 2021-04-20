@@ -1,5 +1,7 @@
 package com.example.respolhpl.di
 
+import com.example.respolhpl.cart.data.sources.CartRepository
+import com.example.respolhpl.cart.data.sources.CartRepositoryImpl
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.data.sources.repository.ProductRepositoryImpl
 import dagger.Binds
@@ -15,5 +17,9 @@ interface RepositoryModule {
 
     @Reusable
     @Binds
-    fun provideRepository(repository: ProductRepositoryImpl): ProductRepository
+    fun provideProductRepository(repository: ProductRepositoryImpl): ProductRepository
+
+    @Reusable
+    @Binds
+    fun provideCartRepository(repositoryImpl: CartRepositoryImpl) : CartRepository
 }

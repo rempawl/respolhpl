@@ -1,4 +1,4 @@
-package com.example.respolhpl.cart
+package com.example.respolhpl.cart.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

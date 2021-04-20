@@ -4,6 +4,8 @@ package com.example.respolhpl.productDetails
 import androidx.databinding.Bindable
 import androidx.lifecycle.*
 import com.example.respolhpl.BR
+import com.example.respolhpl.cart.data.CartProduct
+import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.repository.ProductRepository
@@ -19,12 +21,15 @@ import javax.inject.Inject
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val productRepository: ProductRepository,
+    private val cartRepository: CartRepository,
     currentPageState: CurrentPageState
 ) : ObservableViewModel(), CurrentPageState by currentPageState {
 
     private val _shouldNavigate = MediatorLiveData<Event<Int>>()
     val shouldNavigate: LiveData<Event<Int>>
         get() = _shouldNavigate
+
+    private val src = currentPage.map { Event(it) }
 
     private var maxQuantity = 1
 
@@ -49,10 +54,19 @@ class ProductDetailsViewModel @Inject constructor(
     val result: LiveData<Result<*>>
         get() = _result
 
+    private val prodObserver = Observer<Result<*>> { it ->
+        it.checkIfIsSuccessAndType<Product>()?.let { createCartProductAndAddToCart(it) }
+    }
+
     init {
         viewModelScope.launch {
             getProduct(savedStateHandle.get<Int>(ProductDetailsFragment.prodId) ?: -1)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        _result.removeObserver(prodObserver)
     }
 
     fun onMinusBtnClick() {
@@ -64,9 +78,31 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     fun navigate() {
-        val src = currentPage.map { Event(it) }
         _shouldNavigate.addSource(src) { _shouldNavigate.value = it }
+
+    }
+    fun doneNavigating(){
         _shouldNavigate.removeSource(src)
+    }
+
+
+
+    private fun createCartProduct(product: Product) = CartProduct(
+        product.id,
+        price = product.price,
+        quantity = orderQuantity,
+        name = product.name,
+        thumbnailSrc = product.thumbnailSrc
+    )
+
+    private fun createCartProductAndAddToCart(product: Product) {
+        viewModelScope.launch {
+            cartRepository.addProduct(createCartProduct(product))
+        }
+    }
+
+    fun onAddToCartClick() {
+        _result.observeForever(prodObserver)
     }
 
 

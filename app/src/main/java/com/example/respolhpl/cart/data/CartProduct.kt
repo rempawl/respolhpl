@@ -1,4 +1,4 @@
-package com.example.respolhpl.cart
+package com.example.respolhpl.cart.data
 
 data class CartProduct(
     val id: Int,
@@ -16,5 +16,6 @@ data class CartProduct(
             thumbnailSrc = entity.thumbnailSrc,
             price = entity.price
         )
+
     }
 }

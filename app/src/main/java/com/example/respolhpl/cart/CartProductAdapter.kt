@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.databinding.CartProductItemBinding
 
 class CartProductAdapter : ListAdapter<CartProduct, RecyclerView.ViewHolder>(Diff()) {

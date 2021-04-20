@@ -170,7 +170,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/def_margin"
-                android:text="@string/add_to_cart" />
+                android:text="@string/add_to_cart"
+                android:onClick="@{() -> viewModel.onAddToCartClick()}"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buy_now_btn"
