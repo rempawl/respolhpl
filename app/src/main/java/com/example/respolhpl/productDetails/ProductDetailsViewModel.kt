@@ -29,7 +29,7 @@ class ProductDetailsViewModel @Inject constructor(
     val shouldNavigate: LiveData<Event<Int>>
         get() = _shouldNavigate
 
-    private val src = currentPage.map { Event(it) }
+    private val currentPageEvent = currentPage.map { Event(it) }
 
     private var maxQuantity = 1
 
@@ -78,14 +78,12 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     fun navigate() {
-        _shouldNavigate.addSource(src) { _shouldNavigate.value = it }
-
-    }
-    fun doneNavigating(){
-        _shouldNavigate.removeSource(src)
+        _shouldNavigate.addSource(currentPageEvent) { _shouldNavigate.value = it }
     }
 
-
+    fun doneNavigating() {
+        _shouldNavigate.removeSource(currentPageEvent)
+    }
 
     private fun createCartProduct(product: Product) = CartProduct(
         product.id,

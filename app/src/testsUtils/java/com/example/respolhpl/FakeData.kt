@@ -1,5 +1,7 @@
 package com.example.respolhpl
 
+import com.example.respolhpl.cart.data.CartProduct
+import com.example.respolhpl.cart.data.CartProductEntity
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.product.domain.ProductMinimal
@@ -95,6 +97,10 @@ object FakeData {
         )
     )
     val products = remoteProducts.map { Product.from(it) }
+    val cartEntities =
+        products.map { CartProductEntity(it.id, it.name, it.price, it.thumbnailSrc, CART_QUANTITY) }
+    val cartProducts = cartEntities.map { CartProduct.from(it) }
+
     val minimalProducts = products.map { ProductMinimal(it.id, it.name, it.price, it.thumbnailSrc) }
     val favProductEntities = remoteProducts.map { prod ->
         FavProductEntity(
@@ -104,6 +110,8 @@ object FakeData {
             thumbnailSrc = prod.images.first().src
         )
     }
-    val minRemoteProds = remoteProducts.map { RemoteProductMinimal(it.id, it.name, it.price, it.images) }
+    val minRemoteProds =
+        remoteProducts.map { RemoteProductMinimal(it.id, it.name, it.price, it.images) }
 
+    const val CART_QUANTITY = 2
 }

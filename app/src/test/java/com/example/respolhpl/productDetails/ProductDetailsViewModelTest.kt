@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import com.example.respolhpl.CoroutineTestRule
 import com.example.respolhpl.FakeData
+import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.getOrAwaitValue
 import com.example.respolhpl.productDetails.currentPageState.CurrentPageStateImpl
@@ -23,10 +24,10 @@ import org.mockito.kotlin.verifyBlocking
 @ExperimentalCoroutinesApi
 class ProductDetailsViewModelTest {
 
-    lateinit var repository: ProductRepository
+    lateinit var productRepository: ProductRepository
     lateinit var handle: SavedStateHandle
     lateinit var viewModel: ProductDetailsViewModel
-
+    lateinit var cartRepository: CartRepository
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -36,18 +37,24 @@ class ProductDetailsViewModelTest {
 
     @Before
     fun setup() {
-        repository = mock {
+        productRepository = mock {
             onBlocking { getProductById(1) } doReturn flow { emit((FakeData.resultSuccessProduct)) }
         }
         handle = mock { on { get<Int>(ProductDetailsFragment.prodId) } doReturn 1 }
+        cartRepository = mock {}
 
-        viewModel = ProductDetailsViewModel(handle, repository, CurrentPageStateImpl())
+        viewModel = ProductDetailsViewModel(
+            handle,
+            productRepository,
+            cartRepository,
+            CurrentPageStateImpl()
+        )
     }
 
     @Test
     fun resultInit() {
         val res = viewModel.result.getOrAwaitValue()
-        verifyBlocking(repository) { getProductById(1) }
+        verifyBlocking(productRepository) { getProductById(1) }
         assertThat(res, `is`(FakeData.resultSuccessProduct))
     }
 
@@ -76,12 +83,12 @@ class ProductDetailsViewModelTest {
     }
 
     @Test
-    fun onPlusBtnClickThenOnMinusBtnClick(){
+    fun onPlusBtnClickThenOnMinusBtnClick() {
         coroutineTestRule.runBlockingTest {
             val qnt = viewModel.orderQuantity
             viewModel.onPlusBtnClick()
             viewModel.onMinusBtnClick()
-            assertThat(viewModel.orderQuantity,`is`(qnt))
+            assertThat(viewModel.orderQuantity, `is`(qnt))
         }
     }
 

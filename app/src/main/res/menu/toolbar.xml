@@ -16,7 +16,7 @@
         android:title="@string/cart"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/favs"
+        android:id="@+id/menu_fav"
         android:icon="@drawable/ic_baseline_star_outline_24"
         android:orderInCategory="300"
         android:title="@string/add_to_favs"

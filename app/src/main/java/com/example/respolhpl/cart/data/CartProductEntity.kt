@@ -9,7 +9,16 @@ data class CartProductEntity(
     @PrimaryKey() val id: Int,
     val name: String,
     val price: Double,
-    val thumbnailSrc: String,
+    val thumbnailSrc: String?,
     val quantity: Int,
 //    val shipping: Shipping
-)
+) {
+    companion object{
+    fun from(cartProduct: CartProduct) = CartProductEntity(id = cartProduct.id,
+        name = cartProduct.name,
+        price = cartProduct.price,
+        thumbnailSrc = cartProduct.thumbnailSrc,
+        quantity = cartProduct.quantity
+    )
+    }
+}

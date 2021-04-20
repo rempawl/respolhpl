@@ -6,7 +6,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import okio.Okio
+import okio.buffer
+import okio.source
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
@@ -85,12 +86,14 @@ class WooCommerceApiTest {
     private fun enqueueResponse(fileName: String, headers: Map<String, String> = emptyMap()) {
         val inputStream = javaClass.classLoader!!
             .getResourceAsStream("api_response/$fileName")
-        val source = Okio.buffer(Okio.source(inputStream))
+            .source()
+            .buffer()
+
         val mockResponse = MockResponse()
         for ((key, value) in headers) {
             mockResponse.addHeader(key, value)
         }
-        mockServer.enqueue(mockResponse.setBody(source.readString(Charsets.UTF_8)))
+        mockServer.enqueue(mockResponse.setBody(inputStream.readString(Charsets.UTF_8)))
 
     }
 

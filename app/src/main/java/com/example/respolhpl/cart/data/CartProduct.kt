@@ -17,5 +17,6 @@ data class CartProduct(
             price = entity.price
         )
 
+
     }
 }
