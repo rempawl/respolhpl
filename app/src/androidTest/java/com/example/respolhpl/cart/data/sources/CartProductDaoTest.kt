@@ -62,4 +62,22 @@ class CartProductDaoTest {
             assertThat(res, `is`(entities))
         }
     }
+
+    @Suppress("DEPRECATION")
+    @Test
+    fun insertListThenUpdateOne(){
+        runBlockingTest {
+            dao.insert(entities)
+
+            val prod = entities.first()
+            val res = dao.getCartProductById(prod.id).first()
+            assertThat(res,`is`(prod))
+
+            val updated = res!!.copy(quantity = 5)
+            dao.update(updated)
+
+            val res2 = dao.getCartProductById(prod.id).first()
+            assertThat(res2,`is`(updated))
+        }
+    }
 }

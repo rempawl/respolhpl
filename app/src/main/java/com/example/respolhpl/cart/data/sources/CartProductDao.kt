@@ -13,6 +13,6 @@ interface CartProductDao : BaseDao<CartProductEntity> {
     fun getCartProducts(): Flow<List<CartProductEntity>>
 
     @Query("SELECT * FROM cart WHERE id == :id")
-    fun getCartProductById(id: Int) : Flow<CartProduct?>
+    fun getCartProductById(id: Int) : Flow<CartProductEntity?>
 }
 
