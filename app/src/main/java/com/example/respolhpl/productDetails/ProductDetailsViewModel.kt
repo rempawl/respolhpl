@@ -9,21 +9,22 @@ import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.repository.ProductRepository
-import com.example.respolhpl.productDetails.currentPageState.CurrentPageState
+import com.example.respolhpl.productDetails.currentPageState.CurrentViewPagerPage
 import com.example.respolhpl.utils.ObservableViewModel
 import com.example.respolhpl.utils.event.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+//todo change quantity while adding to cart
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val productRepository: ProductRepository,
     private val cartRepository: CartRepository,
-    currentPageState: CurrentPageState
-) : ObservableViewModel(), CurrentPageState by currentPageState {
+    currentViewPagerPage: CurrentViewPagerPage
+) : ObservableViewModel(), CurrentViewPagerPage by currentViewPagerPage {
 
     private val _shouldNavigate = MediatorLiveData<Event<Int>>()
     val shouldNavigate: LiveData<Event<Int>>
@@ -64,10 +65,6 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        _result.removeObserver(prodObserver)
-    }
 
     fun onMinusBtnClick() {
         orderQuantity -= 1
@@ -85,6 +82,11 @@ class ProductDetailsViewModel @Inject constructor(
         _shouldNavigate.removeSource(currentPageEvent)
     }
 
+    fun onAddToCartClick() {
+        //todo rethink
+        _result.observeForever(prodObserver)
+    }
+
     private fun createCartProduct(product: Product) = CartProduct(
         product.id,
         price = product.price,
@@ -95,14 +97,12 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun createCartProductAndAddToCart(product: Product) {
         viewModelScope.launch {
-            cartRepository.addProduct(createCartProduct(product))
+            coroutineScope {
+                cartRepository.addProduct(createCartProduct(product))
+            }
+            _result.removeObserver(prodObserver)
         }
     }
-
-    fun onAddToCartClick() {
-        _result.observeForever(prodObserver)
-    }
-
 
     private suspend fun getProduct(id: Int) {
         productRepository.getProductById(id).collect { res ->
@@ -117,6 +117,5 @@ class ProductDetailsViewModel @Inject constructor(
             notifyPropertyChanged(BR.plusBtnEnabled)
         }
     }
-
 
 }

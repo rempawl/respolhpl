@@ -7,6 +7,7 @@ data class CartProduct(
 //    val shipping: Shipping,
     val thumbnailSrc: String?,
     val price: Double,
+    val cost : Double = price*quantity
 ) {
     companion object {
         fun from(entity: CartProductEntity): CartProduct = CartProduct(

@@ -66,11 +66,6 @@ object ProductDetailsBindingAdapters {
     }
 
 
-    @JvmStatic
-    @BindingAdapter("showWhen")
-    fun View.showWhen(shouldShow: Boolean) {
-        visibility = if (shouldShow) VISIBLE else GONE
-    }
 
 
 }

@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".cart.CartFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/prods_list"
+        <variable
+            name="viewModel"
+            type="com.example.respolhpl.cart.CartViewModel" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</FrameLayout>
+        android:layout_height="match_parent"
+        tools:context=".cart.CartFragment">
+
+        <include
+            layout="@layout/error_layout"
+            showWhen="@{viewModel.result.error}" />
+
+        <include
+            layout="@layout/loading_layout"
+            showWhen="@{viewModel.result.loading}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/prods_list"
+            showWhen="@{viewModel.result.success}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+</layout>

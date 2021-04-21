@@ -1,7 +1,7 @@
 package com.example.respolhpl.di
 
-import com.example.respolhpl.productDetails.currentPageState.CurrentPageState
-import com.example.respolhpl.productDetails.currentPageState.CurrentPageStateImpl
+import com.example.respolhpl.productDetails.currentPageState.CurrentViewPagerPage
+import com.example.respolhpl.productDetails.currentPageState.CurrentViewPagerPageImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,5 +13,5 @@ import dagger.hilt.android.scopes.ViewModelScoped
 abstract class ModelModule {
     @Binds
     @ViewModelScoped
-    abstract fun provideCurrentPageState(impl : CurrentPageStateImpl) : CurrentPageState
+    abstract fun provideCurrentPageState(impl : CurrentViewPagerPageImpl) : CurrentViewPagerPage
 }

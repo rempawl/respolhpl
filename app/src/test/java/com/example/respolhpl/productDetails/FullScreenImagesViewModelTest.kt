@@ -8,7 +8,7 @@ import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.getOrAwaitValue
-import com.example.respolhpl.productDetails.currentPageState.CurrentPageStateImpl
+import com.example.respolhpl.productDetails.currentPageState.CurrentViewPagerPageImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -41,7 +41,7 @@ class FullScreenImagesViewModelTest {
         repository =
             mock { onBlocking { getProductImages(id) } doReturn flow { emit(Result.Success(imgs)) } }
         stateHandle = mock { on { get<Int>(ProductDetailsFragment.prodId) } doReturn id }
-        viewModel = FullScreenImagesViewModel(repository, stateHandle, CurrentPageStateImpl())
+        viewModel = FullScreenImagesViewModel(repository, stateHandle, CurrentViewPagerPageImpl())
     }
 
     @Test

@@ -7,7 +7,7 @@ import com.example.respolhpl.FakeData
 import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.getOrAwaitValue
-import com.example.respolhpl.productDetails.currentPageState.CurrentPageStateImpl
+import com.example.respolhpl.productDetails.currentPageState.CurrentViewPagerPageImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -47,7 +47,7 @@ class ProductDetailsViewModelTest {
             handle,
             productRepository,
             cartRepository,
-            CurrentPageStateImpl()
+            CurrentViewPagerPageImpl()
         )
     }
 

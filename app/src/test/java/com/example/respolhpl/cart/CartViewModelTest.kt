@@ -1,28 +1,44 @@
 package com.example.respolhpl.cart
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.respolhpl.FakeCartProductDao
-import com.example.respolhpl.TestDispatchersProvider
+import com.example.respolhpl.*
+import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.cart.data.sources.CartRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert.*
+import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class CartViewModelTest{
-    lateinit var viewModel : CartViewModel
+class CartViewModelTest {
+    lateinit var viewModel: CartViewModel
 
     lateinit var cartRepository: CartRepository
     private val dispatcherProvider = TestDispatchersProvider()
+
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule(dispatcherProvider.test)
+
     @Before
-    fun setup(){
-        cartRepository = CartRepositoryImpl(FakeCartProductDao(),dispatcherProvider)
+    fun setup() {
+        cartRepository = CartRepositoryImpl(FakeCartProductDao(), dispatcherProvider)
         viewModel = CartViewModel(cartRepository)
     }
 
+    @Test
+    fun init() {
+        runBlockingTest {
+            val res = viewModel.result.getOrAwaitValue()
+            res.checkIfIsSuccessAndListOf<CartProduct>()?.let { prods ->
+                assertThat(prods, `is`(FakeData.cartProducts))
+            }
+        }
+    }
 }

@@ -8,7 +8,7 @@ import com.example.respolhpl.cart.data.CartProductEntity
 import com.example.respolhpl.cart.data.sources.CartProductDao
 import com.example.respolhpl.data.product.entity.FavProductEntity
 
-@Database(version = 3, entities = [FavProductEntity::class, CartProductEntity::class])
+@Database(version = 4, entities = [FavProductEntity::class, CartProductEntity::class])
 abstract class AppDataBase : RoomDatabase() {
     abstract fun favProductDao(): FavProductDao
 

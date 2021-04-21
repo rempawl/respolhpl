@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="product"
             type="com.example.respolhpl.cart.data.CartProduct" />
@@ -60,7 +59,7 @@
                 style="@style/DefaultBodyText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/quantity"
+                android:text="@{@string/quantity(product.quantity)}"
                 app:layout_constraintLeft_toRightOf="@id/thumbnail"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/price" />
@@ -69,7 +68,7 @@
                 style="@style/DefaultBodyText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/cost"
+                android:text="@{@string/cost(product.cost)}"
                 app:layout_constraintLeft_toRightOf="@id/thumbnail"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/quantity" />
