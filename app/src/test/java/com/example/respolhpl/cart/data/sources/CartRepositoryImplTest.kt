@@ -37,7 +37,6 @@ class CartRepositoryImplTest {
             prod.checkIfIsSuccessAndListOf<CartProduct>()?.let { prods ->
                 assertThat(prods, `is`(FakeData.cartProducts))
             }
-
         }
     }
 
@@ -64,6 +63,14 @@ class CartRepositoryImplTest {
     @Test
     fun addNewProduct() {
         coroutineTestRule.runBlockingTest {
+            val prod = CartProduct(id=1,name="test",quantity = 5,"src",2.50)
+            repository.addProduct(prod)
+            repository.getProducts().first().checkIfIsSuccessAndListOf<CartProduct>()?.let{prods ->
+                val res = prods.find { it == prod }
+                assertThat(res,`is`(prod))
+
+            }
+
 
         }
 

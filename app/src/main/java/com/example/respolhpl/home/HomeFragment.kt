@@ -3,6 +3,7 @@ package com.example.respolhpl.home
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,11 +41,13 @@ class HomeFragment : Fragment()  {
     ): View {
         adapter = ProductListAdapter(onItemClickListener = { id -> viewModel.navigate(id) })
         binding = FragmentHomeBinding.inflate(inflater)
+        setHasOptionsMenu(true)
         setupBinding()
         setupObservers()
         initAdapter()
         return binding.root
     }
+
 
     private fun initAdapter() {
         binding.productList.adapter = adapter.withLoadStateFooter(

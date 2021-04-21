@@ -1,15 +1,13 @@
 package com.example.respolhpl.productDetails
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.onNavDestinationSelected
 import com.example.respolhpl.R
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
@@ -42,7 +40,6 @@ class ProductDetailsFragment : Fragment() {
             card.setOnClickListener { viewModel.navigate() }
         }
         setHasOptionsMenu(true)
-
         setupObservers()
         setupBinding()
         return binding.root

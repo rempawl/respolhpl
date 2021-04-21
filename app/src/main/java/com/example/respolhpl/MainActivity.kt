@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    val navController: NavController
+    private val navController: NavController
         get() = findNavController(R.id.nav_host_fragment)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,11 +47,11 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.toolbar, menu)
         return true
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         return item.onNavDestinationSelected(navController) ||
                 super.onOptionsItemSelected(item)
     }
+
+
 
 }
