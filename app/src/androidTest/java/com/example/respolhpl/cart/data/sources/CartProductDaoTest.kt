@@ -7,11 +7,14 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.example.respolhpl.FakeData
 import com.example.respolhpl.data.sources.local.AppDataBase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.After
 import org.junit.Assert.assertThat
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -65,19 +68,32 @@ class CartProductDaoTest {
 
     @Suppress("DEPRECATION")
     @Test
-    fun insertListThenUpdateOne(){
+    fun insertListThenUpdateOne() {
         runBlockingTest {
             dao.insert(entities)
 
             val prod = entities.first()
             val res = dao.getCartProductById(prod.id).first()
-            assertThat(res,`is`(prod))
+            assertThat(res, `is`(prod))
 
             val updated = res!!.copy(quantity = 5)
             dao.update(updated)
 
             val res2 = dao.getCartProductById(prod.id).first()
-            assertThat(res2,`is`(updated))
+            assertThat(res2, `is`(updated))
+        }
+    }
+
+    @Test
+    fun delete() {
+        runBlockingTest {
+            val prod = entities.first()
+            dao.insert(prod)
+
+            dao.delete(prod)
+            val res = dao.getCartProducts().first()
+            assertTrue(res.isEmpty())
+
         }
     }
 }

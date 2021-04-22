@@ -1,8 +1,6 @@
 package com.example.respolhpl.bindingAdapters
 
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.core.text.HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH
@@ -13,11 +11,20 @@ import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Product
 
 
-object ProductDetailsBindingAdapters {
+object ProductBindingAdapters {
+
+    @JvmStatic
+    @BindingAdapter("bindSrc")
+    fun ImageView.bindSrc(isLiked: Boolean) {
+        val src =
+            if (isLiked) R.drawable.ic_baseline_star_24 else R.drawable.ic_baseline_star_outline_24
+        this.setImageResource(src)
+    }
+
     @JvmStatic
     @BindingAdapter("setPage")
     fun ViewPager2.setPage(page: Int?) {
-        if(page == null) return
+        if (page == null) return
         if (currentItem != page) {
             setCurrentItem(page, true)
         }
@@ -64,8 +71,6 @@ object ProductDetailsBindingAdapters {
             setTextIfItsDifferent(context.getString(R.string.price, product.price))
         }
     }
-
-
 
 
 }

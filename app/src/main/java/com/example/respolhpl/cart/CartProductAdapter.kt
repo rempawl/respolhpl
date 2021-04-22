@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.databinding.CartProductItemBinding
 
-class CartProductAdapter : ListAdapter<CartProduct, RecyclerView.ViewHolder>(Diff()) {
+class CartProductAdapter(private val onDeleteClickListener: (CartProduct) -> Unit) :
+    ListAdapter<CartProduct, RecyclerView.ViewHolder>(Diff()) {
     companion object {
         const val PRODUCT_TYPE = 1
         const val SUMMARY_TYPE = 2
@@ -18,8 +19,11 @@ class CartProductAdapter : ListAdapter<CartProduct, RecyclerView.ViewHolder>(Dif
 
     class CartProductViewHolder private constructor(private val binding: CartProductItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(product: CartProduct) {
-            binding.product = product
+        fun bind(product: CartProduct, onDeleteClickListener: (CartProduct) -> Unit) {
+            binding.apply {
+                this.product = product
+                deleteBtn.setOnClickListener { onDeleteClickListener(product) }
+            }
         }
 
         companion object {
@@ -46,7 +50,7 @@ class CartProductAdapter : ListAdapter<CartProduct, RecyclerView.ViewHolder>(Dif
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType  ) {
+        return when (viewType) {
             PRODUCT_TYPE -> CartProductViewHolder.from(parent)
             else -> throw java.lang.IllegalStateException("wrong viewType")
         }
@@ -54,7 +58,7 @@ class CartProductAdapter : ListAdapter<CartProduct, RecyclerView.ViewHolder>(Dif
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is CartProductViewHolder) {
-            holder.bind(getItem(position))
+            holder.bind(getItem(position), onDeleteClickListener)
         }
     }
 

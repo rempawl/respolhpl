@@ -6,7 +6,8 @@ data class ProductMinimal(
     val id: Int,
     val name: String,
     val price: Double,
-    val thumbnailSrc: String?
+    val thumbnailSrc: String?,
+    val isLiked : Boolean = false
 ) {
     companion object {
         fun from(remoteProduct: RemoteProductMinimal) = ProductMinimal(

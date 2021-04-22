@@ -5,6 +5,7 @@ import com.example.respolhpl.FakeCartProductDao
 import com.example.respolhpl.FakeData
 import com.example.respolhpl.TestDispatchersProvider
 import com.example.respolhpl.cart.data.CartProduct
+import junit.framework.Assert.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
@@ -54,7 +55,8 @@ class CartRepositoryImplTest {
             repository.getProducts().first().checkIfIsSuccessAndListOf<CartProduct>()
                 ?.let { prods ->
                     val r = prods.find { it.id == updated.id }
-                    val expected = updated.copy(quantity = prod.quantity + updated.quantity)
+                    val quantity = prod.quantity + updated.quantity
+                    val expected = updated.copy(quantity = quantity, cost = quantity * prod.price)
                     assertThat(r, `is`(expected))
                 }
         }
@@ -63,14 +65,26 @@ class CartRepositoryImplTest {
     @Test
     fun addNewProduct() {
         coroutineTestRule.runBlockingTest {
-            val prod = CartProduct(id=1,name="test",quantity = 5,"src",2.50)
+            val prod = CartProduct(id = 1, name = "test", quantity = 5, "src", 2.50)
             repository.addProduct(prod)
-            repository.getProducts().first().checkIfIsSuccessAndListOf<CartProduct>()?.let{prods ->
-                val res = prods.find { it == prod }
-                assertThat(res,`is`(prod))
+            repository.getProducts().first().checkIfIsSuccessAndListOf<CartProduct>()
+                ?.let { prods ->
+                    val res = prods.find { it == prod }
+                    assertThat(res, `is`(prod))
+                }
+        }
+    }
 
-            }
+    @Test
+    fun deleteProduct() {
+        coroutineTestRule.runBlockingTest {
+            val product = FakeData.cartProducts.first()
 
+            repository.delete(product)
+            repository.getProducts().first().checkIfIsSuccessAndListOf<CartProduct>()
+                ?.let { prods ->
+                    assertNull(prods.find { it == product })
+                }
 
         }
 

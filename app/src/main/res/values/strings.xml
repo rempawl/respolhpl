@@ -43,5 +43,8 @@
                     " Są łatwe w czyszczenia, do ich wyczyszczenia wystarczy woda i gąbka lub woda z detergentem w przypadku silniejszych zabrudzeń. Nie potrzeba ich wyparzać w zmywarce, aby pozbyć  się bakterii z ich powierzchni."</string>
     <string name="quantity">Ilość: %1$d</string>
     <string name="cost">Koszt: %1$.2f</string>
+    <string name="confirm">Potwierdz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="deletion_confirmation_title">Czy na pewno chcesz usunąć produkt z koszyka?</string>
 
 </resources>

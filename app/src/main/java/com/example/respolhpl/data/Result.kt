@@ -12,12 +12,13 @@ sealed class Result<R> {
             return res.data
         }
     }
+
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T> checkIfIsSuccessAndListOf(): List<T>? {
         return this.takeIf { it.isSuccess }?.let { res ->
             res as Success
             check(res.data is List<*>) { "data should be list" }
-            if(res.data.isEmpty()) return null
+            if (res.data.isEmpty()) return emptyList()
 
             check(res.data[0] is T) { "data should be ${T::class.java}" }
             return res.data as List<T>

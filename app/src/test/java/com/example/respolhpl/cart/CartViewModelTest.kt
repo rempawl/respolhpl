@@ -5,6 +5,7 @@ import com.example.respolhpl.*
 import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.cart.data.sources.CartRepositoryImpl
+import junit.framework.Assert.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.`is`
@@ -16,7 +17,6 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class CartViewModelTest {
     lateinit var viewModel: CartViewModel
-
     lateinit var cartRepository: CartRepository
     private val dispatcherProvider = TestDispatchersProvider()
 
@@ -28,17 +28,33 @@ class CartViewModelTest {
 
     @Before
     fun setup() {
+
+
         cartRepository = CartRepositoryImpl(FakeCartProductDao(), dispatcherProvider)
         viewModel = CartViewModel(cartRepository)
     }
 
     @Test
     fun init() {
-        runBlockingTest {
+        coroutineTestRule.runBlockingTest {
             val res = viewModel.result.getOrAwaitValue()
             res.checkIfIsSuccessAndListOf<CartProduct>()?.let { prods ->
                 assertThat(prods, `is`(FakeData.cartProducts))
             }
+        }
+    }
+
+    @Test
+    fun delete() {
+        coroutineTestRule.runBlockingTest {
+            //todo
+            val prod = FakeData.cartProducts.first()
+            viewModel.deleteFromCart(prod)
+            viewModel.result.getOrAwaitValue(5).checkIfIsSuccessAndListOf<CartProduct>()
+                ?.let { prods ->
+                    assertNull(prods.find { prod == it })
+                }
+
         }
     }
 }

@@ -31,15 +31,21 @@ class CartFragment : Fragment() {
     ): View? {
         setHasOptionsMenu(true)
         binding = CartFragmentBinding.inflate(inflater)
-        adapter = CartProductAdapter()
+        adapter = CartProductAdapter { prod -> onDeleteBtnClick(prod) }
         setupBinding()
         setupObservers()
 
         return binding.root
     }
 
+    private fun onDeleteBtnClick(prod: CartProduct) {
+        ConfirmDialog(getString(R.string.deletion_confirmation_title)) {
+            viewModel.deleteFromCart(prod)
+        }.show(childFragmentManager, "")
+    }
+
     private fun setupObservers() {
-        viewModel.result.observe(viewLifecycleOwner){ res ->
+        viewModel.result.observe(viewLifecycleOwner) { res ->
             updateAdapterList(res)
         }
     }
@@ -71,7 +77,6 @@ class CartFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
     }
-
 
 
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +28,12 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
     private suspend fun getCart() {
         cartRepository.getProducts().collectLatest {
             _result.postValue(it)
+        }
+    }
+
+    fun deleteFromCart(product: CartProduct) {
+        viewModelScope.launch {
+            cartRepository.delete(product)
         }
     }
 }

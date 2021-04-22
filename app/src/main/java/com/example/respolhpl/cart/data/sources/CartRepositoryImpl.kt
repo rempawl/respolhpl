@@ -26,6 +26,12 @@ class CartRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun delete(product: CartProduct) {
+        withContext(dispatchersProvider.io) {
+            cartProductDao.delete(CartProductEntity.from(product))
+        }
+    }
+
     private suspend fun insertProductOrUpdateIfAlreadyIsInCart(product: CartProduct) {
         cartProductDao.getCartProductById(product.id).first()?.let { fromCart ->
             updateProduct(product.copy(quantity = fromCart.quantity + product.quantity))
