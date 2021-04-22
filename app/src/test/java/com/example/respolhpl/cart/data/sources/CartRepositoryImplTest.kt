@@ -1,5 +1,6 @@
 package com.example.respolhpl.cart.data.sources
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.respolhpl.CoroutineTestRule
 import com.example.respolhpl.FakeCartProductDao
 import com.example.respolhpl.FakeData
@@ -22,6 +23,8 @@ class CartRepositoryImplTest {
     lateinit var dao: CartProductDao
     val dispatchersProvider = TestDispatchersProvider()
 
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
     @get:Rule
     val coroutineTestRule = CoroutineTestRule(dispatcher = dispatchersProvider.test)
 
