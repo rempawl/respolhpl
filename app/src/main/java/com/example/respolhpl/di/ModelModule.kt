@@ -14,4 +14,5 @@ abstract class ModelModule {
     @Binds
     @ViewModelScoped
     abstract fun provideCurrentPageState(impl : CurrentViewPagerPageImpl) : CurrentViewPagerPage
+
 }

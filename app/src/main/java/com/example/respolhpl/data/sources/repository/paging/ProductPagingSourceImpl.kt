@@ -1,29 +1,28 @@
 package com.example.respolhpl.data.sources.repository
 
-import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
+import com.example.respolhpl.utils.mappers.ListMapper
+import com.example.respolhpl.data.sources.repository.paging.ProductPagingSource
 import com.squareup.moshi.JsonDataException
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
-abstract class ProductPagingSource : PagingSource<Int,ProductMinimal>(){
 
-}
-class ProductPagingSourceImpl(
+class ProductPagingSourceImpl @Inject constructor(
     private val api: RemoteDataSource,
-    private val mapper: (RemoteProductMinimal) -> ProductMinimal
-) : PagingSource<Int, ProductMinimal>() {
+    private val mapper: ListMapper<RemoteProductMinimal, ProductMinimal>
+) : ProductPagingSource() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductMinimal> {
         val position = params.key ?: STARTING_PAGE_INDEX
         return try {
             val response = api.getProductsAsync(params.loadSize, position)
 
-
-            val products = (response).map { mapper(it) }
+            val products = mapper.map(response)
 
             val nextKey = calculateNextKey(products, position, params.loadSize)
 
@@ -60,6 +59,7 @@ class ProductPagingSourceImpl(
 
 
     companion object {
+
         const val STARTING_PAGE_INDEX = 1
         const val NETWORK_PAGE_SIZE = 15
     }
