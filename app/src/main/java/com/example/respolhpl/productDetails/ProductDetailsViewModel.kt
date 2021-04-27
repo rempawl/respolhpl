@@ -13,10 +13,11 @@ import com.example.respolhpl.productDetails.currentPageState.CurrentViewPagerPag
 import com.example.respolhpl.utils.ObservableViewModel
 import com.example.respolhpl.utils.event.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+
 //todo change quantity while adding to cart
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
@@ -32,7 +33,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     private val currentPageEvent = currentPage.map { Event(it) }
 
-    private var maxQuantity = 1
+    private var maxQuantity = 0
 
     val isMinusBtnEnabled: Boolean
         @Bindable
@@ -83,6 +84,7 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     fun onAddToCartClick() {
+
         //todo rethink
         _result.observeForever(prodObserver)
     }
@@ -97,18 +99,17 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun createCartProductAndAddToCart(product: Product) {
         viewModelScope.launch {
-            coroutineScope {
-                cartRepository.addProduct(createCartProduct(product))
-            }
+            cartRepository.addProduct(createCartProduct(product))
             _result.removeObserver(prodObserver)
         }
     }
 
     private suspend fun getProduct(id: Int) {
-        productRepository.getProductById(id).collect { res ->
-            setMaxQuantity(res)
+        productRepository.getProductById(id).collectLatest { res ->
             _result.postValue(res)
+            setMaxQuantity(res)
         }
+
     }
 
     private fun setMaxQuantity(res: Result<*>) {

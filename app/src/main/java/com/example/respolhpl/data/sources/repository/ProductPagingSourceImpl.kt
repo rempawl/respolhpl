@@ -1,21 +1,18 @@
 package com.example.respolhpl.data.sources.repository
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.squareup.moshi.JsonDataException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import retrofit2.HttpException
 import java.io.IOException
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.coroutineContext
 
-class ProductPagingSource(
+abstract class ProductPagingSource : PagingSource<Int,ProductMinimal>(){
+
+}
+class ProductPagingSourceImpl(
     private val api: RemoteDataSource,
     private val mapper: (RemoteProductMinimal) -> ProductMinimal
 ) : PagingSource<Int, ProductMinimal>() {
@@ -26,7 +23,7 @@ class ProductPagingSource(
             val response = api.getProductsAsync(params.loadSize, position)
 
 
-            val products = (response ).map { mapper(it) }
+            val products = (response).map { mapper(it) }
 
             val nextKey = calculateNextKey(products, position, params.loadSize)
 

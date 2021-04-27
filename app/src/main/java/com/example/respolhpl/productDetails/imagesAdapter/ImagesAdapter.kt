@@ -6,9 +6,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.databinding.ImageItemBinding
-import javax.inject.Inject
 
-class ImagesAdapter @Inject constructor(
+class ImagesAdapter constructor(
     private val bindingDecorator: ImageItemBinding.() -> Unit
 ) : ListAdapter<Image, ImagesAdapter.ImageViewHolder>(ImageDiffUtil()) {
 
