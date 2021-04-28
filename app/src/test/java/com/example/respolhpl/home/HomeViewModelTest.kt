@@ -38,7 +38,7 @@ class HomeViewModelTest {
     @Test
     fun initResult() {
         coroutineTestRule.runBlockingTest {
-            val res = viewModel.result?.first()
+            val res = viewModel._result?.first()
             verifyBlocking(repository) { getProducts() }
 
         }

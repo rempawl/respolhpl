@@ -5,11 +5,14 @@ import com.example.respolhpl.cart.data.sources.CartRepositoryImpl
 import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
-import com.example.respolhpl.data.sources.repository.*
-import com.example.respolhpl.utils.mappers.ListMapper
+import com.example.respolhpl.data.sources.repository.ProductRepository
+import com.example.respolhpl.data.sources.repository.ProductRepositoryImpl
+import com.example.respolhpl.data.sources.repository.ProductsPagerFactoryImpl
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSource
-import com.example.respolhpl.utils.mappers.ProductsMinimalListMapper
+import com.example.respolhpl.data.sources.repository.paging.ProductPagingSourceImpl
 import com.example.respolhpl.data.sources.repository.paging.ProductsPagerFactory
+import com.example.respolhpl.utils.mappers.ListMapper
+import com.example.respolhpl.utils.mappers.ProductsMinimalListMapper
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
