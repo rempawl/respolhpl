@@ -3,11 +3,11 @@ package com.example.respolhpl.productDetails
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.onNavDestinationSelected
 import com.example.respolhpl.R
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
@@ -49,6 +49,7 @@ class ProductDetailsFragment : Fragment() {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.menu_fav).isVisible = true
     }
+
     private fun navigateToFullScreenImageDialog(curPage: Int) {
         findNavController().navigate(
             ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment(
@@ -67,6 +68,17 @@ class ProductDetailsFragment : Fragment() {
         viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver { curPage ->
             navigateToFullScreenImageDialog(curPage)
         })
+        viewModel.addToCartCount.observe(viewLifecycleOwner, EventObserver { count ->
+            showAddToCartToast(count)
+        })
+    }
+
+    private fun showAddToCartToast(count: Int) {
+        Toast.makeText(
+            requireContext(),
+            resources.getQuantityString(R.plurals.add_to_cart_quantity, count, count),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun setupBinding() {

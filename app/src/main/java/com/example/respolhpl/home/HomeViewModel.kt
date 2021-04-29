@@ -26,9 +26,8 @@ class HomeViewModel @Inject constructor(
     val shouldNavigate: LiveData<Event<Int>>
         get() = _shouldNavigate
 
-    private var _result: Flow<PagingData<ProductMinimal>>? = null
-    val result: Flow<PagingData<ProductMinimal>>?
-        get() = _result
+    var result: Flow<PagingData<ProductMinimal>>? = null
+        private set
 
     init {
         viewModelScope.launch {
@@ -41,7 +40,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getProducts() {
-        _result = productRepository.getProducts()
+        result = productRepository.getProducts()
             .cachedIn(viewModelScope)
     }
 }

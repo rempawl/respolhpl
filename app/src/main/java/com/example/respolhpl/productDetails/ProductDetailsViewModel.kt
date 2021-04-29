@@ -31,6 +31,10 @@ class ProductDetailsViewModel @Inject constructor(
     val shouldNavigate: LiveData<Event<Int>>
         get() = _shouldNavigate
 
+    private val _addToCartCount = MutableLiveData<Event<Int>>()
+    val addToCartCount: LiveData<Event<Int>>
+        get() = _addToCartCount
+
     private val currentPageEvent = currentPage.map { Event(it) }
 
     private var maxQuantity = 0
@@ -99,6 +103,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun createCartProductAndAddToCart(product: Product) {
         viewModelScope.launch {
+            _addToCartCount.value = Event(orderQuantity)
             cartRepository.addProduct(createCartProduct(product))
             _result.removeObserver(prodObserver)
         }

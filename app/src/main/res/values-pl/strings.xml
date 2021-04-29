@@ -1,8 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="add_to_cart_quantity">
         <item quantity="one">Dodano %d produkt do koszyka</item>
         <item quantity="few"> Dodano %d produkty do koszyka</item>
         <item quantity="other">Dodano %d produktów do koszyka</item>
+        <item quantity="many"> Dodano %d produktów do koszyka</item>
     </plurals>
     <string name="app_name">RespolHPL</string>
     <string name="nav_header_title">RespolHPL</string>
