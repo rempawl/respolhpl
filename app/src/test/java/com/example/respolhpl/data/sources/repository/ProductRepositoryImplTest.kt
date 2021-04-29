@@ -9,6 +9,8 @@ import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
+import com.example.respolhpl.data.sources.repository.paging.ProductPagingSourceImpl
+import com.example.respolhpl.utils.mappers.ProductsMinimalListMapper
 import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -30,7 +32,9 @@ class ProductRepositoryImplTest {
 
     @Before
     fun setup() {
-        repositoryImpl = ProductRepositoryImpl(remoteDataSource, dispatchersProvider)
+        val fact = ProductsPagerFactoryImpl(ProductPagingSourceImpl(remoteDataSource,ProductsMinimalListMapper()))
+
+        repositoryImpl = ProductRepositoryImpl(remoteDataSource, dispatchersProvider,fact)
     }
 
     @Test
