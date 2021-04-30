@@ -97,7 +97,7 @@
                             <EditText
                                 android:id="@+id/quantity"
                                 hideKeyboardOnInputDone="@{true}"
-                                orderQuantity="@={Converter.intToString(viewModel.orderQuantity)}"
+                                orderQuantity="@={Converter.intToString(viewModel.cartQuantity)}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_columnWeight="1"
@@ -123,7 +123,7 @@
 
                             <TextView
                                 style="@style/DefaultBodyText"
-                                bindQuantity="@{viewModel.result}"
+                                android:text="@{@string/from_quantity(viewModel.maxQuantity)}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="0dp"

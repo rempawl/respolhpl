@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface RemoteDataSource {
 
-    suspend fun getProductByIDAsync(id: Int): RemoteProduct
+    suspend fun getProductById(id: Int): RemoteProduct
 
-    suspend fun getProductsAsync(perPage: Int, page: Int): List<RemoteProductMinimal>
+    suspend fun getProducts(perPage: Int, page: Int): List<RemoteProductMinimal>
 }

@@ -10,13 +10,13 @@ interface WooCommerceApi : RemoteDataSource {
 
 
     @GET(PRODUCTS_PATH + STATUS)
-    override suspend fun getProductsAsync(
+    override suspend fun getProducts(
         @Query("per_page") perPage: Int,
         @Query("page") page: Int
     ): List<RemoteProductMinimal>
 
     @GET("$PRODUCTS_PATH/{id}")
-    override suspend fun getProductByIDAsync(@Path(value = "id") id: Int): RemoteProduct
+    override suspend fun getProductById(@Path(value = "id") id: Int): RemoteProduct
 
 
     companion object {

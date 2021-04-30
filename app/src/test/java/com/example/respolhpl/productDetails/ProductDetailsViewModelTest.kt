@@ -72,11 +72,11 @@ class ProductDetailsViewModelTest {
             val product = FakeData.resultSuccessProduct.data
             assert(product.quantity == 2)
 
-            val qnt = viewModel.orderQuantity
+            val qnt = viewModel.cartQuantity
             assertThat(qnt, `is`(1))
             viewModel.onPlusBtnClick()
 
-            assertThat(viewModel.orderQuantity, `is`(2))
+            assertThat(viewModel.cartQuantity, `is`(2))
             assertThat(viewModel.isPlusBtnEnabled, `is`(false))
             assertThat(viewModel.isMinusBtnEnabled, `is`(true))
         }
@@ -85,10 +85,10 @@ class ProductDetailsViewModelTest {
     @Test
     fun onPlusBtnClickThenOnMinusBtnClick() {
         coroutineTestRule.runBlockingTest {
-            val qnt = viewModel.orderQuantity
+            val qnt = viewModel.cartQuantity
             viewModel.onPlusBtnClick()
             viewModel.onMinusBtnClick()
-            assertThat(viewModel.orderQuantity, `is`(qnt))
+            assertThat(viewModel.cartQuantity, `is`(qnt))
         }
     }
 

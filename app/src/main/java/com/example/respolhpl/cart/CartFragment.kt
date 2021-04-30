@@ -25,6 +25,7 @@ class CartFragment : Fragment() {
     private val viewModel: CartViewModel by viewModels()
     private var adapter by autoCleared<CartProductAdapter>()
     private var binding by autoCleared<CartFragmentBinding>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

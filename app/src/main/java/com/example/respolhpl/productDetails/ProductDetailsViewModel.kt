@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-//todo change quantity while adding to cart
+//todo change quantity while adding to cart and set timeout for block
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
@@ -26,6 +26,31 @@ class ProductDetailsViewModel @Inject constructor(
     private val cartRepository: CartRepository,
     currentViewPagerPage: CurrentViewPagerPage
 ) : ObservableViewModel(), CurrentViewPagerPage by currentViewPagerPage {
+
+    val isMinusBtnEnabled: Boolean
+        @Bindable
+        get() = cartQuantity > 1
+
+    val isPlusBtnEnabled: Boolean
+        @Bindable
+        get() = cartQuantity < maxQuantity
+
+    @Bindable
+    var cartQuantity: Int = 0
+        set(value) {
+            field = if (value > maxQuantity) maxQuantity else value
+            notifyPropertyChanged(BR.cartQuantity)
+            notifyPropertyChanged(BR.minusBtnEnabled)
+            notifyPropertyChanged(BR.plusBtnEnabled)
+        }
+
+    @Bindable
+    var maxQuantity = 0
+        private set(value) {
+            field = value
+            notifyPropertyChanged(BR.plusBtnEnabled)
+            notifyPropertyChanged(BR.maxQuantity)
+        }
 
     private val _shouldNavigate = MediatorLiveData<Event<Int>>()
     val shouldNavigate: LiveData<Event<Int>>
@@ -37,32 +62,11 @@ class ProductDetailsViewModel @Inject constructor(
 
     private val currentPageEvent = currentPage.map { Event(it) }
 
-    private var maxQuantity = 0
-
-    val isMinusBtnEnabled: Boolean
-        @Bindable
-        get() = orderQuantity > 1
-
-    val isPlusBtnEnabled: Boolean
-        @Bindable
-        get() = orderQuantity < maxQuantity
-
-    @Bindable
-    var orderQuantity: Int = 1
-        set(value) {
-            field = if (value > maxQuantity) maxQuantity else value
-            notifyPropertyChanged(BR.orderQuantity)
-            notifyPropertyChanged(BR.minusBtnEnabled)
-            notifyPropertyChanged(BR.plusBtnEnabled)
-        }
-
     private val _result = MutableLiveData<Result<*>>(Result.Loading)
     val result: LiveData<Result<*>>
         get() = _result
 
-    private val prodObserver = Observer<Result<*>> { it ->
-        it.checkIfIsSuccessAndType<Product>()?.let { createCartProductAndAddToCart(it) }
-    }
+    private var product: Product? = null
 
     init {
         viewModelScope.launch {
@@ -72,11 +76,11 @@ class ProductDetailsViewModel @Inject constructor(
 
 
     fun onMinusBtnClick() {
-        orderQuantity -= 1
+        cartQuantity -= 1
     }
 
     fun onPlusBtnClick() {
-        orderQuantity += 1
+        cartQuantity += 1
     }
 
     fun navigate() {
@@ -88,40 +92,42 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     fun onAddToCartClick() {
-
-        //todo rethink
-        _result.observeForever(prodObserver)
+        product?.let { createCartProductAndAddToCart(it) }
+            ?: throw IllegalStateException("cartProduct is not initalized")
     }
 
     private fun createCartProduct(product: Product) = CartProduct(
         product.id,
         price = product.price,
-        quantity = orderQuantity,
+        quantity = cartQuantity,
         name = product.name,
         thumbnailSrc = product.thumbnailSrc
     )
 
     private fun createCartProductAndAddToCart(product: Product) {
         viewModelScope.launch {
-            _addToCartCount.value = Event(orderQuantity)
+            _addToCartCount.value = Event(cartQuantity)
             cartRepository.addProduct(createCartProduct(product))
-            _result.removeObserver(prodObserver)
+            maxQuantity -= cartQuantity
+            cartQuantity = 0
+
         }
     }
 
     private suspend fun getProduct(id: Int) {
         productRepository.getProductById(id).collectLatest { res ->
             _result.postValue(res)
-            setMaxQuantity(res)
+            setMaxQuantityAndCreateCartProduct(res)
         }
-
     }
 
-    private fun setMaxQuantity(res: Result<*>) {
+    private fun setMaxQuantityAndCreateCartProduct(res: Result<*>) {
         res.checkIfIsSuccessAndType<Product>()?.let { prod ->
-            maxQuantity = prod.quantity
-            notifyPropertyChanged(BR.plusBtnEnabled)
+            maxQuantity = (prod.quantity)
+            product = prod
         }
+
     }
+
 
 }

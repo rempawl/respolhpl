@@ -25,15 +25,16 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
         }
     }
 
+    fun deleteFromCart(product: CartProduct) {
+        viewModelScope.launch {
+            cartRepository.delete(product)
+        }
+    }
+
     private suspend fun getCart() {
         cartRepository.getProducts().collectLatest {
             _result.postValue(it)
         }
     }
 
-    fun deleteFromCart(product: CartProduct) {
-        viewModelScope.launch {
-            cartRepository.delete(product)
-        }
-    }
 }

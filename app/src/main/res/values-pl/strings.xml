@@ -6,6 +6,7 @@
         <item quantity="other">Dodano %d produktów do koszyka</item>
         <item quantity="many"> Dodano %d produktów do koszyka</item>
     </plurals>
+
     <string name="app_name">RespolHPL</string>
     <string name="nav_header_title">RespolHPL</string>
     <string name="nav_header_subtitle">www.respolhpl.pl</string>
@@ -35,6 +36,11 @@
     <string name="cart">Koszyk</string>
     <string name="add_to_favs">Dodaj do ulubionych</string>
 
+    <string name="quantity">Ilość: %1$d</string>
+    <string name="cost">Koszt: %1$.2f</string>
+    <string name="confirm">Potwierdz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="deletion_confirmation_title">Czy na pewno chcesz usunąć produkt z koszyka?</string>
 
     <string name="tools_desc"><h2>Właściwości:</h2>\n
                     <ul>                    " \t<li>Wysoka odporność na ścieranie, zadrapania, uderzenia,zginanie</li>\n" +
@@ -48,10 +54,4 @@
                     "Deski do krojenia, które oferujemy Państwu są wykonane z najwyższej jakości płyt kompakt HPL marki Polyrey®.Materiał jest niezwykle sztywny i odporny mechanicznie,a dzięki zastosowaniu technologii Sanitized® są one antybakteryjne w całym przekroju przez co zwiększają bezpieczeństwo użytkowania.\n" +
                     "\n" +
                     " Są łatwe w czyszczenia, do ich wyczyszczenia wystarczy woda i gąbka lub woda z detergentem w przypadku silniejszych zabrudzeń. Nie potrzeba ich wyparzać w zmywarce, aby pozbyć  się bakterii z ich powierzchni."</string>
-    <string name="quantity">Ilość: %1$d</string>
-    <string name="cost">Koszt: %1$.2f</string>
-    <string name="confirm">Potwierdz</string>
-    <string name="cancel">Anuluj</string>
-    <string name="deletion_confirmation_title">Czy na pewno chcesz usunąć produkt z koszyka?</string>
-
 </resources>

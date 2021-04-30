@@ -36,13 +36,6 @@ object ProductBindingAdapters {
         }
     }
 
-    @JvmStatic
-    @BindingAdapter("bindQuantity")
-    fun TextView.bindProductQuantity(result: Result<*>) {
-        result.checkIfIsSuccessAndType<Product>()?.let { product ->
-            setTextIfItsDifferent(context.getString(R.string.from_quantity, product.quantity))
-        }
-    }
 
     @JvmStatic
     @BindingAdapter("bindProductName")

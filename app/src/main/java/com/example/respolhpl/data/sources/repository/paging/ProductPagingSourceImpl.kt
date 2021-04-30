@@ -5,7 +5,6 @@ import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.utils.mappers.ListMapper
-import com.example.respolhpl.data.sources.repository.paging.ProductPagingSource
 import com.squareup.moshi.JsonDataException
 import retrofit2.HttpException
 import java.io.IOException
@@ -20,7 +19,7 @@ class ProductPagingSourceImpl @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductMinimal> {
         val position = params.key ?: STARTING_PAGE_INDEX
         return try {
-            val response = api.getProductsAsync(params.loadSize, position)
+            val response = api.getProducts(params.loadSize, position)
 
             val products = mapper.map(response)
 

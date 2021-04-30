@@ -21,23 +21,13 @@ class ProductRepositoryImpl @Inject constructor(
     private val productsPagerFactory: ProductsPagerFactory
 ) : ProductRepository {
 
-    private suspend fun getDataAsFlow(getter: suspend () -> Result<*>) =
-        flow {
-            emit(getter())
-        }.flowOn(dispatchersProvider.io)
-
-
-    private suspend fun <T> getDataWithTimeout(getter: suspend () -> T): T = withTimeout(10_000) {
-        getter()
-    }
-
     override suspend fun getProducts(): Flow<PagingData<ProductMinimal>> {
         return productsPagerFactory.create().flow
     }
 
     override suspend fun getProductById(id: Int): Flow<Result<*>> = getDataAsFlow {
         try {
-            val res = getDataWithTimeout { remoteDataSource.getProductByIDAsync(id) }
+            val res = getDataWithTimeout { remoteDataSource.getProductById(id) }
             Result.Success(Product.from(res))
         } catch (e: Exception) {
             Result.Error(e)
@@ -46,12 +36,28 @@ class ProductRepositoryImpl @Inject constructor(
 
     override suspend fun getProductImages(id: Int): Flow<Result<*>> = getDataAsFlow {
         try {
-            val res = getDataWithTimeout { remoteDataSource.getProductByIDAsync(id).images }
+            val res = getDataWithTimeout { remoteDataSource.getProductById(id).images }
             val imgs = res.map { Image.from(it) }
             Result.Success(imgs)
         } catch (e: Exception) {
             Result.Error(e)
         }
+    }
+
+    private suspend fun getDataAsFlow(getter: suspend () -> Result<*>) =
+        flow {
+            emit(getter())
+        }.flowOn(dispatchersProvider.io)
+
+
+    private suspend fun <T> getDataWithTimeout(getter: suspend () -> T): T {
+        return withTimeout(TIMEOUT) {
+            getter()
+        }
+    }
+
+    companion object {
+        const val TIMEOUT: Long = 10_000
     }
 
 }

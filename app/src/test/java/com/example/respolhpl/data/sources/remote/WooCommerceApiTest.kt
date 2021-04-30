@@ -46,7 +46,7 @@ class WooCommerceApiTest {
         runBlocking {
             enqueueResponse("products.json")
             val products =
-                api.getProductsAsync(10, 1)
+                api.getProducts(10, 1)
             val request = mockServer.takeRequest()
 
             assertThat(products.size, `is`(10))
@@ -67,7 +67,7 @@ class WooCommerceApiTest {
         val id = 956
         runBlocking {
             enqueueResponse("product_${id}.json")
-            val product = api.getProductByIDAsync(id)
+            val product = api.getProductById(id)
             val request = mockServer.takeRequest()
             assertThat(product.id, `is`(id))
             assertThat(product.name, `is`("Antybakteryjna  Deska do krojenia Orzech"))
