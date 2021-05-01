@@ -12,5 +12,5 @@ interface ImagesDao : BaseDao<ImageEntity> {
 
     @Transaction
     @Query("SELECT * FROM products WHERE id = :pId")
-    fun getProductImages(pId: Int): Flow<ProductWithImages>
+    fun getProductImages(pId: Int): Flow<ProductWithImages?>
 }
