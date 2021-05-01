@@ -28,6 +28,7 @@ class ProductRepositoryImpl @Inject constructor(
     override suspend fun getProductById(id: Int): Flow<Result<*>> = getDataAsFlow {
         try {
             val res = getDataWithTimeout { remoteDataSource.getProductById(id) }
+            //todo cache images
             Result.Success(Product.from(res))
         } catch (e: Exception) {
             Result.Error(e)

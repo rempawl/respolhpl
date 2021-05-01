@@ -6,13 +6,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.respolhpl.cart.data.CartProductEntity
 import com.example.respolhpl.cart.data.sources.CartProductDao
-import com.example.respolhpl.data.product.entity.FavProductEntity
+import com.example.respolhpl.data.product.entity.*
 
-@Database(version = 4, entities = [FavProductEntity::class, CartProductEntity::class])
+@Database(
+    version = 6,
+    entities = [FavProductEntity::class, CartProductEntity::class, ProductIdEntity::class,
+        ImageEntity::class]
+)
 abstract class AppDataBase : RoomDatabase() {
     abstract fun favProductDao(): FavProductDao
 
     abstract fun cartProductDao(): CartProductDao
+
+    abstract fun imagesDao(): ImagesDao
+
+    abstract fun productIdDao(): ProductIdsDao
 
     companion object {
         const val DB_NAME = "RespolHPLDataBase"
