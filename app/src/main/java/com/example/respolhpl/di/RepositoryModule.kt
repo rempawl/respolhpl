@@ -27,7 +27,6 @@ abstract class RepositoryModule {
     companion object {
         @Provides
         @Reusable
-        @JvmStatic
         fun providePagingSource(
             remoteDataSource: RemoteDataSource,
             mapper: ProductsMinimalListMapper

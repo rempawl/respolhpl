@@ -9,6 +9,10 @@
             name="viewModel"
             type="com.example.respolhpl.productDetails.ProductDetailsViewModel" />
 
+        <variable
+            name="cartModel"
+            type="com.example.respolhpl.productDetails.CartModel" />
+
         <import type="com.example.respolhpl.bindingAdapters.Converter" />
 
     </data>
@@ -23,9 +27,10 @@
         <include
             layout="@layout/loading_layout"
             app:showWhen="@{viewModel.result.loading}" />
+
         <include
             layout="@layout/error_layout"
-            app:showWhen="@{viewModel.result.error}"/>
+            app:showWhen="@{viewModel.result.error}" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -38,8 +43,8 @@
                 android:orientation="vertical">
 
                 <androidx.viewpager2.widget.ViewPager2
-                    setPage="@{viewModel.currentPage}"
                     android:id="@+id/view_pager"
+                    setPage="@{viewModel.currentPage}"
                     android:layout_width="match_parent"
                     android:layout_height="400dp" />
 
@@ -82,14 +87,14 @@
                             app:layout_constraintLeft_toLeftOf="parent">
 
                             <Button
-                                android:enabled="@{viewModel.minusBtnEnabled}"
                                 android:id="@+id/minus_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_columnWeight="1"
                                 android:layout_margin="0dp"
+                                android:enabled="@{cartModel.minusBtnEnabled}"
                                 android:minHeight="0dp"
-                                android:onClick="@{() ->viewModel.onMinusBtnClick()}"
+                                android:onClick="@{() ->cartModel.onMinusBtnClick()}"
                                 android:padding="0dp"
                                 android:text="@string/minus"
                                 android:textSize="@dimen/def_text_size" />
@@ -97,7 +102,7 @@
                             <EditText
                                 android:id="@+id/quantity"
                                 hideKeyboardOnInputDone="@{true}"
-                                orderQuantity="@={Converter.intToString(viewModel.cartQuantity)}"
+                                orderQuantity="@={Converter.intToString(cartModel.cartQuantity)}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_columnWeight="1"
@@ -109,25 +114,25 @@
                                 tools:text="5" />
 
                             <Button
-                                android:enabled="@{viewModel.isPlusBtnEnabled}"
                                 android:id="@+id/plus_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_columnWeight="1"
                                 android:layout_margin="0dp"
+                                android:enabled="@{cartModel.isPlusBtnEnabled}"
                                 android:minHeight="0dp"
-                                android:onClick="@{() -> viewModel.onPlusBtnClick()}"
+                                android:onClick="@{() -> cartModel.onPlusBtnClick()}"
                                 android:padding="0dp"
                                 android:text="@string/plus"
                                 android:textSize="@dimen/def_text_size" />
 
                             <TextView
                                 style="@style/DefaultBodyText"
-                                android:text="@{@string/from_quantity(viewModel.maxQuantity)}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="0dp"
                                 android:padding="@dimen/def_padding"
+                                android:text="@{@string/from_quantity(cartModel.maxQuantity)}"
                                 tools:text="z 10 sztuk" />
 
 
@@ -146,12 +151,11 @@
                     app:bindProductDescription="@{viewModel.result}"
                     tools:text="@string/tools_desc" />
 
-                    <TextView
-                        android:id="@+id/footer"
-                        android:layout_marginTop="@dimen/def_margin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="?attr/actionBarSize"
-                        />
+                <TextView
+                    android:id="@+id/footer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginTop="@dimen/def_margin" />
             </LinearLayout>
         </ScrollView>
 
@@ -171,8 +175,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/def_margin"
-                android:text="@string/add_to_cart"
-                android:onClick="@{() -> viewModel.onAddToCartClick()}"/>
+                android:onClick="@{() -> viewModel.onAddToCartClick()}"
+                android:text="@string/add_to_cart" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buy_now_btn"

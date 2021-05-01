@@ -3,7 +3,9 @@ package com.example.respolhpl.productDetails
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import com.example.respolhpl.CoroutineTestRule
+import com.example.respolhpl.FakeCartRepository
 import com.example.respolhpl.FakeData
+import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.getOrAwaitValue
@@ -12,18 +14,17 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verifyBlocking
+import org.mockito.ArgumentMatcher
+import org.mockito.kotlin.*
 
 @ExperimentalCoroutinesApi
 class ProductDetailsViewModelTest {
-
     lateinit var productRepository: ProductRepository
     lateinit var handle: SavedStateHandle
     lateinit var viewModel: ProductDetailsViewModel
@@ -41,12 +42,13 @@ class ProductDetailsViewModelTest {
             onBlocking { getProductById(1) } doReturn flow { emit((FakeData.resultSuccessProduct)) }
         }
         handle = mock { on { get<Int>(ProductDetailsFragment.prodId) } doReturn 1 }
-        cartRepository = mock {}
+        cartRepository = spy(FakeCartRepository())
 
         viewModel = ProductDetailsViewModel(
             handle,
             productRepository,
             cartRepository,
+            CartModelImpl(),
             CurrentViewPagerPageImpl()
         )
     }
@@ -59,37 +61,23 @@ class ProductDetailsViewModelTest {
     }
 
 
-    @Test
-    fun onInitMinusBtnIsDisabled() {
-        coroutineTestRule.runBlockingTest {
-            assertThat(viewModel.isMinusBtnEnabled, `is`(false))
-        }
-    }
+ /*   @Test
 
     @Test
-    fun whenMaxQuantityIs2onPlusBtnClickIncreasesOrderQuantityDisablesPlusBtnAndEnablesMinusBtn() {
+    fun addTwoItemsToCart() {
         coroutineTestRule.runBlockingTest {
-            val product = FakeData.resultSuccessProduct.data
-            assert(product.quantity == 2)
+            assertThat(viewModel.maxQuantity, `is`(2))
+            viewModel.cartQuantity = 2
+            viewModel.onAddToCartClick()
 
-            val qnt = viewModel.cartQuantity
-            assertThat(qnt, `is`(1))
-            viewModel.onPlusBtnClick()
+            assertThat(viewModel.addToCartCount.getOrAwaitValue(), `is`(2))
+            assertThat(viewModel.maxQuantity, `is`(0))
+            assertThat(viewModel.cartQuantity, `is`(0))
 
-            assertThat(viewModel.cartQuantity, `is`(2))
-            assertThat(viewModel.isPlusBtnEnabled, `is`(false))
-            assertThat(viewModel.isMinusBtnEnabled, `is`(true))
+            verifyBlocking(cartRepository) { addProduct(argThat { arg -> arg is CartProduct }) }
+
         }
-    }
 
-    @Test
-    fun onPlusBtnClickThenOnMinusBtnClick() {
-        coroutineTestRule.runBlockingTest {
-            val qnt = viewModel.cartQuantity
-            viewModel.onPlusBtnClick()
-            viewModel.onMinusBtnClick()
-            assertThat(viewModel.cartQuantity, `is`(qnt))
-        }
-    }
+    }*/
 
 }

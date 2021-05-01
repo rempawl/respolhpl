@@ -1,7 +1,10 @@
 package com.example.respolhpl.productDetails
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -68,7 +71,7 @@ class ProductDetailsFragment : Fragment() {
         viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver { curPage ->
             navigateToFullScreenImageDialog(curPage)
         })
-        viewModel.addToCartCount.observe(viewLifecycleOwner, EventObserver { count ->
+        viewModel.cartModel.addToCartCount.observe(viewLifecycleOwner, EventObserver { count ->
             showAddToCartToast(count)
         })
     }
@@ -86,6 +89,7 @@ class ProductDetailsFragment : Fragment() {
         binding.viewPager.adapter = imagesAdapter
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewPager.registerOnPageChangeCallback(onPageChangeCallback)
+        binding.cartModel = viewModel.cartModel
     }
 
 

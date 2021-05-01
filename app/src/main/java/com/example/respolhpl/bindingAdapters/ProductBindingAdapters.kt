@@ -30,11 +30,6 @@ object ProductBindingAdapters {
         }
     }
 
-    private fun TextView.setTextIfItsDifferent(value: String) {
-        if (text != value) {
-            text = value
-        }
-    }
 
 
     @JvmStatic
@@ -62,6 +57,12 @@ object ProductBindingAdapters {
     fun TextView.bindProductPrice(result: Result<*>) {
         result.checkIfIsSuccessAndType<Product>()?.let { product ->
             setTextIfItsDifferent(context.getString(R.string.price, product.price))
+        }
+    }
+
+    private fun TextView.setTextIfItsDifferent(value: String) {
+        if (text != value) {
+            text = value
         }
     }
 
