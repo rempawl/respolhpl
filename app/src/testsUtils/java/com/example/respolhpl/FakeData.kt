@@ -15,7 +15,7 @@ object FakeData {
         Product(
             1,
             "test",
-            2,
+            5,
             emptyList(),
             "src",
             22.2,

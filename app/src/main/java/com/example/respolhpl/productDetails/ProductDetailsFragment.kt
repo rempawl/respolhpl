@@ -70,7 +70,8 @@ class ProductDetailsFragment : Fragment() {
         }
         viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver { curPage ->
             navigateToFullScreenImageDialog(curPage)
-        })
+        }
+        )
         viewModel.cartModel.addToCartCount.observe(viewLifecycleOwner, EventObserver { count ->
             showAddToCartToast(count)
         })
@@ -100,3 +101,6 @@ class ProductDetailsFragment : Fragment() {
 
 
 }
+
+
+

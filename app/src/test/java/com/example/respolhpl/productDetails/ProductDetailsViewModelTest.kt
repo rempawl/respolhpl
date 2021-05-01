@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.respolhpl.CoroutineTestRule
 import com.example.respolhpl.FakeCartRepository
 import com.example.respolhpl.FakeData
-import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.getOrAwaitValue
@@ -14,13 +13,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatcher
 import org.mockito.kotlin.*
 
 @ExperimentalCoroutinesApi
@@ -29,6 +26,8 @@ class ProductDetailsViewModelTest {
     lateinit var handle: SavedStateHandle
     lateinit var viewModel: ProductDetailsViewModel
     lateinit var cartRepository: CartRepository
+
+    lateinit var cartModel: CartModel
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -43,12 +42,13 @@ class ProductDetailsViewModelTest {
         }
         handle = mock { on { get<Int>(ProductDetailsFragment.prodId) } doReturn 1 }
         cartRepository = spy(FakeCartRepository())
+        cartModel = CartModelImpl()
 
         viewModel = ProductDetailsViewModel(
             handle,
             productRepository,
             cartRepository,
-            CartModelImpl(),
+            cartModel,
             CurrentViewPagerPageImpl()
         )
     }
@@ -58,26 +58,26 @@ class ProductDetailsViewModelTest {
         val res = viewModel.result.getOrAwaitValue()
         verifyBlocking(productRepository) { getProductById(1) }
         assertThat(res, `is`(FakeData.resultSuccessProduct))
+        assertThat(
+            viewModel.cartModel.maxQuantity,
+            `is`(FakeData.resultSuccessProduct.data.quantity)
+        )
     }
 
-
- /*   @Test
 
     @Test
     fun addTwoItemsToCart() {
         coroutineTestRule.runBlockingTest {
-            assertThat(viewModel.maxQuantity, `is`(2))
-            viewModel.cartQuantity = 2
+            viewModel.cartModel.cartQuantity = 2
             viewModel.onAddToCartClick()
-
-            assertThat(viewModel.addToCartCount.getOrAwaitValue(), `is`(2))
-            assertThat(viewModel.maxQuantity, `is`(0))
-            assertThat(viewModel.cartQuantity, `is`(0))
-
-            verifyBlocking(cartRepository) { addProduct(argThat { arg -> arg is CartProduct }) }
-
+            verifyBlocking(cartRepository) { addProduct(argThat { quantity == 2 }) }
         }
+    }
 
-    }*/
-
+    @Test
+    fun navigation() {
+        viewModel.navigate()
+        val page = viewModel.shouldNavigate.getOrAwaitValue().getContentIfNotHandled()
+        assertThat(page, `is`(0))
+    }
 }

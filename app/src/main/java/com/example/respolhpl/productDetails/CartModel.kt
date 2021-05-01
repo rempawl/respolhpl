@@ -1,6 +1,5 @@
 package com.example.respolhpl.productDetails
 
-import androidx.annotation.VisibleForTesting
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.lifecycle.LiveData
