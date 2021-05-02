@@ -9,12 +9,14 @@ import com.example.respolhpl.cart.data.sources.CartProductDao
 import com.example.respolhpl.data.product.entity.*
 
 @Database(
-    version = 6,
+    version = 7,
     entities = [FavProductEntity::class, CartProductEntity::class, ProductIdEntity::class,
-        ImageEntity::class]
+        ImageEntity::class, ImageProductIdJoin::class]
 )
 abstract class AppDataBase : RoomDatabase() {
     abstract fun favProductDao(): FavProductDao
+
+    abstract fun imageProductIdJoinDao() : ImageProductIdJoinDao
 
     abstract fun cartProductDao(): CartProductDao
 

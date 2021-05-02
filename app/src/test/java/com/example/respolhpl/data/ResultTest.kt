@@ -24,7 +24,7 @@ class ResultTest {
 
     @Test(expected = IllegalStateException::class)
     fun checkIfIsSuccessAndTypeFails() {
-        result = Result.Success(Image("test"))
+        result = Result.Success(Image("test",1))
         val res = result.checkIfIsSuccessAndType<Product>()
     }
 

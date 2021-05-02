@@ -1,44 +1,48 @@
 package com.example.respolhpl.data.sources.repository
 
 import androidx.paging.PagingData
-import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import com.example.respolhpl.*
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
+import com.example.respolhpl.data.sources.repository.imagesCache.ImagesCache
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSourceImpl
 import com.example.respolhpl.utils.mappers.ProductsMinimalListMapper
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.CoreMatchers.`is`
-
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.mock
 
 @ExperimentalCoroutinesApi
 class ProductRepositoryImplTest {
     lateinit var repositoryImpl: ProductRepositoryImpl
-
+    lateinit var cache: ImagesCache
     var remoteDataSource: RemoteDataSource = FakeRemoteDataSource()
     val dispatchersProvider = TestDispatchersProvider()
-    var factory = ProductsPagerFactoryImpl(ProductPagingSourceImpl(remoteDataSource,
-        ProductsMinimalListMapper())
+    var factory = ProductsPagerFactoryImpl(
+        ProductPagingSourceImpl(
+            remoteDataSource,
+            ProductsMinimalListMapper()
+        )
     )
+
 
     @get:Rule
     val coroutineTestRule = CoroutineTestRule(dispatchersProvider.test)
 
     @Before
     fun setup() {
-
-        repositoryImpl = ProductRepositoryImpl(remoteDataSource, dispatchersProvider, factory)
+        cache = mock {}
+        repositoryImpl = ProductRepositoryImpl(
+            remoteDataSource, cache, dispatchersProvider, factory
+        )
     }
 
     @Test
@@ -79,7 +83,8 @@ class ProductRepositoryImplTest {
 
     @Test
     fun getProductByIdWithTimeout() {
-        repositoryImpl = ProductRepositoryImpl(TimeoutFakeDataSource(), dispatchersProvider,factory)
+        repositoryImpl =
+            ProductRepositoryImpl(TimeoutFakeDataSource(), cache, dispatchersProvider, factory)
         coroutineTestRule.runBlockingTest {
             val res = repositoryImpl.getProductById(134).first()
             assertTrue(res.isError)

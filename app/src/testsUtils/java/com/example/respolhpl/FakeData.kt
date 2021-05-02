@@ -44,9 +44,13 @@ object FakeData {
             price = 42.99,
             images = listOf(
                 ImageRemote(
-                    "https://i0.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/12/IMG-20201217-WA0016.jpg?fit=768%2C1212&ssl=1"
+                    "https://i0.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/12/IMG-20201217-WA0016.jpg?fit=768%2C1212&ssl=1",
+                    14
                 ),
-                ImageRemote("https://i2.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/12/IMG-20201217-WA0010-rotated.jpg?fit=777%2C1202&ssl=1")
+                ImageRemote(
+                    "https://i2.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/12/IMG-20201217-WA0010-rotated.jpg?fit=777%2C1202&ssl=1",
+                    13
+                )
             ),
 //            categories = listOf(RemoteCategory(RemoteCategory.ANTIBAC_BOARD_ID)),
             stock_quantity = 60,
@@ -86,7 +90,8 @@ object FakeData {
             price = 309.99,
             images = listOf(
                 ImageRemote(
-                    "https://i1.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/11/4134_EM.jpg?fit=1440%2C1440&ssl=1"
+                    "https://i1.wp.com/respolhpl-sklep.pl/wp-content/uploads/2020/11/4134_EM.jpg?fit=1440%2C1440&ssl=1",
+                    12
                 )
             ),
 //            categories = listOf(RemoteCategory(RemoteCategory.LAMINAT_HPL)),
