@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface ImagesDao {
 
     @Transaction
-    @Query("SELECT * FROM products WHERE productId = :pId")
+    @Query("SELECT * FROM products_ids WHERE productId = :pId")
     fun getProductImages(pId: Int): Flow<ProductWithImages?>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

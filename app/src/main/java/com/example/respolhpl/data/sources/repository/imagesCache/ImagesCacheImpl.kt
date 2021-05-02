@@ -3,7 +3,7 @@ package com.example.respolhpl.data.sources.repository.imagesCache
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.entity.ImageEntity
 import com.example.respolhpl.data.product.entity.ImageProductIdJoin
-import com.example.respolhpl.data.product.entity.ImageProductIdJoinDao
+import com.example.respolhpl.data.sources.local.ImageProductIdJoinDao
 import com.example.respolhpl.data.product.entity.ProductIdEntity
 import com.example.respolhpl.data.sources.local.ImagesDao
 import com.example.respolhpl.data.sources.local.ProductIdsDao

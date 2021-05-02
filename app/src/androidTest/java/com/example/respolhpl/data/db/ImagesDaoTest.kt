@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.respolhpl.data.product.entity.ImageEntity
 import com.example.respolhpl.data.product.entity.ImageProductIdJoin
-import com.example.respolhpl.data.product.entity.ImageProductIdJoinDao
+import com.example.respolhpl.data.sources.local.ImageProductIdJoinDao
 import com.example.respolhpl.data.product.entity.ProductIdEntity
 import com.example.respolhpl.data.sources.local.AppDataBase
 import com.example.respolhpl.data.sources.local.ImagesDao
