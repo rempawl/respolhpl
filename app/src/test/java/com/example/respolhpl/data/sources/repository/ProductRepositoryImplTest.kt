@@ -6,8 +6,11 @@ import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
-import com.example.respolhpl.data.sources.repository.imagesCache.ImagesCache
+import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSource
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSourceImpl
+import com.example.respolhpl.fakes.FakeData
+import com.example.respolhpl.fakes.FakeRemoteDataSource
+import com.example.respolhpl.fakes.TimeoutFakeDataSource
 import com.example.respolhpl.utils.mappers.ProductsMinimalListMapper
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertTrue
@@ -23,7 +26,7 @@ import org.mockito.kotlin.mock
 @ExperimentalCoroutinesApi
 class ProductRepositoryImplTest {
     lateinit var repositoryImpl: ProductRepositoryImpl
-    lateinit var cache: ImagesCache
+    lateinit var source: ImagesSource
     var remoteDataSource: RemoteDataSource = FakeRemoteDataSource()
     val dispatchersProvider = TestDispatchersProvider()
     var factory = ProductsPagerFactoryImpl(
@@ -39,9 +42,9 @@ class ProductRepositoryImplTest {
 
     @Before
     fun setup() {
-        cache = mock {}
+        source = mock { onBlocking {  }}
         repositoryImpl = ProductRepositoryImpl(
-            remoteDataSource, cache, dispatchersProvider, factory
+            remoteDataSource, source, dispatchersProvider, factory
         )
     }
 
@@ -84,7 +87,7 @@ class ProductRepositoryImplTest {
     @Test
     fun getProductByIdWithTimeout() {
         repositoryImpl =
-            ProductRepositoryImpl(TimeoutFakeDataSource(), cache, dispatchersProvider, factory)
+            ProductRepositoryImpl(TimeoutFakeDataSource(), source, dispatchersProvider, factory)
         coroutineTestRule.runBlockingTest {
             val res = repositoryImpl.getProductById(134).first()
             assertTrue(res.isError)

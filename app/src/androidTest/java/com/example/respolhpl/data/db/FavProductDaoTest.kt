@@ -8,7 +8,7 @@ import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.respolhpl.data.sources.local.AppDataBase
 import com.example.respolhpl.data.sources.local.FavProductDao
-import com.example.respolhpl.FakeData
+import com.example.respolhpl.fakes.FakeData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest

@@ -9,6 +9,8 @@ interface ProductIdsDao   {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(product: ProductIdEntity)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(products: List<ProductIdEntity>)
 
     @Query("SELECT * FROM products_ids")
     fun getAllIds() : Flow<List<ProductIdEntity>>

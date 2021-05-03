@@ -9,7 +9,7 @@ import com.example.respolhpl.cart.data.sources.CartProductDao
 import com.example.respolhpl.data.product.entity.*
 
 @Database(
-    version = 7,
+    version = 8,
     entities = [FavProductEntity::class, CartProductEntity::class, ProductIdEntity::class,
         ImageEntity::class, ImageProductIdJoin::class]
 )

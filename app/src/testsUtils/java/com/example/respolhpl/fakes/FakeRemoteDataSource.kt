@@ -1,4 +1,4 @@
-package com.example.respolhpl
+package com.example.respolhpl.fakes
 
 import com.example.respolhpl.data.product.remote.RemoteProduct
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal

@@ -57,10 +57,10 @@ class ImagesDaoTest {
 
     @Test
     fun insertAndGetProdWithImages() {
-        val exp = createImages()
+        val imgs = createImages()
         runBlockingTest {
             val prod = ProductIdEntity(1)
-            exp.forEach {
+            imgs.forEach {
                 joinDao.insert(
                     ImageProductIdJoin(
                         productId = prod.productId,
@@ -69,10 +69,10 @@ class ImagesDaoTest {
                 )
             }
 
-            dao.insert(exp)
+            dao.insert(imgs)
             prodDao.insert(prod)
             val res = dao.getProductImages(1).first()
-            MatcherAssert.assertThat(res?.images, CoreMatchers.`is`(exp))
+            MatcherAssert.assertThat(res?.images, CoreMatchers.`is`(imgs))
         }
     }
 

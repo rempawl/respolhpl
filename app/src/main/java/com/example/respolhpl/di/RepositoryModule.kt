@@ -8,8 +8,8 @@ import com.example.respolhpl.data.product.entity.ImageEntity
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.sources.repository.*
-import com.example.respolhpl.data.sources.repository.imagesCache.ImagesCache
-import com.example.respolhpl.data.sources.repository.imagesCache.ImagesCacheImpl
+import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSource
+import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSourceImpl
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSource
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSourceImpl
 import com.example.respolhpl.data.sources.repository.paging.ProductsPagerFactory
@@ -39,7 +39,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Reusable
-    abstract fun provideImagesSource(impl : ImagesCacheImpl) : ImagesCache
+    abstract fun provideImagesSource(impl : ImagesSourceImpl) : ImagesSource
 
     @Binds
     @Reusable

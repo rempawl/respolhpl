@@ -5,6 +5,8 @@ import com.example.respolhpl.*
 import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.cart.data.sources.CartRepositoryImpl
+import com.example.respolhpl.fakes.FakeCartProductDao
+import com.example.respolhpl.fakes.FakeData
 import junit.framework.Assert.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest

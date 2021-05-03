@@ -2,7 +2,7 @@ package com.example.respolhpl.productDetails
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.respolhpl.CoroutineTestRule
-import com.example.respolhpl.FakeData
+import com.example.respolhpl.fakes.FakeData
 import com.example.respolhpl.TestDispatchersProvider
 import com.example.respolhpl.getOrAwaitValue
 import junit.framework.Assert.assertFalse

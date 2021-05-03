@@ -3,8 +3,8 @@ package com.example.respolhpl.productDetails
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import com.example.respolhpl.CoroutineTestRule
-import com.example.respolhpl.FakeCartRepository
-import com.example.respolhpl.FakeData
+import com.example.respolhpl.fakes.FakeCartRepository
+import com.example.respolhpl.fakes.FakeData
 import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.getOrAwaitValue

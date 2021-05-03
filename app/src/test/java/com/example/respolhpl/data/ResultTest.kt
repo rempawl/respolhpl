@@ -1,6 +1,6 @@
 package com.example.respolhpl.data
 
-import com.example.respolhpl.FakeData
+import com.example.respolhpl.fakes.FakeData
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.domain.Product
 import org.hamcrest.CoreMatchers.`is`
