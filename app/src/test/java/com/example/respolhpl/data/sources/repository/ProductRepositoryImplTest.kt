@@ -1,13 +1,15 @@
 package com.example.respolhpl.data.sources.repository
 
 import androidx.paging.PagingData
-import com.example.respolhpl.*
+import com.example.respolhpl.CoroutineTestRule
+import com.example.respolhpl.TestDispatchersProvider
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSource
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSourceImpl
+import com.example.respolhpl.data.sources.repository.paging.ProductsPagerFactory
 import com.example.respolhpl.fakes.FakeData
 import com.example.respolhpl.fakes.FakeRemoteDataSource
 import com.example.respolhpl.fakes.TimeoutFakeDataSource
@@ -17,24 +19,23 @@ import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
 @ExperimentalCoroutinesApi
 class ProductRepositoryImplTest {
     lateinit var repositoryImpl: ProductRepositoryImpl
-    lateinit var source: ImagesSource
-    var remoteDataSource: RemoteDataSource = FakeRemoteDataSource()
+    lateinit var imagesSource: ImagesSource
+    lateinit var remoteDataSource: RemoteDataSource
     val dispatchersProvider = TestDispatchersProvider()
-    var factory = ProductsPagerFactoryImpl(
-        ProductPagingSourceImpl(
-            remoteDataSource,
-            ProductsMinimalListMapper()
-        )
-    )
+
+    lateinit var productsPagerFactory : ProductsPagerFactory
 
 
     @get:Rule
@@ -42,9 +43,17 @@ class ProductRepositoryImplTest {
 
     @Before
     fun setup() {
-        source = mock { }
+        remoteDataSource = FakeRemoteDataSource()
+        productsPagerFactory = ProductsPagerFactoryImpl(
+            ProductPagingSourceImpl(
+                remoteDataSource,
+                ProductsMinimalListMapper()
+            )
+        )
+        imagesSource =
+            mock { onBlocking { getImages(134) } doReturn FakeData.products.first().images }
         repositoryImpl = ProductRepositoryImpl(
-            remoteDataSource, source, dispatchersProvider, factory
+            remoteDataSource, imagesSource, dispatchersProvider, productsPagerFactory
         )
     }
 
@@ -81,13 +90,22 @@ class ProductRepositoryImplTest {
         coroutineTestRule.runBlockingTest {
             val res = repositoryImpl.getProductImages(134).first { it is Result.Success }
             assertNotNull(res.checkIfIsSuccessAndListOf<Image>())
+            res.checkIfIsSuccessAndListOf<Image>()?.let { imgs ->
+                val exp = FakeData.products.first().images
+                assertThat(imgs, `is`(exp))
+            }
         }
     }
 
     @Test
     fun getProductByIdWithTimeout() {
         repositoryImpl =
-            ProductRepositoryImpl(TimeoutFakeDataSource(), source, dispatchersProvider, factory)
+            ProductRepositoryImpl(
+                TimeoutFakeDataSource(),
+                imagesSource,
+                dispatchersProvider,
+                productsPagerFactory
+            )
         coroutineTestRule.runBlockingTest {
             val res = repositoryImpl.getProductById(134).first()
             assertTrue(res.isError)

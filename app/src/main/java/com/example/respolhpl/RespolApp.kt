@@ -13,6 +13,7 @@ import dagger.hilt.android.HiltAndroidApp
 //todo cart summary
 //todo shipping
 
+//todo connection listener
 //todo error Try again
 @HiltAndroidApp
 class RespolApp : Application()

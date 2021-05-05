@@ -1,9 +1,9 @@
 package com.example.respolhpl
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val viewModel by viewModels<MainActivityViewModel>()
 
     private val navController: NavController
         get() = findNavController(R.id.nav_host_fragment)
@@ -28,19 +29,11 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val toolbar: Toolbar = binding.toolbar
-        setSupportActionBar(toolbar)
-
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-
+        val drawerLayout = binding.drawerLayout
         binding.navView.setupWithNavController(navController)
 
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home
-            ), drawerLayout
-        )
-        toolbar.setupWithNavController(navController, appBarConfiguration)
+        setupAppBarConfig(drawerLayout)
+        setupToolbar(binding)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -51,6 +44,21 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return item.onNavDestinationSelected(navController) ||
                 super.onOptionsItemSelected(item)
+    }
+
+    private fun setupToolbar(binding: ActivityMainBinding) {
+        val toolbar: Toolbar = binding.toolbar
+        setSupportActionBar(toolbar)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
+
+    }
+
+    private fun setupAppBarConfig(drawerLayout: DrawerLayout) {
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home
+            ), drawerLayout
+        )
     }
 
 
