@@ -2,6 +2,7 @@ package com.example.respolhpl.data.sources.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.respolhpl.data.product.entity.ProductIdEntity
 import junit.framework.Assert.assertTrue
@@ -14,8 +15,10 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
+@RunWith(AndroidJUnit4::class)
 class ProductIdsDaoTest {
     private lateinit var dataBase: AppDataBase
     private lateinit var prodDao: ProductIdsDao

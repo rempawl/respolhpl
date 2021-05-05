@@ -65,34 +65,31 @@ android {
 }
 
 dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.viewpager2:viewpager2:1.1.0-alpha01"
+
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
     implementation "androidx.paging:paging-runtime-ktx:3.0.0-rc01"
 
-    implementation "androidx.viewpager2:viewpager2:1.1.0-alpha01"
-
-    implementation "androidx.cardview:cardview:1.0.0"
-
-
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def retrofit_v = "2.9.0"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_v"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_v"
 
     implementation "com.squareup.moshi:moshi:1.9.3"
     implementation "com.squareup.moshi:moshi-kotlin:1.9.3"
-
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.8.0'
-
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     //nav
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
@@ -146,12 +143,9 @@ dependencies {
 
     def espressoVersion = "3.3.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
-    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$espressoVersion"
-    implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
-    testImplementation("androidx.test.espresso:espresso-core:3.3.0")
-    testImplementation "com.squareup.okhttp3:mockwebserver:3.8.1"
+    testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+
+    testImplementation "com.squareup.okhttp3:mockwebserver:4.9.0"
 
     testImplementation 'org.robolectric:robolectric:4.5.1'
 

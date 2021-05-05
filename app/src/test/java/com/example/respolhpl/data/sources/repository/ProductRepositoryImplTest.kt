@@ -42,7 +42,7 @@ class ProductRepositoryImplTest {
 
     @Before
     fun setup() {
-        source = mock { onBlocking {  }}
+        source = mock { }
         repositoryImpl = ProductRepositoryImpl(
             remoteDataSource, source, dispatchersProvider, factory
         )

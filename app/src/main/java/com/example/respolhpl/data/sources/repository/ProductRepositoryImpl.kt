@@ -1,6 +1,5 @@
 package com.example.respolhpl.data.sources.repository
 
-import android.util.Log
 import androidx.paging.PagingData
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Image
@@ -35,7 +34,6 @@ class ProductRepositoryImpl @Inject constructor(
             cacheImages(res)
             Result.Success(Product.from(res))
         } catch (e: Exception) {
-            Log.e("kruci", e.toString())
             Result.Error(e)
         }
     }
@@ -45,7 +43,6 @@ class ProductRepositoryImpl @Inject constructor(
             val res = imagesSource.getImages(prodId = id)
             Result.Success(res)
         } catch (e: Exception) {
-            Log.e("kruci", e.toString())
             Result.Error(e)
         }
     }
