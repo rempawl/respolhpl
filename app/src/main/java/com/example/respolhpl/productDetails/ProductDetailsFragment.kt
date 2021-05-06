@@ -86,11 +86,16 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun setupBinding() {
-        binding.viewModel = viewModel
-        binding.viewPager.adapter = imagesAdapter
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewPager.registerOnPageChangeCallback(onPageChangeCallback)
-        binding.cartModel = viewModel.cartModel
+        val vm = viewModel
+        binding.apply {
+            errorRoot.retryButton.setOnClickListener { vm.retry() }
+            viewModel = vm
+            viewPager.adapter = imagesAdapter
+            lifecycleOwner = viewLifecycleOwner
+            viewPager.registerOnPageChangeCallback(onPageChangeCallback)
+            cartModel = vm.cartModel
+
+        }
     }
 
 

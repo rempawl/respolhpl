@@ -57,10 +57,16 @@ class FullScreenImagesFragment : Fragment() {
     }
 
     private fun setupBinding() {
-        binding.viewModel = viewModel
-        binding.viewPager.adapter = imagesAdapter
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewPager.registerOnPageChangeCallback(onPageChangeCallback)
+        val vm = viewModel
+        binding.apply {
+            viewModel = vm
+
+            errorRoot.retryButton.setOnClickListener { vm.retry() }
+
+            viewPager.adapter = imagesAdapter
+            lifecycleOwner = viewLifecycleOwner
+            viewPager.registerOnPageChangeCallback(onPageChangeCallback)
+        }
     }
 
 //    override fun onDestroyView() {

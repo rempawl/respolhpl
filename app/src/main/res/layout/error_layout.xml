@@ -20,13 +20,7 @@
             android:textColor="@color/light_red"
             android:textSize="@dimen/text_size_error" />
 
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textAlignment="center"-->
-<!--            android:textSize="@dimen/text_size_error"-->
-<!--            tools:text="@string/connection_error" />-->
-        <!--            app:bindError="@{vm.result}"/>-->
+
         <Button
             android:id="@+id/retry_button"
             android:layout_width="wrap_content"

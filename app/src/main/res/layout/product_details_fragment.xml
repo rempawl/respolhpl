@@ -30,7 +30,8 @@
 
         <include
             layout="@layout/error_layout"
-            app:showWhen="@{viewModel.result.error}" />
+            app:showWhen="@{viewModel.result.error}"
+            android:id="@+id/error_root"/>
 
         <ScrollView
             android:layout_width="match_parent"

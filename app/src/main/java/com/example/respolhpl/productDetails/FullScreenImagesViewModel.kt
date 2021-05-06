@@ -20,17 +20,26 @@ class FullScreenImagesViewModel @Inject constructor(
     private val _result = MutableLiveData<Result<*>>(Result.Loading)
     val result: LiveData<Result<*>>
         get() = _result
+    private val id = savedStateHandle.get<Int>(ProductDetailsFragment.prodId) ?: throw
+    IllegalStateException(" product id is null")
 
     init {
-        viewModelScope.launch { getImages() }
+        getImages()
     }
 
-    private suspend fun getImages() {
-        val id = savedStateHandle.get<Int>(ProductDetailsFragment.prodId) ?: -1
-        productRepository.getProductImages(id).collect {
-            _result.postValue(it)
-            saveCurrentPage(savedStateHandle.get<Int>("currentPage") ?: 0)
+    private fun getImages() {
+        viewModelScope.launch {
+            _result.value = Result.Loading
+            productRepository.getProductImages(id).collect {
+                _result.postValue(it)
+                saveCurrentPage(savedStateHandle.get<Int>("currentPage") ?: 0)
+            }
         }
     }
+
+    fun retry() {
+        getImages()
+    }
+
 
 }

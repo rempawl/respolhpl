@@ -14,7 +14,6 @@ import dagger.hilt.android.HiltAndroidApp
 //todo shipping
 
 //todo connection listener
-//todo error Try again
 
 //todo cart quantity not losing focus
 

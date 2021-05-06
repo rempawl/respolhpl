@@ -34,11 +34,15 @@ class ProductDetailsViewModel @Inject constructor(
         get() = _result
 
     private var product: Product? = null
+    private val productId = getProdId()
+
 
     init {
-        viewModelScope.launch {
-            getProduct(savedStateHandle.get<Int>(ProductDetailsFragment.prodId) ?: -1)
-        }
+        getProduct(productId)
+    }
+
+    fun retry() {
+        getProduct(productId)
     }
 
     fun navigate() {
@@ -60,10 +64,13 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getProduct(id: Int) {
-        productRepository.getProductById(id).collectLatest { res ->
-            _result.postValue(res)
-            setMaxQuantityAndProduct(res)
+    private fun getProduct(id: Int) {
+        viewModelScope.launch {
+            _result.value = Result.Loading
+            productRepository.getProductById(id).collectLatest { res ->
+                _result.postValue(res)
+                setMaxQuantityAndProduct(res)
+            }
         }
     }
 
@@ -74,6 +81,9 @@ class ProductDetailsViewModel @Inject constructor(
         }
 
     }
+
+    private fun getProdId() = (savedStateHandle.get<Int>(ProductDetailsFragment.prodId)
+        ?: throw java.lang.IllegalStateException("productId is null"))
 
 
 }
