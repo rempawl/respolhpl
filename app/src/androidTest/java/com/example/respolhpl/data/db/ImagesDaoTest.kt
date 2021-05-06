@@ -5,12 +5,12 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.respolhpl.data.product.entity.ImageEntity
-import com.example.respolhpl.data.product.entity.ImageProductIdJoin
-import com.example.respolhpl.data.sources.local.ImageProductIdJoinDao
-import com.example.respolhpl.data.product.entity.ProductIdEntity
+import com.example.respolhpl.data.product.entity.ImageProductJoin
+import com.example.respolhpl.data.sources.local.ImageProductJoinDao
+import com.example.respolhpl.data.product.entity.ProductEntity
 import com.example.respolhpl.data.sources.local.AppDataBase
 import com.example.respolhpl.data.sources.local.ImagesDao
-import com.example.respolhpl.data.sources.local.ProductIdsDao
+import com.example.respolhpl.data.sources.local.ProductDao
 import junit.framework.Assert.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -28,8 +28,8 @@ import org.junit.runner.RunWith
 class ImagesDaoTest {
     private lateinit var dataBase: AppDataBase
     private lateinit var dao: ImagesDao
-    private lateinit var prodDao: ProductIdsDao
-    private lateinit var joinDao: ImageProductIdJoinDao
+    private lateinit var prodDao: ProductDao
+    private lateinit var joinDao: ImageProductJoinDao
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -62,10 +62,10 @@ class ImagesDaoTest {
     fun insertAndGetProdWithImages() {
         val imgs = createImages()
         runBlockingTest {
-            val prod = ProductIdEntity(1)
+            val prod = ProductEntity(1)
             imgs.forEach {
                 joinDao.insert(
-                    ImageProductIdJoin(
+                    ImageProductJoin(
                         productId = prod.productId,
                         it.imageId
                     )
@@ -84,17 +84,17 @@ class ImagesDaoTest {
         val imgs = createImages()
 
         runBlockingTest {
-            val prod = ProductIdEntity(1)
-            val prod2 = ProductIdEntity(2)
+            val prod = ProductEntity(1)
+            val prod2 = ProductEntity(2)
             imgs.forEach {
                 joinDao.insert(
-                    ImageProductIdJoin(
+                    ImageProductJoin(
                         productId = prod.productId,
                         it.imageId
                     )
                 )
             }
-            joinDao.insert(ImageProductIdJoin(prod2.productId, imgs.first().imageId))
+            joinDao.insert(ImageProductJoin(prod2.productId, imgs.first().imageId))
 
             dao.insert(imgs)
             prodDao.insert(prod)

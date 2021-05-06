@@ -7,16 +7,15 @@ import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.product.entity.ImageEntity
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
-import com.example.respolhpl.data.sources.repository.*
+import com.example.respolhpl.data.sources.repository.ProductRepository
+import com.example.respolhpl.data.sources.repository.ProductRepositoryImpl
+import com.example.respolhpl.data.sources.repository.ProductsPagerFactoryImpl
 import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSource
 import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSourceImpl
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSource
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSourceImpl
 import com.example.respolhpl.data.sources.repository.paging.ProductsPagerFactory
-import com.example.respolhpl.utils.mappers.ImageEntityListMapper
-import com.example.respolhpl.utils.mappers.ListMapper
-import com.example.respolhpl.utils.mappers.NullableInputListMapper
-import com.example.respolhpl.utils.mappers.ProductsMinimalListMapper
+import com.example.respolhpl.utils.mappers.*
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -33,25 +32,20 @@ abstract class RepositoryModule {
         @Reusable
         fun providePagingSource(
             remoteDataSource: RemoteDataSource,
-            mapper: ProductsMinimalListMapper
+            mapper: ListMapper<RemoteProductMinimal, ProductMinimal>
         ): ProductPagingSource = ProductPagingSourceImpl(remoteDataSource, mapper)
+
+
     }
 
     @Binds
     @Reusable
-    abstract fun provideImagesSource(impl : ImagesSourceImpl) : ImagesSource
+    abstract fun provideImagesSource(impl: ImagesSourceImpl): ImagesSource
 
     @Binds
     @Reusable
     abstract fun providePagerFactory(pagerFactoryImpl: ProductsPagerFactoryImpl): ProductsPagerFactory
 
-    @Binds
-    @Reusable
-    abstract fun provideProductsMapper(mapper: ProductsMinimalListMapper): ListMapper<RemoteProductMinimal, ProductMinimal>
-
-    @Binds
-    @Reusable
-    abstract fun provideImageEntitiesMapper(mapper: ImageEntityListMapper) : NullableInputListMapper<ImageEntity,Image>
 
     @Reusable
     @Binds
@@ -60,4 +54,5 @@ abstract class RepositoryModule {
     @Reusable
     @Binds
     abstract fun provideCartRepository(repositoryImpl: CartRepositoryImpl): CartRepository
+
 }

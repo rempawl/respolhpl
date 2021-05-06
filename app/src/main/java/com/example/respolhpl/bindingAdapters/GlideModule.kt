@@ -17,6 +17,7 @@ class GlideModule : AppGlideModule() {
             RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.ic_baseline_error_24)
+
         }
     }
 }

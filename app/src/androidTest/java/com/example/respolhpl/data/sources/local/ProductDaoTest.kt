@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.respolhpl.data.product.entity.ProductIdEntity
+import com.example.respolhpl.data.product.entity.ProductEntity
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -19,9 +19,9 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ProductIdsDaoTest {
+class ProductDaoTest {
     private lateinit var dataBase: AppDataBase
-    private lateinit var prodDao: ProductIdsDao
+    private lateinit var prodDao: ProductDao
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -43,7 +43,7 @@ class ProductIdsDaoTest {
     @Test
     fun insertAndGetOne() {
         runBlockingTest {
-            val prod1 = ProductIdEntity(1)
+            val prod1 = ProductEntity(1)
             prodDao.insert(prod1)
             val res = prodDao.getAllIds().first()
             assertTrue(res.size == 1)
@@ -54,9 +54,9 @@ class ProductIdsDaoTest {
     @Test
     fun insertAndGetFew() {
         runBlockingTest {
-            val prod1 = ProductIdEntity(1)
-            val prod2 = ProductIdEntity(2)
-            val prod3 = ProductIdEntity(3)
+            val prod1 = ProductEntity(1)
+            val prod2 = ProductEntity(2)
+            val prod3 = ProductEntity(3)
             val prods = listOf(prod1, prod2, prod3)
             prodDao.insert(prods)
 

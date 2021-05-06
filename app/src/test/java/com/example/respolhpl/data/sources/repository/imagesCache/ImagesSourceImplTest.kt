@@ -5,11 +5,11 @@ import com.example.respolhpl.CoroutineTestRule
 import com.example.respolhpl.TestDispatchersProvider
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.entity.ImageEntity
-import com.example.respolhpl.data.product.entity.ImageProductIdJoin
-import com.example.respolhpl.data.product.entity.ProductIdEntity
-import com.example.respolhpl.data.sources.local.ImageProductIdJoinDao
+import com.example.respolhpl.data.product.entity.ImageProductJoin
+import com.example.respolhpl.data.product.entity.ProductEntity
+import com.example.respolhpl.data.sources.local.ImageProductJoinDao
 import com.example.respolhpl.data.sources.local.ImagesDao
-import com.example.respolhpl.data.sources.local.ProductIdsDao
+import com.example.respolhpl.data.sources.local.ProductDao
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.fakes.FakeRemoteDataSource
 import com.example.respolhpl.utils.mappers.ImageEntityListMapper
@@ -25,8 +25,8 @@ import org.mockito.kotlin.verifyBlocking
 class ImagesSourceImplTest {
     //todo
     private lateinit var imagesDao: ImagesDao
-    private lateinit var prodDao: ProductIdsDao
-    private lateinit var joinDao: ImageProductIdJoinDao
+    private lateinit var prodDao: ProductDao
+    private lateinit var joinDao: ImageProductJoinDao
     private lateinit var remoteDataSource: RemoteDataSource
     lateinit var imagesSource: ImagesSourceImpl
 
@@ -50,7 +50,7 @@ class ImagesSourceImplTest {
     fun saveFew() {
         coroutineTestRule.runBlockingTest {
             val imgs = createImgs()
-            val product = ProductIdEntity(1)
+            val product = ProductEntity(1)
             val joins = createJoins(imgs)
             imagesSource.saveImages(imgs, 1)
             verifyBlocking(imagesDao) { insert(imgs.map { ImageEntity(it.id, it.src) }) }
@@ -72,7 +72,7 @@ class ImagesSourceImplTest {
 
     private fun createJoins(imgs: List<Image>) =
         imgs.map {
-            ImageProductIdJoin(1, it.id)
+            ImageProductJoin(1, it.id)
         }
 
     private fun createImgs() = listOf(Image("one", 1), Image("two", 2), Image("three", 3))

@@ -1,32 +1,18 @@
 package com.example.respolhpl.data.sources.repository
 
-import androidx.paging.PagingData
 import com.example.respolhpl.CoroutineTestRule
 import com.example.respolhpl.TestDispatchersProvider
-import com.example.respolhpl.data.Result
-import com.example.respolhpl.data.product.domain.Image
-import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSource
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSourceImpl
 import com.example.respolhpl.data.sources.repository.paging.ProductsPagerFactory
-import com.example.respolhpl.fakes.FakeData
 import com.example.respolhpl.fakes.FakeRemoteDataSource
 import com.example.respolhpl.fakes.TimeoutFakeDataSource
-import com.example.respolhpl.utils.mappers.ProductsMinimalListMapper
-import junit.framework.Assert.assertNotNull
-import junit.framework.Assert.assertTrue
+import com.example.respolhpl.utils.mappers.implementations.RemoteToDomainProductMinimalMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
 
 @ExperimentalCoroutinesApi
 class ProductRepositoryImplTest {
@@ -47,7 +33,7 @@ class ProductRepositoryImplTest {
         productsPagerFactory = ProductsPagerFactoryImpl(
             ProductPagingSourceImpl(
                 remoteDataSource,
-                ProductsMinimalListMapper()
+                RemoteToDomainProductMinimalMapper()
             )
         )
         imagesSource =

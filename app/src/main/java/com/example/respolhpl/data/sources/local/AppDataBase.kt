@@ -10,19 +10,19 @@ import com.example.respolhpl.data.product.entity.*
 
 @Database(
     version = 8,
-    entities = [FavProductEntity::class, CartProductEntity::class, ProductIdEntity::class,
-        ImageEntity::class, ImageProductIdJoin::class]
+    entities = [FavProductEntity::class, CartProductEntity::class, ProductEntity::class,
+        ImageEntity::class, ImageProductJoin::class]
 )
 abstract class AppDataBase : RoomDatabase() {
     abstract fun favProductDao(): FavProductDao
 
-    abstract fun imageProductIdJoinDao() : ImageProductIdJoinDao
+    abstract fun imageProductIdJoinDao() : ImageProductJoinDao
 
     abstract fun cartProductDao(): CartProductDao
 
     abstract fun imagesDao(): ImagesDao
 
-    abstract fun productIdDao(): ProductIdsDao
+    abstract fun productIdDao(): ProductDao
 
     companion object {
         const val DB_NAME = "RespolHPLDataBase"

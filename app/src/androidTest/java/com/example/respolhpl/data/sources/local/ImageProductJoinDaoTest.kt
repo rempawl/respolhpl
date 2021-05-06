@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.respolhpl.data.product.entity.ImageProductIdJoin
+import com.example.respolhpl.data.product.entity.ImageProductJoin
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -18,9 +18,9 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ImageProductIdJoinDaoTest {
+class ImageProductJoinDaoTest {
     private lateinit var dataBase: AppDataBase
-    private lateinit var dao: ImageProductIdJoinDao
+    private lateinit var dao: ImageProductJoinDao
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -42,7 +42,7 @@ class ImageProductIdJoinDaoTest {
     @Test
     fun insertAndGetOne() {
         runBlockingTest {
-            val join = ImageProductIdJoin(1, 2)
+            val join = ImageProductJoin(1, 2)
             dao.insert(join)
             val res = dao.getAllJoins()
             assertTrue(res.size == 1)
@@ -54,7 +54,7 @@ class ImageProductIdJoinDaoTest {
     fun insertAndGetFew() {
         runBlockingTest {
             val joins =
-                listOf(ImageProductIdJoin(1, 2), ImageProductIdJoin(1, 3), ImageProductIdJoin(2, 2))
+                listOf(ImageProductJoin(1, 2), ImageProductJoin(1, 3), ImageProductJoin(2, 2))
             dao.insert(joins)
             val res = dao.getAllJoins()
             assertThat(res, `is`(joins))

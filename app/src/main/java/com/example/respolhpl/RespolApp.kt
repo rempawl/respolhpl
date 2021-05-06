@@ -9,11 +9,14 @@ import dagger.hilt.android.HiltAndroidApp
 //todo favs
 //todo clear cart
 //todo cart navigation
-//todo change cart count
+
 //todo cart summary
 //todo shipping
 
 //todo connection listener
 //todo error Try again
+
+//todo cart quantity not losing focus
+
 @HiltAndroidApp
 class RespolApp : Application()
