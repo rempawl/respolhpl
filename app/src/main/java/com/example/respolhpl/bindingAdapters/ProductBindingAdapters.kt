@@ -13,13 +13,7 @@ import com.example.respolhpl.data.product.domain.Product
 
 object ProductBindingAdapters {
 
-    @JvmStatic
-    @BindingAdapter("bindSrc")
-    fun ImageView.bindSrc(isLiked: Boolean) {
-        val src =
-            if (isLiked) R.drawable.ic_baseline_star_24 else R.drawable.ic_baseline_star_outline_24
-        this.setImageResource(src)
-    }
+
 
     @JvmStatic
     @BindingAdapter("setPage")

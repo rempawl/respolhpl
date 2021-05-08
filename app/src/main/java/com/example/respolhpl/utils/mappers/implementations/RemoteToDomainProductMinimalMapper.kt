@@ -8,6 +8,10 @@ import javax.inject.Inject
 class RemoteToDomainProductMinimalMapper @Inject constructor() :
     Mapper<RemoteProductMinimal, ProductMinimal> {
     override fun map(from: RemoteProductMinimal): ProductMinimal {
-        return ProductMinimal.from(from)
+        return ProductMinimal(
+            name = from.name, id = from.id,
+            price = from.price,
+            thumbnailSrc = from.images.firstOrNull()?.src,
+        )
     }
 }

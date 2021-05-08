@@ -12,11 +12,14 @@ object ErrorBindingAdapters {
 
     @BindingAdapter("bindError")
     fun TextView.bindError(result: Result<*>) {
-        text = createErrorMsgIfIsError(result,context) ?: ""
+        val errorMsg = createErrorMsgIfIsError(result, context) ?: ""
+        if (errorMsg.isNotBlank() && text != errorMsg) {
+            text = errorMsg
+        }
     }
 
     private fun createErrorMsgIfIsError(res: Result<*>, context: Context): String? {
-        return res.takeIf { it.isError  }?.let { it ->
+        return res.takeIf { it.isError }?.let { it ->
             createErrorMessage((it as Result.Error).exception, context)
         }
     }
@@ -25,7 +28,7 @@ object ErrorBindingAdapters {
         when (exception) {
             is HttpException -> getCodeMessage(exception.code(), context)
             is SocketTimeoutException -> context.getString(R.string.timeout_error)
-            else -> exception.message ?: ""
+            else -> context.getString(R.string.an_error_occurred)
 
         }
 

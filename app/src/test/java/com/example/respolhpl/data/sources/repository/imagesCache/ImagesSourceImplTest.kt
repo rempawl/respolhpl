@@ -12,7 +12,10 @@ import com.example.respolhpl.data.sources.local.ImagesDao
 import com.example.respolhpl.data.sources.local.ProductDao
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.fakes.FakeRemoteDataSource
-import com.example.respolhpl.utils.mappers.ImageEntityListMapper
+import com.example.respolhpl.utils.mappers.ListMapperImpl
+import com.example.respolhpl.utils.mappers.NullableInputListMapperImpl
+import com.example.respolhpl.utils.mappers.implementations.ImageRemoteToDomainMapper
+import com.example.respolhpl.utils.mappers.implementations.ImgEntityToDomainMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
@@ -42,8 +45,16 @@ class ImagesSourceImplTest {
         imagesDao = mock { }
         prodDao = mock { }
         joinDao = mock { }
+
         imagesSource =
-            ImagesSourceImpl(prodDao, imagesDao, joinDao, remoteDataSource, ImageEntityListMapper())
+            ImagesSourceImpl(
+                prodDao,
+                imagesDao,
+                joinDao,
+                remoteDataSource,
+                NullableInputListMapperImpl(ImgEntityToDomainMapper()),
+                ListMapperImpl(ImageRemoteToDomainMapper())
+            )
     }
 
     @Test

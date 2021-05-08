@@ -14,8 +14,10 @@ import dagger.hilt.android.HiltAndroidApp
 //todo shipping
 
 //todo connection listener
+//todo mappers test
 
-//todo cart quantity not losing focus
+//todo ui tests
+//todo cart quantity not opening keyboard on first touch
 
 @HiltAndroidApp
 class RespolApp : Application()

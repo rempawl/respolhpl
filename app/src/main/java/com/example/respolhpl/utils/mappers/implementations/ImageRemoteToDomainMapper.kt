@@ -7,7 +7,10 @@ import javax.inject.Inject
 
 class ImageRemoteToDomainMapper @Inject constructor() : Mapper<ImageRemote, Image> {
     override fun map(from: ImageRemote): Image {
-        return Image.from(from)
+        return Image(
+            src = from.src,
+            id = from.id
+        )
     }
 }
 
