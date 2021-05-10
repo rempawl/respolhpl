@@ -6,9 +6,12 @@ import com.example.respolhpl.data.product.entity.ImageEntity
 import com.example.respolhpl.data.product.remote.ImageRemote
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import com.example.respolhpl.utils.mappers.*
+import com.example.respolhpl.utils.mappers.facade.MappersFacade
+import com.example.respolhpl.utils.mappers.facade.MappersFacadeImpl
 import com.example.respolhpl.utils.mappers.implementations.ImageRemoteToDomainMapper
 import com.example.respolhpl.utils.mappers.implementations.ImgEntityToDomainMapper
 import com.example.respolhpl.utils.mappers.implementations.RemoteToDomainProductMinimalMapper
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -17,20 +20,24 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object MappersModule {
+abstract class MappersModule {
 
+    @Binds
+    @Reusable
+    abstract fun provideMappersFacade(mappersFacadeImpl: MappersFacadeImpl): MappersFacade
+companion object {
     @Provides
     @Reusable
-    fun provideProductMinimalMapper() : Mapper<RemoteProductMinimal,ProductMinimal> =
+    fun provideProductMinimalMapper(): Mapper<RemoteProductMinimal, ProductMinimal> =
         RemoteToDomainProductMinimalMapper()
 
     @Provides
     @Reusable
-    fun provideImageEntityMapper() : Mapper<ImageEntity,Image> = ImgEntityToDomainMapper()
+    fun provideImageEntityMapper(): Mapper<ImageEntity, Image> = ImgEntityToDomainMapper()
 
     @Provides
     @Reusable
-    fun provideImageRemoteMapper() : Mapper<ImageRemote,Image> = ImageRemoteToDomainMapper()
+    fun provideImageRemoteMapper(): Mapper<ImageRemote, Image> = ImageRemoteToDomainMapper()
 
     @Provides
     @Reusable
@@ -46,5 +53,5 @@ object MappersModule {
     @Reusable
     fun providesImgRemoteListMapper(mapper: Mapper<ImageRemote, Image>): ListMapper<ImageRemote, Image> =
         ListMapperImpl(mapper)
-
+}
 }

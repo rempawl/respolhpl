@@ -9,6 +9,7 @@ import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSource
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSourceImpl
 import com.example.respolhpl.data.sources.repository.paging.ProductsPagerFactory
+import com.example.respolhpl.data.sources.repository.paging.ProductsPagerFactoryImpl
 import com.example.respolhpl.fakes.FakeData
 import com.example.respolhpl.fakes.FakeRemoteDataSource
 import com.example.respolhpl.fakes.TimeoutFakeDataSource

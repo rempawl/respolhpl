@@ -2,14 +2,12 @@ package com.example.respolhpl.di
 
 import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.cart.data.sources.CartRepositoryImpl
-import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.domain.ProductMinimal
-import com.example.respolhpl.data.product.entity.ImageEntity
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.data.sources.repository.ProductRepositoryImpl
-import com.example.respolhpl.data.sources.repository.ProductsPagerFactoryImpl
+import com.example.respolhpl.data.sources.repository.paging.ProductsPagerFactoryImpl
 import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSource
 import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSourceImpl
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSource

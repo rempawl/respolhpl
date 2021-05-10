@@ -4,13 +4,11 @@ import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.entity.ImageEntity
 import com.example.respolhpl.data.product.entity.ImageProductJoin
 import com.example.respolhpl.data.product.entity.ProductEntity
-import com.example.respolhpl.data.product.remote.ImageRemote
 import com.example.respolhpl.data.sources.local.ImageProductJoinDao
 import com.example.respolhpl.data.sources.local.ImagesDao
 import com.example.respolhpl.data.sources.local.ProductDao
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
-import com.example.respolhpl.utils.mappers.ListMapper
-import com.example.respolhpl.utils.mappers.NullableInputListMapper
+import com.example.respolhpl.utils.mappers.facade.MappersFacade
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
@@ -20,12 +18,11 @@ class ImagesSourceImpl @Inject constructor(
     private val productDao: ProductDao, private val imagesDao: ImagesDao,
     private val joinDao: ImageProductJoinDao,
     private val remoteDataSource: RemoteDataSource,
-    private val entityMapper: NullableInputListMapper<ImageEntity, Image>,
-    private val remoteMapper: ListMapper<ImageRemote, Image>
+    private val mappers: MappersFacade
 ) : ImagesSource {
 
     override suspend fun getImages(prodId: Int): List<Image> {
-        var res = entityMapper.map(getImagesFromDao(prodId))
+        var res = mappers.imgEntityToImg.map(getImagesFromDao(prodId))
 
         if (res.isEmpty()) {
             res = withTimeout(10_000) { fetchImages(prodId) }
@@ -39,9 +36,10 @@ class ImagesSourceImpl @Inject constructor(
 
 
     private suspend fun fetchImages(prodId: Int) =
-        remoteMapper.map(remoteDataSource.getProductById(prodId).images)
+        mappers.imgRemoteToImg.map(remoteDataSource.getProductById(prodId).images)
 
     override suspend fun saveImages(res: List<Image>, prodId: Int) {
+        //todo mappers
         val imgs = res.map { ImageEntity(src = it.src, imageId = it.id) }
         val joins = imgs.map { ImageProductJoin(prodId, it.imageId) }
         joinDao.insert(joins)

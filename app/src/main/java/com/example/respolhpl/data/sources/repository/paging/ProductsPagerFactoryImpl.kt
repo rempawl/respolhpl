@@ -1,4 +1,4 @@
-package com.example.respolhpl.data.sources.repository
+package com.example.respolhpl.data.sources.repository.paging
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
