@@ -14,7 +14,7 @@ import com.example.respolhpl.fakes.FakeData
 import com.example.respolhpl.fakes.FakeRemoteDataSource
 import com.example.respolhpl.fakes.TimeoutFakeDataSource
 import com.example.respolhpl.utils.mappers.ListMapperImpl
-import com.example.respolhpl.utils.mappers.implementations.RemoteToDomainProductMinimalMapper
+import com.example.respolhpl.utils.mappers.implementations.RemoteProductMinimalToProductMinimalMapper
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -50,7 +50,7 @@ class ProductRepositoryImplTest {
             ProductPagingSourceImpl(
                 remoteDataSource,
 
-                ListMapperImpl(RemoteToDomainProductMinimalMapper())
+                ListMapperImpl(RemoteProductMinimalToProductMinimalMapper())
             )
         )
         imagesSource =

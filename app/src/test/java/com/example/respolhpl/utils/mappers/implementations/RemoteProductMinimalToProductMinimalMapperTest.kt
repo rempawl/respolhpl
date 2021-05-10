@@ -5,15 +5,15 @@ import com.example.respolhpl.data.product.remote.ImageRemote
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import org.junit.Test
 
-class RemoteToDomainProductMinimalMapperTest {
-    lateinit var mapper: RemoteToDomainProductMinimalMapper
+class RemoteProductMinimalToProductMinimalMapperTest {
+    lateinit var mapperProductMinimal: RemoteProductMinimalToProductMinimalMapper
 
     @Test
     fun map() {
-        mapper = RemoteToDomainProductMinimalMapper()
+        mapperProductMinimal = RemoteProductMinimalToProductMinimalMapper()
         val images = listOf(ImageRemote("test", 1))
         val prod = RemoteProductMinimal(1, "test", 1.23, images)
-        val res = mapper.map(prod)
+        val res = mapperProductMinimal.map(prod)
         val exp = ProductMinimal(
             prod.id,
             name = prod.name,

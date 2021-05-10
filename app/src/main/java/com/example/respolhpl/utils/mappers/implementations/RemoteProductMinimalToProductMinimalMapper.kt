@@ -5,7 +5,7 @@ import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import com.example.respolhpl.utils.mappers.Mapper
 import javax.inject.Inject
 
-class RemoteToDomainProductMinimalMapper @Inject constructor() :
+class RemoteProductMinimalToProductMinimalMapper @Inject constructor() :
     Mapper<RemoteProductMinimal, ProductMinimal> {
     override fun map(from: RemoteProductMinimal): ProductMinimal {
         return ProductMinimal(

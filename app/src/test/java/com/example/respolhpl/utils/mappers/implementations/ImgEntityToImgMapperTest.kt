@@ -6,13 +6,13 @@ import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert
 import org.junit.Test
 
-class ImgEntityToDomainMapperTest {
+class ImgEntityToImgMapperTest {
 
-    lateinit var mapper: ImgEntityToDomainMapper
+    lateinit var mapper: ImgEntityToImgMapper
 
     @Test
     fun map() {
-        mapper = ImgEntityToDomainMapper()
+        mapper = ImgEntityToImgMapper()
         val img = ImageEntity(1, "test")
         val res = mapper.map(img)
         val exp = Image(img.src, img.imageId)

@@ -2,7 +2,7 @@ package com.example.respolhpl.utils.mappers
 
 import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.remote.ImageRemote
-import com.example.respolhpl.utils.mappers.implementations.ImageRemoteToDomainMapper
+import com.example.respolhpl.utils.mappers.implementations.ImageRemoteToImgMapper
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert
 
@@ -12,7 +12,7 @@ class ListMapperImplTest{
 
     @Test
     fun imageRemoteToDomainMapper() {
-        val mapper = ListMapperImpl(ImageRemoteToDomainMapper())
+        val mapper = ListMapperImpl(ImageRemoteToImgMapper())
 
         val imgs = listOf(ImageRemote("test",1),ImageRemote("test",2))
 

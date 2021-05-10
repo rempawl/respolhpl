@@ -2,7 +2,6 @@ package com.example.respolhpl.data.sources.repository
 
 import androidx.paging.PagingData
 import com.example.respolhpl.data.Result
-import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.product.remote.RemoteProduct
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
@@ -33,7 +32,7 @@ class ProductRepositoryImpl @Inject constructor(
         try {
             val res = getDataWithTimeout { remoteDataSource.getProductById(id) }
             cacheImages(res)
-            Result.Success(Product.from(res))
+            Result.Success(mappers.prodRemoteToProd.map(res))
         } catch (e: Exception) {
             Result.Error(e)
         }

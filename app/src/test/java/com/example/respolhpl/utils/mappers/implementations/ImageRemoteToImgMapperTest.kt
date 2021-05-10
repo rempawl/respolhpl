@@ -4,14 +4,13 @@ import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.remote.ImageRemote
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert
-import org.junit.Assert.*
 import org.junit.Test
 
-class ImageRemoteToDomainMapperTest{
-    lateinit var mapper: ImageRemoteToDomainMapper
+class ImageRemoteToImgMapperTest{
+    lateinit var mapper: ImageRemoteToImgMapper
     @Test
     fun map(){
-        mapper = ImageRemoteToDomainMapper()
+        mapper = ImageRemoteToImgMapper()
         val remote = ImageRemote("test",1)
         val res = mapper.map(remote)
         val exp = Image.from(remote)
