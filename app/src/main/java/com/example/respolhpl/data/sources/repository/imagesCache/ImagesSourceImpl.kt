@@ -1,7 +1,6 @@
 package com.example.respolhpl.data.sources.repository.imagesCache
 
 import com.example.respolhpl.data.product.domain.Image
-import com.example.respolhpl.data.product.entity.ImageEntity
 import com.example.respolhpl.data.product.entity.ImageProductJoin
 import com.example.respolhpl.data.product.entity.ProductEntity
 import com.example.respolhpl.data.sources.local.ImageProductJoinDao
@@ -20,18 +19,22 @@ class ImagesSourceImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val mappers: MappersFacade
 ) : ImagesSource {
+    companion object {
+        const val TIMEOUT: Long = 10_000
+
+    }
 
     override suspend fun getImages(prodId: Int): List<Image> {
-        var res = mappers.imgEntityToImg.map(getImagesFromDao(prodId))
+        var res = mappers.imgEntityToImg.map(getImagesFromDb(prodId))
 
         if (res.isEmpty()) {
-            res = withTimeout(10_000) { fetchImages(prodId) }
+            res = withTimeout(TIMEOUT) { fetchImages(prodId) }
             saveImages(res, prodId)
         }
         return res
     }
 
-    private suspend fun getImagesFromDao(prodId: Int) =
+    private suspend fun getImagesFromDb(prodId: Int) =
         imagesDao.getProductImages(prodId).first()?.images
 
 
@@ -39,11 +42,11 @@ class ImagesSourceImpl @Inject constructor(
         mappers.imgRemoteToImg.map(remoteDataSource.getProductById(prodId).images)
 
     override suspend fun saveImages(res: List<Image>, prodId: Int) {
-        //todo mappers
-        val imgs = res.map { ImageEntity(src = it.src, imageId = it.id) }
+        val imgs = mappers.imgToImgEntity.map(res)
+        val product = ProductEntity(prodId)
         val joins = imgs.map { ImageProductJoin(prodId, it.imageId) }
         joinDao.insert(joins)
         imagesDao.insert(imgs)
-        productDao.insert(ProductEntity(prodId))
+        productDao.insert(product)
     }
 }

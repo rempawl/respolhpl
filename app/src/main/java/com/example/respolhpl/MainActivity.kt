@@ -1,5 +1,8 @@
 package com.example.respolhpl
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +17,7 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.example.respolhpl.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -24,16 +28,32 @@ class MainActivity : AppCompatActivity() {
     private val navController: NavController
         get() = findNavController(R.id.nav_host_fragment)
 
+    private val connectivityManager
+        get() = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    @Inject
+     lateinit var networkCallback: ConnectivityManager.NetworkCallback
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
+        setupBinding(binding)
+
         setContentView(binding.root)
 
         val drawerLayout = binding.drawerLayout
         binding.navView.setupWithNavController(navController)
 
+        registerNetworkCallback()
         setupAppBarConfig(drawerLayout)
         setupToolbar(binding)
+    }
+
+    private fun setupBinding(binding: ActivityMainBinding) {
+        binding.apply {
+            viewModel = this@MainActivity.viewModel
+            lifecycleOwner = this@MainActivity
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -61,5 +81,19 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        connectivityManager.unregisterNetworkCallback(networkCallback)
+
+    }
+
+    private fun registerNetworkCallback() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            connectivityManager.registerDefaultNetworkCallback(networkCallback)
+        }
+
+    }
+
 
 }
+

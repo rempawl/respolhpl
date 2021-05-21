@@ -1,8 +1,12 @@
 package com.example.respolhpl.di
 
+import android.net.ConnectivityManager
 import com.example.respolhpl.data.sources.remote.BasicAuthInterceptor
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.sources.remote.WooCommerceApi
+import com.example.respolhpl.network.NetworkCallbackImpl
+import com.example.respolhpl.network.NetworkListener
+import com.example.respolhpl.network.NetworkListenerImpl
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -18,6 +22,14 @@ import javax.inject.Singleton
 @Module
 object NetworkModule {
 
+    @Provides
+    @Singleton
+    fun provideNetworkListener(): NetworkListener = NetworkListenerImpl()
+
+    @Singleton
+    @Provides
+    fun provideNetworkCallback(networkListener: NetworkListener): ConnectivityManager.NetworkCallback =
+        NetworkCallbackImpl(networkListener)
 
     @Provides
     @Singleton

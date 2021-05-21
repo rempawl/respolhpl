@@ -8,11 +8,11 @@ import com.example.respolhpl.data.product.remote.RemoteProduct
 import com.example.respolhpl.utils.mappers.ListMapper
 import com.example.respolhpl.utils.mappers.Mapper
 import com.example.respolhpl.utils.mappers.NullableInputListMapper
+import javax.inject.Inject
 
-interface MappersFacade {
-    val imgEntityToImg: NullableInputListMapper<ImageEntity, Image>
-    val imgRemoteToImg: ListMapper<ImageRemote, Image>
-    val prodRemoteToProd: Mapper<RemoteProduct, Product>
-    val imgToImgEntity: ListMapper<Image, ImageEntity>
-}
-
+class MappersFacadeImpl @Inject constructor(
+    override val imgEntityToImg: NullableInputListMapper<ImageEntity, Image>,
+    override val imgRemoteToImg: ListMapper<ImageRemote, Image>,
+    override val prodRemoteToProd: Mapper<RemoteProduct, Product>,
+    override val imgToImgEntity: ListMapper<Image, ImageEntity>
+) : MappersFacade

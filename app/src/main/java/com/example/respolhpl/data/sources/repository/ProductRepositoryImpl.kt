@@ -18,7 +18,6 @@ import javax.inject.Inject
 class ProductRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val imagesSource: ImagesSource,
-//    private val localDataSource: ProductDao, todo favs
     private val dispatchersProvider: DispatchersProvider,
     private val productsPagerFactory: ProductsPagerFactory,
     private val mappers: MappersFacade
@@ -54,6 +53,7 @@ class ProductRepositoryImpl @Inject constructor(
 
     private suspend fun getDataAsFlow(getter: suspend () -> Result<*>) =
         flow {
+            emit(Result.Loading)
             emit(getter())
         }.flowOn(dispatchersProvider.io)
 

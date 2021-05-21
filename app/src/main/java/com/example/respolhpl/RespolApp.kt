@@ -13,10 +13,9 @@ import dagger.hilt.android.HiltAndroidApp
 //todo cart summary
 //todo shipping
 
-//todo connection listener
-//todo mappers test
-
+//todo tests
 //todo ui tests
+
 //todo cart quantity not opening keyboard on first touch
 
 @HiltAndroidApp

@@ -4,16 +4,15 @@ import com.example.respolhpl.data.product.domain.Image
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.product.entity.ImageEntity
+import com.example.respolhpl.data.product.entity.ImageProductJoin
+import com.example.respolhpl.data.product.entity.ProductEntity
 import com.example.respolhpl.data.product.remote.ImageRemote
 import com.example.respolhpl.data.product.remote.RemoteProduct
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
 import com.example.respolhpl.utils.mappers.*
 import com.example.respolhpl.utils.mappers.facade.MappersFacade
 import com.example.respolhpl.utils.mappers.facade.MappersFacadeImpl
-import com.example.respolhpl.utils.mappers.implementations.ImageRemoteToImgMapper
-import com.example.respolhpl.utils.mappers.implementations.ImgEntityToImgMapper
-import com.example.respolhpl.utils.mappers.implementations.ProductRemoteToProductMapper
-import com.example.respolhpl.utils.mappers.implementations.RemoteProductMinimalToProductMinimalMapper
+import com.example.respolhpl.utils.mappers.implementations.*
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -33,11 +32,17 @@ abstract class MappersModule {
     @Reusable
     abstract fun provideRemoteProdToProdMapper(mapper: ProductRemoteToProductMapper): Mapper<RemoteProduct, Product>
 
+    @Binds
+    @Reusable
+    abstract fun provideImgToImgEntityMapper(mapper: ImgToImgEntityMapper): Mapper<Image, ImageEntity>
+
     companion object {
+
         @Provides
         @Reusable
         fun provideProductMinimalMapper(): Mapper<RemoteProductMinimal, ProductMinimal> =
             RemoteProductMinimalToProductMinimalMapper()
+
 
         @Provides
         @Reusable
@@ -60,6 +65,11 @@ abstract class MappersModule {
         @Provides
         @Reusable
         fun providesImgRemoteListMapper(mapper: Mapper<ImageRemote, Image>): ListMapper<ImageRemote, Image> =
+            ListMapperImpl(mapper)
+
+        @Provides
+        @Reusable
+        fun provideImgEntityToImgListMapper(mapper: Mapper<Image, ImageEntity>): ListMapper<Image, ImageEntity> =
             ListMapperImpl(mapper)
     }
 }

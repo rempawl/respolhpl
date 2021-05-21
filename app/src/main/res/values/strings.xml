@@ -51,5 +51,6 @@
     <string name="confirm">Potwierdz</string>
     <string name="cancel">Anuluj</string>
     <string name="deletion_confirmation_title">Czy na pewno chcesz usunąć produkt z koszyka?</string>
+    <string name="connection_lost">Brak połączenia z internetem</string>
 
 </resources>

@@ -19,7 +19,7 @@ class ProductRemoteToProductMapper @Inject constructor(private val imgMapper: Li
             images = imgs,
             thumbnailSrc = imgs.first().src,
             price = from.price,
-            from.description,
+            description = from.description,
         )
     }
 }
