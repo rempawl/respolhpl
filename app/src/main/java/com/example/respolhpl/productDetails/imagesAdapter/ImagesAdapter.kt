@@ -5,16 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.data.product.domain.Image
-import com.example.respolhpl.databinding.ImageItemBinding
+import com.example.respolhpl.databinding.ItemImageBinding
 
 class ImagesAdapter constructor(
-    private val bindingDecorator: ImageItemBinding.() -> Unit
+    private val bindingDecorator: ItemImageBinding.() -> Unit
 ) : ListAdapter<Image, ImagesAdapter.ImageViewHolder>(ImageDiffUtil()) {
 
-    class ImageViewHolder private constructor(private val binding: ImageItemBinding) :
+    class ImageViewHolder private constructor(private val binding: ItemImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(image: Image, count: String, decorate: ImageItemBinding.() -> Unit) {
+        fun bind(image: Image, count: String, decorate: ItemImageBinding.() -> Unit) {
             binding.apply {
                 img = image
                 imgCounter.text = count
@@ -25,7 +25,7 @@ class ImagesAdapter constructor(
         companion object {
             fun from(parent: ViewGroup): ImageViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val binding = ImageItemBinding.inflate(inflater, parent, false)
+                val binding = ItemImageBinding.inflate(inflater, parent, false)
                 return ImageViewHolder(binding)
             }
         }

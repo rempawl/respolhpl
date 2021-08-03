@@ -8,13 +8,11 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupWithNavController
 import com.example.respolhpl.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -32,21 +30,15 @@ class MainActivity : AppCompatActivity() {
         get() = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     @Inject
-     lateinit var networkCallback: ConnectivityManager.NetworkCallback
+    lateinit var networkCallback: ConnectivityManager.NetworkCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setupBinding(binding)
-
         setContentView(binding.root)
 
-        val drawerLayout = binding.drawerLayout
-        binding.navView.setupWithNavController(navController)
-
         registerNetworkCallback()
-        setupAppBarConfig(drawerLayout)
-        setupToolbar(binding)
     }
 
     private fun setupBinding(binding: ActivityMainBinding) {
@@ -54,31 +46,6 @@ class MainActivity : AppCompatActivity() {
             viewModel = this@MainActivity.viewModel
             lifecycleOwner = this@MainActivity
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.toolbar, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return item.onNavDestinationSelected(navController) ||
-                super.onOptionsItemSelected(item)
-    }
-
-    private fun setupToolbar(binding: ActivityMainBinding) {
-        val toolbar: Toolbar = binding.toolbar
-        setSupportActionBar(toolbar)
-        toolbar.setupWithNavController(navController, appBarConfiguration)
-
-    }
-
-    private fun setupAppBarConfig(drawerLayout: DrawerLayout) {
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home
-            ), drawerLayout
-        )
     }
 
     override fun onDestroy() {
@@ -90,6 +57,8 @@ class MainActivity : AppCompatActivity() {
     private fun registerNetworkCallback() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connectivityManager.registerDefaultNetworkCallback(networkCallback)
+        }else{
+            //todo
         }
 
     }

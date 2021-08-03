@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.cart.data.CartProduct
-import com.example.respolhpl.databinding.CartProductItemBinding
+import com.example.respolhpl.databinding.ItemCartProductBinding
 
 class CartProductAdapter(private val onDeleteClickListener: (CartProduct) -> Unit) :
     ListAdapter<CartProduct, RecyclerView.ViewHolder>(Diff()) {
@@ -15,9 +15,8 @@ class CartProductAdapter(private val onDeleteClickListener: (CartProduct) -> Uni
         const val SUMMARY_TYPE = 2
     }
 
-    //todo summary ViewHolder
 
-    class CartProductViewHolder private constructor(private val binding: CartProductItemBinding) :
+    class CartProductViewHolder private constructor(private val binding: ItemCartProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: CartProduct, onDeleteClickListener: (CartProduct) -> Unit) {
             binding.apply {
@@ -30,7 +29,7 @@ class CartProductAdapter(private val onDeleteClickListener: (CartProduct) -> Uni
             fun from(parent: ViewGroup): CartProductViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
                 return CartProductViewHolder(
-                    CartProductItemBinding.inflate(
+                    ItemCartProductBinding.inflate(
                         inflater,
                         parent,
                         false

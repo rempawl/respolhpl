@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.data.product.domain.ProductMinimal
-import com.example.respolhpl.databinding.ProductItemBinding
+import com.example.respolhpl.databinding.ItemProductBinding
 
 typealias OnItemClickListener = (id: Int) -> Unit
 
@@ -15,7 +15,7 @@ class ProductListAdapter constructor(
 
 
     class ProductViewHolder private constructor(
-        private val binding: ProductItemBinding,
+        private val binding: ItemProductBinding,
         private val onItemClickListener: OnItemClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -27,7 +27,7 @@ class ProductListAdapter constructor(
         companion object {
             fun from(parent: ViewGroup, clickListener: OnItemClickListener): ProductViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val binding = ProductItemBinding.inflate(inflater, parent, false)
+                val binding = ItemProductBinding.inflate(inflater, parent, false)
                 return ProductViewHolder(binding, clickListener)
             }
         }
@@ -41,5 +41,4 @@ class ProductListAdapter constructor(
         val item = getItem(position) ?: return
         holder.bind(item)
     }
-
 }
