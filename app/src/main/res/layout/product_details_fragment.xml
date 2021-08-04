@@ -17,7 +17,7 @@
 
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="true"
@@ -25,17 +25,31 @@
         tools:context=".productDetails.ProductDetailsFragment">
 
         <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_default"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
             layout="@layout/loading_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:showWhen="@{viewModel.result.loading}" />
 
         <include
+            android:id="@+id/error_root"
             layout="@layout/error_layout"
-            app:showWhen="@{viewModel.result.error}"
-            android:id="@+id/error_root"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:showWhen="@{viewModel.result.error}" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:showWhen="@{viewModel.result.success}">
 
             <LinearLayout
@@ -89,16 +103,17 @@
 
                             <Button
                                 android:id="@+id/minus_btn"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_columnWeight="1"
                                 android:layout_margin="0dp"
+                                android:background="@drawable/bg_cart_qnt_btn"
                                 android:enabled="@{cartModel.minusBtnEnabled}"
-                                android:minHeight="0dp"
                                 android:onClick="@{() ->cartModel.onMinusBtnClick()}"
-                                android:padding="0dp"
                                 android:text="@string/minus"
-                                android:textSize="@dimen/def_text_size" />
+                                android:textColor="@color/light_red"
+                                android:textSize="@dimen/def_text_size"
+                                app:backgroundTint="@null" />
 
                             <EditText
                                 android:id="@+id/quantity"
@@ -114,18 +129,17 @@
                                 android:textSize="@dimen/def_text_size"
                                 tools:text="5" />
 
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/plus_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_columnWeight="1"
-                                android:layout_margin="0dp"
+                                android:background="@drawable/bg_cart_qnt_btn"
                                 android:enabled="@{cartModel.isPlusBtnEnabled}"
-                                android:minHeight="0dp"
                                 android:onClick="@{() -> cartModel.onPlusBtnClick()}"
-                                android:padding="0dp"
                                 android:text="@string/plus"
-                                android:textSize="@dimen/def_text_size" />
+                                android:textColor="@color/light_red"
+                                android:textSize="@dimen/def_text_size"
+                                app:backgroundTint="@null" />
 
                             <TextView
                                 style="@style/DefaultBodyText"
@@ -168,7 +182,8 @@
             android:background="?attr/colorAccent"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/def_padding">
+            android:paddingHorizontal="@dimen/def_padding"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/cartButton"
@@ -186,5 +201,5 @@
                 android:layout_marginHorizontal="@dimen/def_margin"
                 android:text="@string/buy_now" />
         </LinearLayout>
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

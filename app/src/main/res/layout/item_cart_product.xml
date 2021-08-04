@@ -66,6 +66,7 @@
                 app:layout_constraintTop_toBottomOf="@id/price" />
 
             <TextView
+                android:id="@+id/textView"
                 style="@style/DefaultBodyText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -75,14 +76,15 @@
                 app:layout_constraintTop_toBottomOf="@id/quantity" />
 
             <ImageView
+                android:id="@+id/delete_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/def_margin"
-                android:id="@+id/delete_btn"
                 android:contentDescription="deleteButton"
                 android:src="@drawable/ic_baseline_delete_24"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

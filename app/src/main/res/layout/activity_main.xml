@@ -27,6 +27,7 @@
             app:navGraph="@navigation/main_navigation" />
 
         <TextView
+            android:layout_marginTop="?attr/actionBarSize"
             android:id="@+id/connection_info"
             showWhen="@{!viewModel.isConnected()}"
             android:layout_width="0dp"

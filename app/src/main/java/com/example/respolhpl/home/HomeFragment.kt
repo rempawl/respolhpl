@@ -15,16 +15,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.databinding.FragmentHomeBinding
-import com.example.respolhpl.utils.event.EventObserver
 import com.example.respolhpl.utils.autoCleared
+import com.example.respolhpl.utils.event.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
-
 @AndroidEntryPoint
-class HomeFragment : Fragment()  {
+class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
 
@@ -38,11 +37,15 @@ class HomeFragment : Fragment()  {
     ): View {
         adapter = ProductListAdapter(onItemClickListener = { id -> viewModel.navigate(id) })
         binding = FragmentHomeBinding.inflate(inflater)
-        setHasOptionsMenu(true)
-        setupBinding()
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.setupBinding()
         setupObservers()
         initAdapter()
-        return binding.root
     }
 
 
@@ -71,17 +74,20 @@ class HomeFragment : Fragment()  {
 
     }
 
-    private fun setupBinding() {
-        binding.apply {
-            productList.apply {
-                adapter = this@HomeFragment.adapter
-                layoutManager = chooseLayoutManager()
-                setHasFixedSize(false)
-            }
-            viewModel = this@HomeFragment.viewModel
-            lifecycleOwner = viewLifecycleOwner
-            error.retryButton.setOnClickListener { adapter.retry() }
+    private fun FragmentHomeBinding.setupBinding() {
+        productList.apply {
+            adapter = this@HomeFragment.adapter
+            layoutManager = chooseLayoutManager()
+            setHasFixedSize(false)
         }
+
+        viewModel = this@HomeFragment.viewModel
+        lifecycleOwner = viewLifecycleOwner
+        toolbar.label.text = "RespolHPL"
+        toolbar.menuBtn.setOnClickListener {
+            //todo
+        }
+        error.retryButton.setOnClickListener { adapter.retry() }
     }
 
     private fun navigateToProductDetails(id: Int) {

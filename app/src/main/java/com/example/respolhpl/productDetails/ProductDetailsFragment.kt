@@ -2,7 +2,6 @@ package com.example.respolhpl.productDetails
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -42,18 +41,14 @@ class ProductDetailsFragment : Fragment() {
             image.scaleType = ImageView.ScaleType.CENTER_CROP
             card.setOnClickListener { viewModel.navigate() }
         }
-        setHasOptionsMenu(true)
         setupObservers()
-        setupBinding()
+        binding.setupBinding()
+
         return binding.root
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-        menu.findItem(R.id.menu_fav).isVisible = true
-    }
 
-    private fun navigateToFullScreenImageDialog(curPage: Int) {
+    private fun navigateToFullScreenImageFragment(curPage: Int) {
         findNavController().navigate(
             ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment(
                 args.productId, curPage
@@ -69,7 +64,7 @@ class ProductDetailsFragment : Fragment() {
             }
         }
         viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver { curPage ->
-            navigateToFullScreenImageDialog(curPage)
+            navigateToFullScreenImageFragment(curPage)
         }
         )
         viewModel.cartModel.addToCartCount.observe(viewLifecycleOwner, EventObserver { count ->
@@ -85,17 +80,19 @@ class ProductDetailsFragment : Fragment() {
         ).show()
     }
 
-    private fun setupBinding() {
-        val vm = viewModel
-        binding.apply {
-            errorRoot.retryButton.setOnClickListener { vm.retry() }
-            viewModel = vm
-            viewPager.adapter = imagesAdapter
-            lifecycleOwner = viewLifecycleOwner
-            viewPager.registerOnPageChangeCallback(onPageChangeCallback)
-            cartModel = vm.cartModel
+    private fun ProductDetailsFragmentBinding.setupBinding() {
+        val viewModel1 = this@ProductDetailsFragment.viewModel
+        errorRoot.retryButton.setOnClickListener { viewModel1.retry() }
+        toolbar.backBtn.setOnClickListener { findNavController().navigateUp() }
+        toolbar.label.text = "Product"
+        viewModel = viewModel1
 
-        }
+        viewPager.adapter = imagesAdapter
+        lifecycleOwner = viewLifecycleOwner
+        viewPager.registerOnPageChangeCallback(onPageChangeCallback)
+        cartModel = viewModel1.cartModel
+
+
     }
 
 

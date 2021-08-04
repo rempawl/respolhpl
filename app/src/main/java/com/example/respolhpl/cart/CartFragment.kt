@@ -32,11 +32,16 @@ class CartFragment : Fragment() {
     ): View? {
         setHasOptionsMenu(true)
         binding = CartFragmentBinding.inflate(inflater)
-        adapter = CartProductAdapter { prod -> onDeleteBtnClick(prod) }
-        setupBinding()
-        setupObservers()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        adapter = CartProductAdapter { prod -> onDeleteBtnClick(prod) }
+        binding.setupBinding()
+        setupObservers()
+
     }
 
     private fun onDeleteBtnClick(prod: CartProduct) {
@@ -63,7 +68,7 @@ class CartFragment : Fragment() {
         menu.findItem(R.id.cart_fragment).isVisible = false
     }
 
-    private fun setupBinding() {
+    private fun CartFragmentBinding.setupBinding() {
         binding.apply {
             setupProductsListAdapter()
             lifecycleOwner = viewLifecycleOwner
