@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.respolhpl.R
 import com.example.respolhpl.cart.data.CartProduct
@@ -69,11 +70,11 @@ class CartFragment : Fragment() {
     }
 
     private fun CartFragmentBinding.setupBinding() {
-        binding.apply {
-            setupProductsListAdapter()
-            lifecycleOwner = viewLifecycleOwner
-            viewModel = this@CartFragment.viewModel
-        }
+        setupProductsListAdapter()
+        backBtn.setOnClickListener { findNavController().navigateUp() }
+        label.setText(R.string.cart)
+        lifecycleOwner = viewLifecycleOwner
+        viewModel = this@CartFragment.viewModel
     }
 
     private fun CartFragmentBinding.setupProductsListAdapter() {

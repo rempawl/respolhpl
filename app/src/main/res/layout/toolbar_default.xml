@@ -26,4 +26,12 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Label" />
 
+    <ImageView
+        android:id="@+id/cart_btn"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:padding="16dp"
+        android:src="@drawable/ic_baseline_shopping_cart_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -83,9 +83,12 @@ class HomeFragment : Fragment() {
 
         viewModel = this@HomeFragment.viewModel
         lifecycleOwner = viewLifecycleOwner
-        toolbar.label.text = "RespolHPL"
-        toolbar.menuBtn.setOnClickListener {
-            //todo
+        toolbar.apply {
+            label.text = "RespolHPL"
+            cartBtn.setOnClickListener { findNavController().navigate(HomeFragmentDirections.actionNavHomeToCartFragment()) }
+            toolbar.menuBtn.setOnClickListener {
+                //todo
+            }
         }
         error.retryButton.setOnClickListener { adapter.retry() }
     }

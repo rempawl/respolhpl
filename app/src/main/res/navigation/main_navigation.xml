@@ -15,6 +15,9 @@
             app:destination="@id/product_details"
 
             />
+        <action
+            android:id="@+id/action_nav_home_to_cart_fragment"
+            app:destination="@id/cart_fragment" />
 
     </fragment>
 
@@ -28,6 +31,9 @@
         <action
             android:id="@+id/navigation_product_details_to_full_screen_images_fragment"
             app:destination="@id/fullScreenImagesFragment" />
+        <action
+            android:id="@+id/action_product_details_to_cart_fragment"
+            app:destination="@id/cart_fragment" />
     </fragment>
     <fragment
         android:id="@+id/fullScreenImagesFragment"
