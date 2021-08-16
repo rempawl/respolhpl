@@ -41,10 +41,10 @@ class CartModelImplTest {
     fun onPlusBtnClickThenDisablePlusBtnAndEnableMinusBtn() {
         coroutineTestRule.runBlockingTest {
             cartModelImpl.maxQuantity = 2
-            cartModelImpl.cartQuantity = 1
+            cartModelImpl.currentCartQuantity = 1
             cartModelImpl.onPlusBtnClick()
 
-            assertThat(cartModelImpl.cartQuantity, `is`(2))
+            assertThat(cartModelImpl.currentCartQuantity, `is`(2))
             assertThat(cartModelImpl.isPlusBtnEnabled, `is`(false))
             assertThat(cartModelImpl.isMinusBtnEnabled, `is`(true))
         }
@@ -53,7 +53,7 @@ class CartModelImplTest {
     @Test
     fun onMinusBtnClickThenDisableMinusBtn() {
         cartModelImpl.maxQuantity = 2
-        cartModelImpl.cartQuantity = 2
+        cartModelImpl.currentCartQuantity = 2
         assertFalse(cartModelImpl.isPlusBtnEnabled)
         assertTrue(cartModelImpl.isMinusBtnEnabled)
 
@@ -61,7 +61,7 @@ class CartModelImplTest {
 
         assertTrue(cartModelImpl.isPlusBtnEnabled)
         assertFalse(cartModelImpl.isMinusBtnEnabled)
-        assertThat(cartModelImpl.cartQuantity, `is`(1))
+        assertThat(cartModelImpl.currentCartQuantity, `is`(1))
 
     }
 
@@ -69,10 +69,10 @@ class CartModelImplTest {
     fun onPlusBtnClickThenOnMinusBtnClick() {
         coroutineTestRule.runBlockingTest {
             cartModelImpl.maxQuantity = 6
-            val qnt = cartModelImpl.cartQuantity
+            val qnt = cartModelImpl.currentCartQuantity
             cartModelImpl.onPlusBtnClick()
             cartModelImpl.onMinusBtnClick()
-            assertThat(cartModelImpl.cartQuantity, `is`(qnt))
+            assertThat(cartModelImpl.currentCartQuantity, `is`(qnt))
         }
     }
 
@@ -80,10 +80,10 @@ class CartModelImplTest {
     fun createCartProductWhenCartQuantityIs5() {
         coroutineTestRule.runBlockingTest {
             cartModelImpl.maxQuantity = 10
-            cartModelImpl.cartQuantity = 5
+            cartModelImpl.currentCartQuantity = 5
             val res = cartModelImpl.createCartProductAndChangeQuantity(FakeData.products.first())
             assertThat(res.quantity, `is`(5))
-            assertThat(cartModelImpl.cartQuantity, `is`(0))
+            assertThat(cartModelImpl.currentCartQuantity, `is`(0))
             assertThat(cartModelImpl.maxQuantity, `is`(5))
 
             val addToCartCount =

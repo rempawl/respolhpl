@@ -31,13 +31,13 @@
 
         <include
             layout="@layout/loading_layout"
-            app:showWhen="@{viewModel.result.loading}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:showWhen="@{viewModel.result.loading}" />
 
         <include
             android:id="@+id/error_root"
@@ -123,8 +123,6 @@
 
                             <EditText
                                 android:id="@+id/quantity"
-                                hideKeyboardOnInputDone="@{true}"
-                                orderQuantity="@={Converter.intToString(cartModel.cartQuantity)}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_columnWeight="1"
@@ -184,16 +182,16 @@
             showWhen="@{viewModel.result.success}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="?attr/colorAccent"
+            android:background="@color/light_red"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/def_padding"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.button.MaterialButton
+                android:backgroundTint="@color/white"
+                android:textColor="@color/light_red"
                 android:id="@+id/cartButton"
-                style="?attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/def_margin"
@@ -201,6 +199,8 @@
                 android:text="@string/add_to_cart" />
 
             <com.google.android.material.button.MaterialButton
+                android:backgroundTint="@color/white"
+                android:textColor="@color/light_red"
                 android:id="@+id/buy_now_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

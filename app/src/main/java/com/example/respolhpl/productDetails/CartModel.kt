@@ -3,6 +3,7 @@ package com.example.respolhpl.productDetails
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.respolhpl.BR
 import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.data.product.domain.Product
@@ -13,17 +14,21 @@ abstract class CartModel : BaseObservable() {
 
     val isMinusBtnEnabled: Boolean
         @Bindable
-        get() = cartQuantity > 1
+        get() = currentCartQuantity > 1
 
     val isPlusBtnEnabled: Boolean
         @Bindable
-        get() = cartQuantity < maxQuantity
+        get() = currentCartQuantity < maxQuantity
 
-    @Bindable
-    var cartQuantity: Int = 0
+
+    private val _cartQuantity = MutableLiveData(0)
+    val cartQuantity: LiveData<Int>
+        get() = _cartQuantity
+
+    var currentCartQuantity: Int = 0
         set(value) {
             field = if (value > maxQuantity) maxQuantity else value
-            notifyPropertyChanged(BR.cartQuantity)
+            _cartQuantity.postValue(value)
             notifyPropertyChanged(BR.minusBtnEnabled)
             notifyPropertyChanged(BR.plusBtnEnabled)
         }
@@ -37,11 +42,11 @@ abstract class CartModel : BaseObservable() {
         }
 
     fun onMinusBtnClick() {
-        cartQuantity -= 1
+        currentCartQuantity -= 1
     }
 
     fun onPlusBtnClick() {
-        cartQuantity += 1
+        currentCartQuantity += 1
     }
 
     abstract fun createCartProductAndChangeQuantity(product: Product): CartProduct
@@ -49,7 +54,7 @@ abstract class CartModel : BaseObservable() {
     protected fun createCartProduct(product: Product) = CartProduct(
         product.id,
         price = product.price,
-        quantity = cartQuantity,
+        quantity = currentCartQuantity,
         name = product.name,
         thumbnailSrc = product.thumbnailSrc
     )

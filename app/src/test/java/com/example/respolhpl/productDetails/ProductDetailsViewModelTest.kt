@@ -68,7 +68,7 @@ class ProductDetailsViewModelTest {
     @Test
     fun addTwoItemsToCart() {
         coroutineTestRule.runBlockingTest {
-            viewModel.cartModel.cartQuantity = 2
+            viewModel.cartModel.currentCartQuantity = 2
             viewModel.onAddToCartClick()
             verifyBlocking(cartRepository) { addProduct(argThat { quantity == 2 }) }
         }

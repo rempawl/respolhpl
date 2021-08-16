@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.respolhpl.R
+import com.example.respolhpl.bindingAdapters.Converter
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
@@ -67,6 +69,11 @@ class ProductDetailsFragment : Fragment() {
             navigateToFullScreenImageFragment(curPage)
         }
         )
+        viewModel.cartModel.cartQuantity.observe(viewLifecycleOwner) {
+            if (binding.quantity.text.toString() != it.toString()) {
+                binding.quantity.setText(it.toString())
+            }
+        }
         viewModel.cartModel.addToCartCount.observe(viewLifecycleOwner, EventObserver { count ->
             showAddToCartToast(count)
         })
@@ -88,6 +95,12 @@ class ProductDetailsFragment : Fragment() {
             )
         }
 
+        quantity.setText(viewModel1.cartModel.currentCartQuantity.toString())
+        quantity.doOnTextChanged { text, _, _, _ ->
+
+            viewModel1.cartModel.currentCartQuantity = Converter.stringToInt(text.toString())
+
+        }
         toolbar.backBtn.setOnClickListener { findNavController().navigateUp() }
         toolbar.label.text = getString(R.string.product)
 
