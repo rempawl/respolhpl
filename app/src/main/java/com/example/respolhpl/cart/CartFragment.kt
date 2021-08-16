@@ -64,10 +64,7 @@ class CartFragment : Fragment() {
     }
 
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-        menu.findItem(R.id.cart_fragment).isVisible = false
-    }
+
 
     private fun CartFragmentBinding.setupBinding() {
         setupProductsListAdapter()

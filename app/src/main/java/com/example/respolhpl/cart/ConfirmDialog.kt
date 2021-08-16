@@ -11,6 +11,7 @@ class ConfirmDialog(
     private val onConfirm: () -> Unit
 ) : DialogFragment() {
 
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             AlertDialog.Builder(requireContext())
@@ -19,6 +20,5 @@ class ConfirmDialog(
                 .setNegativeButton(getString(R.string.cancel)) { _, _ -> dismiss() }
                 .create()
         } ?: throw IllegalStateException()
-
     }
 }

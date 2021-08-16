@@ -82,17 +82,22 @@ class ProductDetailsFragment : Fragment() {
 
     private fun ProductDetailsFragmentBinding.setupBinding() {
         val viewModel1 = this@ProductDetailsFragment.viewModel
-        errorRoot.retryButton.setOnClickListener { viewModel1.retry() }
+        toolbar.cartBtn.setOnClickListener {
+            findNavController().navigate(
+                ProductDetailsFragmentDirections.actionProductDetailsToCartFragment()
+            )
+        }
+
         toolbar.backBtn.setOnClickListener { findNavController().navigateUp() }
-        toolbar.label.text = "Product"
+        toolbar.label.text = getString(R.string.product)
+
         viewModel = viewModel1
+        errorRoot.retryButton.setOnClickListener { viewModel1.retry() }
 
         viewPager.adapter = imagesAdapter
         lifecycleOwner = viewLifecycleOwner
         viewPager.registerOnPageChangeCallback(onPageChangeCallback)
         cartModel = viewModel1.cartModel
-
-
     }
 
 
