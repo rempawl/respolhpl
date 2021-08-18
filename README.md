@@ -3,15 +3,14 @@
 Its data is fetched from https://respolhpl-sklep.pl/ using WooCommerce REST API.
 ### Main screen 
 
-![main](https://user-images.githubusercontent.com/54141482/113695784-8c3be980-96d1-11eb-912b-ba42f22eeae0.png)
+![main](https://user-images.githubusercontent.com/54141482/129910768-3fa0128c-0aa0-4df5-923f-750ac59f58eb.jpg)
 
 ### In landscape 
-![main_land](https://user-images.githubusercontent.com/54141482/113695780-8ba35300-96d1-11eb-89ad-b72d4b72033f.png)
+![main_land](https://user-images.githubusercontent.com/54141482/129910910-7c617e6c-2e98-405a-bf66-806374c57204.jpg)
 ### Adding to Cart and Cart view
-![add_to_cart](https://user-images.githubusercontent.com/54141482/116524890-332e3280-a8d8-11eb-9014-0a7990968802.png)
-![cart](https://user-images.githubusercontent.com/54141482/116524887-31fd0580-a8d8-11eb-88c5-7a4dee9f5329.png)
+![add_to_cart](https://user-images.githubusercontent.com/54141482/129911041-adbdd766-31ef-4bb7-ac78-e222d478f687.jpg)
+![cart](https://user-images.githubusercontent.com/54141482/129911094-6c49d750-2836-4f95-9d9d-de9ec5921a39.jpg)
 
 ### Product details screen
-![details1](https://user-images.githubusercontent.com/54141482/113695785-8cd48000-96d1-11eb-8580-ef63acb15ddb.png)
-![details2](https://user-images.githubusercontent.com/54141482/113695786-8cd48000-96d1-11eb-8966-5fe1b5b29c26.png)
+![details](https://user-images.githubusercontent.com/54141482/129911185-b8bba4eb-447c-4185-a636-c15d940676cd.jpg)
 
