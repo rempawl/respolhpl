@@ -50,8 +50,16 @@ class CartFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.result.observe(viewLifecycleOwner) { res ->
-            updateAdapterList(res)
+        viewModel.apply {
+            result.observe(viewLifecycleOwner) { res ->
+                updateAdapterList(res)
+            }
+            cartCost.observe(viewLifecycleOwner) {
+                it?.let {
+                    binding.cartSummary.text = getString(R.string.cart_cost,it)
+                }
+
+            }
         }
     }
 
@@ -68,7 +76,7 @@ class CartFragment : Fragment() {
         clearBtn.setOnClickListener {
             ConfirmDialog.newInstance(getString(R.string.confirm_clear_cart)) {
                 this@CartFragment.viewModel.clearCart()
-            }.show(childFragmentManager,"")
+            }.show(childFragmentManager, "")
         }
         label.setText(R.string.cart)
         lifecycleOwner = viewLifecycleOwner

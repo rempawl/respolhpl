@@ -9,6 +9,7 @@ import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,6 +19,10 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
     private val _result = MutableLiveData<Result<*>>(Result.Loading)
     val result: LiveData<Result<*>>
         get() = _result
+
+    private val _cartCost = MutableLiveData<Double>()
+    val cartCost: LiveData<Double>
+        get() = _cartCost
 
     init {
         viewModelScope.launch {
@@ -33,9 +38,17 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
     }
 
     private suspend fun getCart() {
-        cartRepository.getProducts().collectLatest {
+        cartRepository.getProducts().onEach {
+            updateCartCostIfSuccess(it)
+        }.collectLatest {
             _result.postValue(it)
         }
+    }
+
+    private fun updateCartCostIfSuccess(result: Result<*>) {
+        result.checkIfIsSuccessAndListOf<CartProduct>()
+            ?.sumOf { it.cost }
+            ?.let { _cartCost.postValue(it) }
     }
 
     fun clearCart() {

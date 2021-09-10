@@ -14,7 +14,6 @@ import dagger.hilt.android.HiltAndroidApp
 //todo tests
 //todo ui tests
 
-//todo cart quantity not opening keyboard on first touch
 
 @HiltAndroidApp
 class RespolApp : Application()

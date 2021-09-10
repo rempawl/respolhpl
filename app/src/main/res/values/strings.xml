@@ -55,5 +55,6 @@
     <string name="product">Product</string>
     <string name="label_main">RespolHPL</string>
     <string name="confirm_clear_cart">Are you sure you want to clear the cart</string>
+    <string name="cart_cost">Cart cost: %1$f</string>
 
 </resources>
