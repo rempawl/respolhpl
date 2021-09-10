@@ -14,9 +14,9 @@ import javax.inject.Inject
 class CartRepositoryImpl @Inject constructor(
     private val cartProductDao: CartProductDao,
     private val dispatchersProvider: DispatchersProvider
-) :    CartRepository {
+) : CartRepository {
 
-    override suspend fun getProducts() : Flow<Result<*>> =
+    override suspend fun getProducts(): Flow<Result<*>> =
         cartProductDao.getCartProducts().catch { Result.Error(it) }
             .map { Result.Success(it.map { cartProductEntity -> CartProduct.from(cartProductEntity) }) }
 
@@ -29,6 +29,12 @@ class CartRepositoryImpl @Inject constructor(
     override suspend fun delete(product: CartProduct) {
         withContext(dispatchersProvider.io) {
             cartProductDao.delete(CartProductEntity.from(product))
+        }
+    }
+
+    override suspend fun clearCart() {
+        withContext(dispatchersProvider.io) {
+            cartProductDao.deleteAll()
         }
     }
 

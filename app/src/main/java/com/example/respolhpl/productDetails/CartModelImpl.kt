@@ -14,13 +14,13 @@ class CartModelImpl : CartModel() {
     override fun createCartProductAndChangeQuantity(product: Product): CartProduct {
         _addToCartCount.value = Event(currentCartQuantity)
         val res = createCartProduct(product)
-        changeCartQuantity()
+        resetCartQuantity()
         return res
     }
 
-    private fun changeCartQuantity() {
+    private fun resetCartQuantity() {
         maxQuantity -= currentCartQuantity
-        currentCartQuantity = 0
+        currentCartQuantity = 1
     }
 
 }

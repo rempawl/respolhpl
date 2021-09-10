@@ -25,7 +25,7 @@ abstract class CartModel : BaseObservable() {
     val cartQuantity: LiveData<Int>
         get() = _cartQuantity
 
-    var currentCartQuantity: Int = 0
+    var currentCartQuantity: Int = 1
         set(value) {
             field = if (value > maxQuantity) maxQuantity else value
             _cartQuantity.postValue(value)
@@ -34,7 +34,7 @@ abstract class CartModel : BaseObservable() {
         }
 
     @Bindable
-    var maxQuantity = 0
+    var maxQuantity = 1
         set(value) {
             field = value
             notifyPropertyChanged(BR.plusBtnEnabled)

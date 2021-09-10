@@ -6,8 +6,6 @@ import dagger.hilt.android.HiltAndroidApp
 
 //todo order
 //todo favs
-//todo clear cart
-//todo cart navigation
 //todo cart select
 
 //todo cart summary

@@ -14,6 +14,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.respolhpl.R
 import com.example.respolhpl.databinding.FragmentHomeBinding
 import com.example.respolhpl.utils.autoCleared
 import com.example.respolhpl.utils.event.EventObserver
@@ -84,7 +85,7 @@ class HomeFragment : Fragment() {
         viewModel = this@HomeFragment.viewModel
         lifecycleOwner = viewLifecycleOwner
         toolbar.apply {
-            label.text = "RespolHPL"
+            label.text = getString(R.string.label_main)
             cartBtn.setOnClickListener { findNavController().navigate(HomeFragmentDirections.actionNavHomeToCartFragment()) }
             toolbar.menuBtn.setOnClickListener {
                 //todo

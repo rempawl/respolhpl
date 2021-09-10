@@ -2,7 +2,6 @@ package com.example.respolhpl.cart
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -31,7 +30,6 @@ class CartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true)
         binding = CartFragmentBinding.inflate(inflater)
 
         return binding.root
@@ -46,7 +44,7 @@ class CartFragment : Fragment() {
     }
 
     private fun onDeleteBtnClick(prod: CartProduct) {
-        ConfirmDialog(getString(R.string.deletion_confirmation_title)) {
+        ConfirmDialog.newInstance(getString(R.string.deletion_confirmation_title)) {
             viewModel.deleteFromCart(prod)
         }.show(childFragmentManager, "")
     }
@@ -64,11 +62,14 @@ class CartFragment : Fragment() {
     }
 
 
-
-
     private fun CartFragmentBinding.setupBinding() {
         setupProductsListAdapter()
         backBtn.setOnClickListener { findNavController().navigateUp() }
+        clearBtn.setOnClickListener {
+            ConfirmDialog.newInstance(getString(R.string.confirm_clear_cart)) {
+                this@CartFragment.viewModel.clearCart()
+            }.show(childFragmentManager,"")
+        }
         label.setText(R.string.cart)
         lifecycleOwner = viewLifecycleOwner
         viewModel = this@CartFragment.viewModel
@@ -77,7 +78,6 @@ class CartFragment : Fragment() {
     private fun CartFragmentBinding.setupProductsListAdapter() {
         prodsList.apply {
             adapter = this@CartFragment.adapter
-            setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
         }
     }
