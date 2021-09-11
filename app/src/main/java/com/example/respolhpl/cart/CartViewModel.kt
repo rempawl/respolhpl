@@ -20,6 +20,10 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
     val result: LiveData<Result<*>>
         get() = _result
 
+    private val _isEmpty = MutableLiveData<Boolean>()
+    val isEmpty: LiveData<Boolean>
+        get() = _isEmpty
+
     private val _cartCost = MutableLiveData<Double>()
     val cartCost: LiveData<Double>
         get() = _cartCost
@@ -39,10 +43,16 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
 
     private suspend fun getCart() {
         cartRepository.getProducts().onEach {
-            updateCartCostIfSuccess(it)
+            updateCartState(it)
         }.collectLatest {
             _result.postValue(it)
         }
+    }
+
+    private fun updateCartState(result: Result<*>) {
+        updateCartCostIfSuccess(result)
+        val isEmpty = (result.checkIfIsSuccessAndListOf<CartProduct>()?.size ?: 0) == 0
+        _isEmpty.postValue(isEmpty)
     }
 
     private fun updateCartCostIfSuccess(result: Result<*>) {

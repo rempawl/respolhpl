@@ -8,12 +8,14 @@
         <variable
             name="viewModel"
             type="com.example.respolhpl.cart.CartViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".cart.CartFragment">
+
 
         <ImageView
             android:id="@+id/toolbar"
@@ -55,6 +57,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/back_btn" />
 
+        <TextView
+            android:layout_marginTop="24dp"
+            android:id="@+id/empty_cart_text"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/your_cart_is_empty"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <ImageView
+            android:id="@+id/empty_cart_icon"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_remove_shopping_cart"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/empty_cart_text" />
+
         <include
             layout="@layout/error_layout"
             showWhen="@{viewModel.result.error}"
@@ -78,13 +104,14 @@
         <TextView
             android:id="@+id/cart_summary"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:textSize="16sp"
+            android:background="@drawable/bg_white_corner_5"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@color/white"
             android:gravity="center"
-
             android:textColor="@color/black"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/label" />

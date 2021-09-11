@@ -56,10 +56,23 @@ class CartFragment : Fragment() {
             }
             cartCost.observe(viewLifecycleOwner) {
                 it?.let {
-                    binding.cartSummary.text = getString(R.string.cart_cost,it)
+                    binding.cartSummary.text = getString(R.string.cart_cost, it)
                 }
-
             }
+            isEmpty.observe(viewLifecycleOwner) {
+                it?.let {
+                    updateEmptyView(it)
+                }
+            }
+        }
+    }
+
+    private fun updateEmptyView(isEmpty: Boolean) {
+        binding.apply {
+            val vis = if (isEmpty) View.VISIBLE else View.GONE
+            emptyCartText.visibility = vis
+            emptyCartIcon.visibility = vis
+            clearBtn.visibility = if (isEmpty) View.GONE else View.VISIBLE
         }
     }
 
