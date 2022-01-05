@@ -3,8 +3,8 @@ package com.example.respolhpl.home
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.PagingData
 import com.example.respolhpl.CoroutineTestRule
-import com.example.respolhpl.fakes.FakeData
 import com.example.respolhpl.data.sources.repository.ProductRepository
+import com.example.respolhpl.fakes.FakeData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -42,5 +42,10 @@ class HomeViewModelTest {
             verifyBlocking(repository) { getProducts() }
 
         }
+    }
+
+    @Test
+    fun doTaskTest() {
+
     }
 }

@@ -1,5 +1,6 @@
 package com.example.respolhpl.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -29,10 +30,13 @@ class HomeViewModel @Inject constructor(
     var result: Flow<PagingData<ProductMinimal>>? = null
         private set
 
+
     init {
         viewModelScope.launch {
-            getProducts()
+                    getProducts()
+
         }
+
     }
 
     fun navigate(id: Int) {

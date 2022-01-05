@@ -8,57 +8,39 @@ import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(private val cartRepository: CartRepository) : ViewModel() {
 
-    private val _result = MutableLiveData<Result<*>>(Result.Loading)
-    val result: LiveData<Result<*>>
+
+    private val _result = MutableStateFlow<Result<*>>(Result.Loading)
+    val result: StateFlow<Result<*>>
         get() = _result
+    private val successRes = result.filter { it.isSuccess }
 
-    private val _isEmpty = MutableLiveData<Boolean>()
-    val isEmpty: LiveData<Boolean>
-        get() = _isEmpty
+    val isEmpty: Flow<Boolean> = successRes.map {
+        (it as Result.Success<List<*>>).data.isEmpty()
+    }
 
-    private val _cartCost = MutableLiveData<Double>()
-    val cartCost: LiveData<Double>
-        get() = _cartCost
+    val cartCost: Flow<Double> = successRes.map {
+        (it as Result.Success<List<CartProduct>>).data.sumOf { it.cost }
+    }
 
     init {
         viewModelScope.launch {
-            getCart()
+            cartRepository.getProducts().collectLatest {
+                _result.value = it
+            }
         }
     }
-
 
     fun deleteFromCart(product: CartProduct) {
         viewModelScope.launch {
             cartRepository.delete(product)
         }
-    }
-
-    private suspend fun getCart() {
-        cartRepository.getProducts().onEach {
-            updateCartState(it)
-        }.collectLatest {
-            _result.postValue(it)
-        }
-    }
-
-    private fun updateCartState(result: Result<*>) {
-        updateCartCostIfSuccess(result)
-        val isEmpty = (result.checkIfIsSuccessAndListOf<CartProduct>()?.size ?: 0) == 0
-        _isEmpty.postValue(isEmpty)
-    }
-
-    private fun updateCartCostIfSuccess(result: Result<*>) {
-        result.checkIfIsSuccessAndListOf<CartProduct>()
-            ?.sumOf { it.cost }
-            ?.let { _cartCost.postValue(it) }
     }
 
     fun clearCart() {

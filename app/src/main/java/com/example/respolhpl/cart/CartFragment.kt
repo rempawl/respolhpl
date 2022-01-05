@@ -6,6 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.respolhpl.R
@@ -14,6 +18,9 @@ import com.example.respolhpl.data.Result
 import com.example.respolhpl.databinding.CartFragmentBinding
 import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CartFragment : Fragment() {
@@ -49,19 +56,29 @@ class CartFragment : Fragment() {
         }.show(childFragmentManager, "")
     }
 
+
     private fun setupObservers() {
-        viewModel.apply {
-            result.observe(viewLifecycleOwner) { res ->
-                updateAdapterList(res)
-            }
-            cartCost.observe(viewLifecycleOwner) {
-                it?.let {
-                    binding.cartSummary.text = getString(R.string.cart_cost, it)
+        this.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.result.collectLatest {
+                        updateAdapterList(it)
+                    }
                 }
-            }
-            isEmpty.observe(viewLifecycleOwner) {
-                it?.let {
-                    updateEmptyView(it)
+                launch {
+                    viewModel.isEmpty.stateIn(lifecycleScope)
+                        .collectLatest {
+                            updateEmptyView(it)
+
+                        }
+                }
+                launch {
+                    //todo
+                    viewModel.cartCost
+                        .stateIn(lifecycleScope)
+                        .collectLatest {
+                            binding.cartSummary.text = getString(R.string.cart_cost, it)
+                        }
                 }
             }
         }
