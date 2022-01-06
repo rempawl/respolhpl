@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.databinding.ItemCartProductBinding
 
+//todo cart summary
 class CartProductAdapter(private val onDeleteClickListener: (CartProduct) -> Unit) :
     ListAdapter<CartProduct, RecyclerView.ViewHolder>(Diff()) {
     companion object {

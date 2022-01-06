@@ -25,10 +25,6 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
         (it as Result.Success<List<*>>).data.isEmpty()
     }
 
-    val cartCost: Flow<Double> = successRes.map {
-        (it as Result.Success<List<CartProduct>>).data.sumOf { it.cost }
-    }
-
     init {
         viewModelScope.launch {
             cartRepository.getProducts().collectLatest {

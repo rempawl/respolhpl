@@ -28,7 +28,7 @@ class FullScreenImagesFragment : Fragment() {
 
     val viewModel by viewModels<FullScreenImagesViewModel>()
     var imagesAdapter by autoCleared<ImagesAdapter>()
-    var binding by autoCleared<FullScreenImagesFragmentBinding>()
+    var binding : FullScreenImagesFragmentBinding? = null
 
     private val onPageChangeCallback by lazy { OnPageChangeCallbackImpl(viewModel) }
 
@@ -45,7 +45,7 @@ class FullScreenImagesFragment : Fragment() {
         setHasOptionsMenu(true)
         setupObservers()
         setupBinding()
-        return binding.root
+        return binding!!.root
     }
 
     private fun setupObservers() {
@@ -58,7 +58,7 @@ class FullScreenImagesFragment : Fragment() {
 
     private fun setupBinding() {
         val vm = viewModel
-        binding.apply {
+        binding?.apply {
             viewModel = vm
 
             errorRoot.retryButton.setOnClickListener { vm.retry() }
@@ -69,9 +69,10 @@ class FullScreenImagesFragment : Fragment() {
         }
     }
 
-//    override fun onDestroyView() {
-//        binding.viewPager.unregisterOnPageChangeCallback(onPageChangeCallback)
-//        super.onDestroyView()
-//    }
+    override fun onDestroyView() {
+        binding?.viewPager?.unregisterOnPageChangeCallback(onPageChangeCallback)
+        binding = null
+        super.onDestroyView()
+    }
 
 }

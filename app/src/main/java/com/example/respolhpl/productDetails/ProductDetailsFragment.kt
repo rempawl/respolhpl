@@ -28,7 +28,7 @@ class ProductDetailsFragment : Fragment() {
 
     private var imagesAdapter: ImagesAdapter by autoCleared()
 
-    private var binding: ProductDetailsFragmentBinding by autoCleared()
+    private var binding: ProductDetailsFragmentBinding? = null
 
     private val viewModel: ProductDetailsViewModel by viewModels()
 
@@ -39,14 +39,18 @@ class ProductDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = ProductDetailsFragmentBinding.inflate(inflater, container, false)
+        return binding!!.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         imagesAdapter = ImagesAdapter {
             image.scaleType = ImageView.ScaleType.CENTER_CROP
             card.setOnClickListener { viewModel.navigate() }
         }
         setupObservers()
-        binding.setupBinding()
+        binding?.setupBinding()
 
-        return binding.root
     }
 
 
@@ -70,8 +74,8 @@ class ProductDetailsFragment : Fragment() {
         }
         )
         viewModel.cartModel.cartQuantity.observe(viewLifecycleOwner) {
-            if (binding.quantity.text.toString() != it.toString()) {
-                binding.quantity.setText(it.toString())
+            if (binding?.quantity?.text.toString() != it.toString()) {
+                binding?.quantity?.setText(it.toString())
             }
         }
         viewModel.cartModel.addToCartCount.observe(viewLifecycleOwner, EventObserver { count ->
@@ -113,6 +117,12 @@ class ProductDetailsFragment : Fragment() {
         cartModel = viewModel1.cartModel
     }
 
+    override fun onDestroyView() {
+        binding?.viewPager?.unregisterOnPageChangeCallback(onPageChangeCallback)
+        binding = null
+        super.onDestroyView()
+
+    }
 
     companion object {
         const val prodId = "productId"

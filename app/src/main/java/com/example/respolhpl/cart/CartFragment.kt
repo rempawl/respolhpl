@@ -17,6 +17,7 @@ import com.example.respolhpl.cart.data.CartProduct
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.databinding.CartFragmentBinding
 import com.example.respolhpl.utils.autoCleared
+import com.example.respolhpl.utils.extensions.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
@@ -60,29 +61,17 @@ class CartFragment : Fragment() {
     private fun setupObservers() {
         this.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.result.collectLatest {
-                        updateAdapterList(it)
+                viewModel.result.collectLatest {
+                    updateAdapterList(it)
+                }
+                viewModel.isEmpty.stateIn(lifecycleScope)
+                    .collectLatest {
+                        updateEmptyView(it)
                     }
-                }
-                launch {
-                    viewModel.isEmpty.stateIn(lifecycleScope)
-                        .collectLatest {
-                            updateEmptyView(it)
-
-                        }
-                }
-                launch {
-                    //todo
-                    viewModel.cartCost
-                        .stateIn(lifecycleScope)
-                        .collectLatest {
-                            binding.cartSummary.text = getString(R.string.cart_cost, it)
-                        }
-                }
             }
         }
     }
+
 
     private fun updateEmptyView(isEmpty: Boolean) {
         binding.apply {
