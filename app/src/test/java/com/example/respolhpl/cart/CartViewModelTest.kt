@@ -7,8 +7,11 @@ import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.cart.data.sources.CartRepositoryImpl
 import com.example.respolhpl.fakes.FakeCartProductDao
 import com.example.respolhpl.fakes.FakeData
+import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
@@ -30,7 +33,6 @@ class CartViewModelTest {
 
     @Before
     fun setup() {
-
         cartRepository = CartRepositoryImpl(FakeCartProductDao(), dispatcherProvider)
         viewModel = CartViewModel(cartRepository)
     }
@@ -38,24 +40,24 @@ class CartViewModelTest {
     @Test
     fun init() {
         coroutineTestRule.runBlockingTest {
-//            val res = viewModel.result.first
-//            res.checkIfIsSuccessAndListOf<CartProduct>()?.let { prods ->
-//                assertThat(prods, `is`(FakeData.cartProducts))
-//            }
+            val res = viewModel.result.firstOrNull()
+            assertNotNull(res)
+            res?.checkIfIsSuccessAndListOf<CartProduct>()?.let { prods ->
+                assertThat(prods, `is`(FakeData.cartProducts))
+            }
         }
     }
 
     @Test
     fun delete() {
         coroutineTestRule.runBlockingTest {
-            //todo
-            val prod = FakeData.cartProducts.first()
-            viewModel.deleteFromCart(prod)
-//            viewModel.result.first().checkIfIsSuccessAndListOf<CartProduct>()
-//                ?.let { prods ->
-//                    assertNull(prods.find { prod == it })
-//                }
-
+            val prod = FakeData.cartProducts.firstOrNull()
+            assertNotNull(prod)
+            viewModel.deleteFromCart(prod!!)
+            viewModel.result.first().checkIfIsSuccessAndListOf<CartProduct>()
+                ?.let { prods ->
+                    assertNull(prods.find { prod == it })
+                }
         }
     }
 }

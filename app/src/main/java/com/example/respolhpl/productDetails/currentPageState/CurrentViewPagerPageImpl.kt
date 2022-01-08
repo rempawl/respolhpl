@@ -1,17 +1,18 @@
 package com.example.respolhpl.productDetails.currentPageState
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 class CurrentViewPagerPageImpl @Inject constructor() : CurrentViewPagerPage {
 
-    private var _currentPage = MutableLiveData(0)
-    override val currentPage: LiveData<Int>
+    private var _currentPage = MutableStateFlow(0)
+    override val currentPage: StateFlow<Int>
         get() = _currentPage
 
     override fun saveCurrentPage(page: Int) {
-        _currentPage.value = page
+        _currentPage.update { page }
     }
 
 }

@@ -9,9 +9,6 @@
             name="viewModel"
             type="com.example.respolhpl.productDetails.ProductDetailsViewModel" />
 
-        <variable
-            name="cartModel"
-            type="com.example.respolhpl.productDetails.CartModel" />
 
         <import type="com.example.respolhpl.bindingAdapters.Converter" />
 
@@ -114,8 +111,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="0dp"
                                 android:background="@drawable/bg_cart_qnt_btn"
-                                android:enabled="@{cartModel.minusBtnEnabled}"
-                                android:onClick="@{() ->cartModel.onMinusBtnClick()}"
+                                android:onClick="@{() ->viewModel.onMinusBtnClick()}"
                                 android:text="@string/minus"
                                 android:textColor="@color/light_red"
                                 android:textSize="@dimen/def_text_size"
@@ -131,15 +127,15 @@
                                 android:inputType="number"
                                 android:paddingHorizontal="@dimen/def_padding"
                                 android:textSize="@dimen/def_text_size"
-                                tools:text="5" />
+                                tools:text="5"
+                                />
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/plus_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/bg_cart_qnt_btn"
-                                android:enabled="@{cartModel.isPlusBtnEnabled}"
-                                android:onClick="@{() -> cartModel.onPlusBtnClick()}"
+                                android:onClick="@{() -> viewModel.onPlusBtnClick()}"
                                 android:text="@string/plus"
                                 android:textColor="@color/light_red"
                                 android:textSize="@dimen/def_text_size"
@@ -151,7 +147,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="0dp"
                                 android:padding="@dimen/def_padding"
-                                android:text="@{@string/from_quantity(cartModel.maxQuantity)}"
                                 tools:text="z 10 sztuk" />
 
 
@@ -191,11 +186,10 @@
             <com.google.android.material.button.MaterialButton
                 android:backgroundTint="@color/white"
                 android:textColor="@color/light_red"
-                android:id="@+id/cartButton"
+                android:id="@+id/addToCartButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/def_margin"
-                android:onClick="@{() -> viewModel.onAddToCartClick()}"
                 android:text="@string/add_to_cart" />
 
             <com.google.android.material.button.MaterialButton

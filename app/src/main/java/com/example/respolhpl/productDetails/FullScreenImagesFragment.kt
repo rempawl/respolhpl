@@ -31,9 +31,6 @@ class FullScreenImagesFragment : Fragment() {
     var binding : FullScreenImagesFragmentBinding? = null
 
     private val onPageChangeCallback by lazy { OnPageChangeCallbackImpl(viewModel) }
-
-    private val args by navArgs<FullScreenImagesFragmentArgs>()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -9,18 +9,24 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.respolhpl.R
-import com.example.respolhpl.bindingAdapters.Converter
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.OnPageChangeCallbackImpl
 import com.example.respolhpl.utils.autoCleared
-import com.example.respolhpl.utils.event.EventObserver
+import com.example.respolhpl.utils.extensions.clicks
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ProductDetailsFragment : Fragment() {
 
@@ -46,10 +52,13 @@ class ProductDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         imagesAdapter = ImagesAdapter {
             image.scaleType = ImageView.ScaleType.CENTER_CROP
-            card.setOnClickListener { viewModel.navigate() }
+            card.clicks()
+                .flatMapLatest { viewModel.navigateToFullScreenImage() }
+                .onEach { navigateToFullScreenImageFragment(it) }
+                .launchIn(lifecycleScope)
         }
-        setupObservers()
         binding?.setupBinding()
+        setupObservers()
 
     }
 
@@ -60,28 +69,46 @@ class ProductDetailsFragment : Fragment() {
                 args.productId, curPage
             )
         )
-        viewModel.doneNavigating()
     }
 
     private fun setupObservers() {
-        viewModel.result.observe(viewLifecycleOwner) { res ->
-            res.checkIfIsSuccessAndType<Product>()?.let { prod ->
-                imagesAdapter.submitList(prod.images)
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.result.collectLatest {
+                        it.checkIfIsSuccessAndType<Product>()?.let { prod ->
+                            imagesAdapter.submitList(prod.images)
+                        }
+                    }
+                }
+                launch {
+                    viewModel.cartQuantity.collectLatest {
+                        if (binding?.quantity?.text.toString() != it.toString()) {
+                            binding?.quantity?.setText(it.toString())
+                        }
+                    }
+                }
+                viewModel.isPlusBtnEnabled
+                    .onEach {
+                        binding?.plusBtn?.isEnabled = it
+                    }
+                    .launchIn(this)
+                viewModel.isMinusBtnEnabled
+                    .onEach {
+                        binding?.minusBtn?.isEnabled = it
+                    }
+                    .launchIn(this)
+
+
             }
+//                viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver { curPage ->
+//                    navigateToFullScreenImageFragment(curPage)
+//                }
+//                )
+
         }
-        viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver { curPage ->
-            navigateToFullScreenImageFragment(curPage)
-        }
-        )
-        viewModel.cartModel.cartQuantity.observe(viewLifecycleOwner) {
-            if (binding?.quantity?.text.toString() != it.toString()) {
-                binding?.quantity?.setText(it.toString())
-            }
-        }
-        viewModel.cartModel.addToCartCount.observe(viewLifecycleOwner, EventObserver { count ->
-            showAddToCartToast(count)
-        })
     }
+
 
     private fun showAddToCartToast(count: Int) {
         Toast.makeText(
@@ -99,11 +126,21 @@ class ProductDetailsFragment : Fragment() {
             )
         }
 
-        quantity.setText(viewModel1.cartModel.currentCartQuantity.toString())
+
+//        quantity.setText(viewModel1.currentCartQuantity.toString())
         quantity.doOnTextChanged { text, _, _, _ ->
 
-            viewModel1.cartModel.currentCartQuantity = Converter.stringToInt(text.toString())
+//            viewModel1.cartModel.currentCartQuantity = Converter.stringToInt(text.toString())
 
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                addToCartButton.clicks().flatMapLatest {
+                    viewModel1.onAddToCartClick()
+                }.collect {
+                    showAddToCartToast(it)
+                }
+            }
         }
         toolbar.backBtn.setOnClickListener { findNavController().navigateUp() }
         toolbar.label.text = getString(R.string.product)
@@ -114,7 +151,6 @@ class ProductDetailsFragment : Fragment() {
         viewPager.adapter = imagesAdapter
         lifecycleOwner = viewLifecycleOwner
         viewPager.registerOnPageChangeCallback(onPageChangeCallback)
-        cartModel = viewModel1.cartModel
     }
 
     override fun onDestroyView() {
@@ -128,8 +164,6 @@ class ProductDetailsFragment : Fragment() {
         const val prodId = "productId"
         const val CURRENT_VIEW_PAGER_ITEM = "currentItem"
     }
-
-
 }
 
 

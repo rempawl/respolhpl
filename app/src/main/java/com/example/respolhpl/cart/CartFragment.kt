@@ -1,27 +1,29 @@
 package com.example.respolhpl.cart
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.respolhpl.R
-import com.example.respolhpl.cart.data.CartProduct
+import com.example.respolhpl.cart.data.CartItem
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.databinding.CartFragmentBinding
+import com.example.respolhpl.utils.DispatchersProvider
 import com.example.respolhpl.utils.autoCleared
-import com.example.respolhpl.utils.extensions.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CartFragment : Fragment() {
@@ -29,6 +31,9 @@ class CartFragment : Fragment() {
     companion object {
         fun newInstance() = CartFragment()
     }
+
+    @Inject
+    lateinit var dispatchersProvider: DispatchersProvider
 
     private val viewModel: CartViewModel by viewModels()
     private var adapter by autoCleared<CartProductAdapter>()
@@ -45,13 +50,12 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = CartProductAdapter { prod -> onDeleteBtnClick(prod) }
+        adapter = CartProductAdapter(dispatchersProvider) { prod -> onDeleteBtnClick(prod) }
         binding.setupBinding()
         setupObservers()
-
     }
 
-    private fun onDeleteBtnClick(prod: CartProduct) {
+    private fun onDeleteBtnClick(prod: CartItem.CartProduct) {
         ConfirmDialog.newInstance(getString(R.string.deletion_confirmation_title)) {
             viewModel.deleteFromCart(prod)
         }.show(childFragmentManager, "")
@@ -61,13 +65,16 @@ class CartFragment : Fragment() {
     private fun setupObservers() {
         this.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.result.collectLatest {
-                    updateAdapterList(it)
+                launch {
+                    viewModel.result.collectLatest {
+                        updateAdapterList(it)
+                    }
                 }
-                viewModel.isEmpty.stateIn(lifecycleScope)
-                    .collectLatest {
+                viewModel.isEmpty
+                    .onEach {
                         updateEmptyView(it)
                     }
+                    .launchIn(this)
             }
         }
     }
@@ -83,8 +90,8 @@ class CartFragment : Fragment() {
     }
 
     private fun updateAdapterList(res: Result<*>) {
-        res.checkIfIsSuccessAndListOf<CartProduct>()?.let { prods ->
-            adapter.submitList(prods)
+        res.checkIfIsSuccessAndListOf<CartItem.CartProduct>()?.let { prods ->
+            adapter.createSummaryAndSubmitList(prods)
         }
     }
 

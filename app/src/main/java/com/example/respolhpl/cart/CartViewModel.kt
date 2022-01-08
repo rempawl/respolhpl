@@ -1,10 +1,8 @@
 package com.example.respolhpl.cart
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.respolhpl.cart.data.CartProduct
+import com.example.respolhpl.cart.data.CartItem
 import com.example.respolhpl.cart.data.sources.CartRepository
 import com.example.respolhpl.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,7 +31,7 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
         }
     }
 
-    fun deleteFromCart(product: CartProduct) {
+    fun deleteFromCart(product: CartItem.CartProduct) {
         viewModelScope.launch {
             cartRepository.delete(product)
         }

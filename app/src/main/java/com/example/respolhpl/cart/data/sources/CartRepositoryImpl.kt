@@ -1,6 +1,6 @@
 package com.example.respolhpl.cart.data.sources
 
-import com.example.respolhpl.cart.data.CartProduct
+import com.example.respolhpl.cart.data.CartItem
 import com.example.respolhpl.cart.data.CartProductEntity
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.utils.DispatchersProvider
@@ -18,15 +18,15 @@ class CartRepositoryImpl @Inject constructor(
 
     override suspend fun getProducts(): Flow<Result<*>> =
         cartProductDao.getCartProducts().catch { Result.Error(it) }
-            .map { Result.Success(it.map { cartProductEntity -> CartProduct.from(cartProductEntity) }) }
+            .map { Result.Success(it.map { cartProductEntity -> CartItem.CartProduct.from(cartProductEntity) }) }
 
-    override suspend fun addProduct(product: CartProduct) {
+    override suspend fun addProduct(product: CartItem.CartProduct) {
         withContext(dispatchersProvider.io) {
             insertProductOrUpdateIfAlreadyIsInCart(product)
         }
     }
 
-    override suspend fun delete(product: CartProduct) {
+    override suspend fun delete(product: CartItem.CartProduct) {
         withContext(dispatchersProvider.io) {
             cartProductDao.delete(CartProductEntity.from(product))
         }
@@ -38,13 +38,13 @@ class CartRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun insertProductOrUpdateIfAlreadyIsInCart(product: CartProduct) {
+    private suspend fun insertProductOrUpdateIfAlreadyIsInCart(product: CartItem.CartProduct) {
         cartProductDao.getCartProductById(product.id).first()?.let { fromCart ->
             updateProduct(product.copy(quantity = fromCart.quantity + product.quantity))
         } ?: cartProductDao.insert(CartProductEntity.from(product))
     }
 
-    private suspend fun updateProduct(product: CartProduct) {
+    private suspend fun updateProduct(product: CartItem.CartProduct) {
         cartProductDao.update(CartProductEntity.from(product))
     }
 

@@ -57,5 +57,6 @@
     <string name="confirm_clear_cart">Are you sure you want to clear the cart</string>
     <string name="cart_cost">Cart cost: %1$f</string>
     <string name="your_cart_is_empty">Your cart is empty.</string>
+    <string name="payment_and_shipping">Dostawa i płatność</string>
 
 </resources>

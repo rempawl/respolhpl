@@ -25,7 +25,6 @@
     </style>
 
     <style name="cardStyle" parent="Widget.MaterialComponents.CardView">
-        <item name="android:layout_margin">@dimen/def_margin</item>
         <item name="cardCornerRadius">@dimen/card_radius</item>
     </style>
 

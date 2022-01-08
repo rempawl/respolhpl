@@ -76,7 +76,7 @@ class ProductDetailsViewModelTest {
 
     @Test
     fun navigation() {
-        viewModel.navigate()
+        viewModel.navigateToFullScreenImage()
         val page = viewModel.shouldNavigate.getOrAwaitValue().getContentIfNotHandled()
         assertThat(page, `is`(0))
     }

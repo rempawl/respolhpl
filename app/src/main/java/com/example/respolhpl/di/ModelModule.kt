@@ -1,7 +1,5 @@
 package com.example.respolhpl.di
 
-import com.example.respolhpl.productDetails.CartModel
-import com.example.respolhpl.productDetails.CartModelImpl
 import com.example.respolhpl.productDetails.currentPageState.CurrentViewPagerPage
 import com.example.respolhpl.productDetails.currentPageState.CurrentViewPagerPageImpl
 import dagger.Binds
@@ -19,8 +17,6 @@ abstract class ModelModule {
     abstract fun provideCurrentPageState(impl: CurrentViewPagerPageImpl): CurrentViewPagerPage
 
     companion object {
-        @Provides
-        @ViewModelScoped
-        fun provideCartModel(): CartModel = CartModelImpl()
+
     }
 }

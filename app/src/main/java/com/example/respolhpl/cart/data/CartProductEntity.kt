@@ -16,7 +16,7 @@ data class CartProductEntity(
 //    val shipping: Shipping
 ) {
     companion object{
-    fun from(cartProduct: CartProduct) = CartProductEntity(id = cartProduct.id,
+    fun from(cartProduct: CartItem.CartProduct) = CartProductEntity(id = cartProduct.id,
         name = cartProduct.name,
         price = cartProduct.price,
         thumbnailSrc = cartProduct.thumbnailSrc,
