@@ -2,7 +2,6 @@ package com.example.respolhpl.productDetails.currentPageState
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.respolhpl.getOrAwaitValue
-import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule

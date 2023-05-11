@@ -17,7 +17,6 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verifyBlocking
 
-@ExperimentalCoroutinesApi
 class HomeViewModelTest {
     lateinit var repository: ProductRepository
     lateinit var savedStateHandle: SavedStateHandle
@@ -38,7 +37,7 @@ class HomeViewModelTest {
     @Test
     fun initResult() {
         coroutineTestRule.runBlockingTest {
-            val res = viewModel.result?.first()
+            val res = viewModel.items?.first()
             verifyBlocking(repository) { getProducts() }
 
         }

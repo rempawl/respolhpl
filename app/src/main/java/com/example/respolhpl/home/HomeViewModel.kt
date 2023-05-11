@@ -1,18 +1,13 @@
 package com.example.respolhpl.home
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.data.sources.repository.ProductRepository
-import com.example.respolhpl.utils.ObservableViewModel
-import com.example.respolhpl.utils.event.Event
+import com.example.respolhpl.utils.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,32 +15,31 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository,
-    private val savedStateHandle: SavedStateHandle
-) : ObservableViewModel() {
+) : BaseViewModel() {
 
-    private val _shouldNavigate = MutableLiveData<Event<Int>>()
-    val shouldNavigate: LiveData<Event<Int>>
-        get() = _shouldNavigate
+    private val _shouldNavigate = MutableSharedFlow<Int>()
+    val shouldNavigate: SharedFlow<Int>
+        get() = _shouldNavigate.asSharedFlow()
 
-    var result: Flow<PagingData<ProductMinimal>>? = null
-        private set
 
+    private val _items = MutableStateFlow<PagingData<ProductMinimal>>(PagingData.empty())
+    val items: StateFlow<PagingData<ProductMinimal>> = _items.asStateFlow()
 
     init {
-        viewModelScope.launch {
-                    getProducts()
-
-        }
-
+        getProducts()
     }
 
     fun navigate(id: Int) {
-        _shouldNavigate.value = Event(id)
+        viewModelScope.launch { _shouldNavigate.emit(id) }
     }
 
-    private suspend fun getProducts() {
-        result = productRepository.getProducts()
-            .cachedIn(viewModelScope)
+    private fun getProducts() {
+        viewModelScope.launch {
+            productRepository.getProducts()
+                .cachedIn(viewModelScope)
+                .collectLatest { items -> _items.update { items } }
+        }
+
     }
 }
 

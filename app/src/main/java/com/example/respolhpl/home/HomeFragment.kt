@@ -17,10 +17,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.R
 import com.example.respolhpl.databinding.FragmentHomeBinding
 import com.example.respolhpl.utils.autoCleared
-import com.example.respolhpl.utils.event.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+
 
 
 @AndroidEntryPoint
@@ -47,6 +49,7 @@ class HomeFragment : Fragment() {
         binding.setupBinding()
         setupObservers()
         initAdapter()
+        TODO("migrate product viewmodel")
     }
 
 
@@ -62,17 +65,14 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun setupObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.result?.collect {
-                adapter.submitData(it)
-            }
+    private fun setupObservers() = with(viewLifecycleOwner.lifecycleScope) {
+        this.launch {
+            viewModel.items.collectLatest { adapter.submitData(it) }
         }
-        viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver { id ->
-            navigateToProductDetails(id)
-        })
 
-
+        viewModel.shouldNavigate
+            .onEach { id -> navigateToProductDetails(id) }
+            .launchIn(this)
     }
 
     private fun FragmentHomeBinding.setupBinding() {
@@ -82,8 +82,6 @@ class HomeFragment : Fragment() {
             setHasFixedSize(false)
         }
 
-        viewModel = this@HomeFragment.viewModel
-        lifecycleOwner = viewLifecycleOwner
         toolbar.apply {
             label.text = getString(R.string.label_main)
             cartBtn.setOnClickListener { findNavController().navigate(HomeFragmentDirections.actionNavHomeToCartFragment()) }

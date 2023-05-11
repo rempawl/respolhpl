@@ -105,8 +105,6 @@ class CartFragment : Fragment() {
             }.show(childFragmentManager, "")
         }
         label.setText(R.string.cart)
-        lifecycleOwner = viewLifecycleOwner
-        viewModel = this@CartFragment.viewModel
     }
 
     private fun CartFragmentBinding.setupProductsListAdapter() {

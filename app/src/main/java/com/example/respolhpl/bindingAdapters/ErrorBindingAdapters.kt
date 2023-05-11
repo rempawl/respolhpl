@@ -2,15 +2,14 @@ package com.example.respolhpl.bindingAdapters
 
 import android.content.Context
 import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import com.example.respolhpl.R
 import com.example.respolhpl.data.Result
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 
+//todo fix
 object ErrorBindingAdapters {
 
-    @BindingAdapter("bindError")
     fun TextView.bindError(result: Result<*>) {
         val errorMsg = createErrorMsgIfIsError(result, context) ?: ""
         if (errorMsg.isNotBlank() && text != errorMsg) {

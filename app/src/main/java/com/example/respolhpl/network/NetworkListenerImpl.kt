@@ -1,19 +1,20 @@
 package com.example.respolhpl.network
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 class NetworkListenerImpl @Inject constructor() : NetworkListener {
-    private val _isConnected = MutableLiveData<Boolean>(true)
-    override val isConnected: LiveData<Boolean>
+    private val _isConnected = MutableStateFlow(true)
+    override val isConnected: Flow<Boolean>
         get() = _isConnected
 
     override fun onAvailable() {
-        _isConnected.postValue(true)
+        _isConnected.update { true }
     }
 
     override fun onUnavailable() {
-        _isConnected.postValue(false)
+        _isConnected.update { false }
     }
 }

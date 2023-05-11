@@ -57,7 +57,7 @@ class CartProductAdapter(
             onDeleteClickListener: (CartItem.CartProduct) -> Unit
         ) {
             binding.apply {
-                product = item
+//                product = item
                 deleteBtn.setOnClickListener { onDeleteClickListener(item) }
             }
         }

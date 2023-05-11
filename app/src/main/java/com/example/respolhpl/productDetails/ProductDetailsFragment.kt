@@ -145,11 +145,11 @@ class ProductDetailsFragment : Fragment() {
         toolbar.backBtn.setOnClickListener { findNavController().navigateUp() }
         toolbar.label.text = getString(R.string.product)
 
-        viewModel = viewModel1
+//        viewModel = viewModel1
         errorRoot.retryButton.setOnClickListener { viewModel1.retry() }
 
         viewPager.adapter = imagesAdapter
-        lifecycleOwner = viewLifecycleOwner
+//        lifecycleOwner = viewLifecycleOwner
         viewPager.registerOnPageChangeCallback(onPageChangeCallback)
     }
 

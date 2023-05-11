@@ -1,9 +1,7 @@
 package com.example.respolhpl.bindingAdapters
 
-import androidx.databinding.InverseMethod
 
 object Converter {
-    @InverseMethod("stringToInt")
     @JvmStatic
     fun intToString(
         value: Int

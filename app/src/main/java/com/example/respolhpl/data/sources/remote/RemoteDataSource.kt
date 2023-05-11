@@ -2,13 +2,13 @@ package com.example.respolhpl.data.sources.remote
 
 import com.example.respolhpl.data.product.remote.RemoteProduct
 import com.example.respolhpl.data.product.remote.RemoteProductMinimal
-import kotlinx.coroutines.Deferred
-import retrofit2.http.GET
-import retrofit2.http.Path
+import com.example.respolhpl.data.sources.remote.WooCommerceApi.Companion.DEFAULT_STATUS
 
 interface RemoteDataSource {
 
     suspend fun getProductById(id: Int): RemoteProduct
 
-    suspend fun getProducts(perPage: Int, page: Int): List<RemoteProductMinimal>
+    suspend fun getProducts(
+        perPage: Int, page: Int, status: String = DEFAULT_STATUS
+    ): List<RemoteProductMinimal>
 }

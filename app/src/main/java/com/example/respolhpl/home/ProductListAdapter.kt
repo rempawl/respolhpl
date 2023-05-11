@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.respolhpl.R
 import com.example.respolhpl.data.product.domain.ProductMinimal
 import com.example.respolhpl.databinding.ItemProductBinding
+import com.example.respolhpl.utils.extensions.loadImage
 
 typealias OnItemClickListener = (id: Int) -> Unit
 
@@ -19,9 +21,12 @@ class ProductListAdapter constructor(
         private val onItemClickListener: OnItemClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(productMinimal: ProductMinimal) {
-            binding.product = productMinimal
-            binding.productCard.setOnClickListener { onItemClickListener(productMinimal.id) }
+        fun bind(productMinimal: ProductMinimal) = binding.run {
+            price.text =
+                root.context.resources.getString(R.string.price, productMinimal.price) // todo ext
+            prodName.text = productMinimal.name
+            thumbnail.loadImage(productMinimal.thumbnailSrc)
+            productCard.setOnClickListener { onItemClickListener(productMinimal.id) }
         }
 
         companion object {

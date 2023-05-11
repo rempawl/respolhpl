@@ -1,7 +1,6 @@
 package com.example.respolhpl.productDetails
 
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.respolhpl.cart.data.CartItem
 import com.example.respolhpl.cart.data.sources.CartRepository
@@ -9,7 +8,7 @@ import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.productDetails.currentPageState.CurrentViewPagerPage
-import com.example.respolhpl.utils.ObservableViewModel
+import com.example.respolhpl.utils.BaseViewModel
 import com.example.respolhpl.utils.event.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -23,7 +22,7 @@ class ProductDetailsViewModel @Inject constructor(
     private val productRepository: ProductRepository,
     private val cartRepository: CartRepository,
     currentViewPagerPage: CurrentViewPagerPage
-) : ObservableViewModel(), CurrentViewPagerPage by currentViewPagerPage {
+) : BaseViewModel(), CurrentViewPagerPage by currentViewPagerPage {
     //todo maxQuantity
 
     private val _cartQuantity = MutableStateFlow(0)
