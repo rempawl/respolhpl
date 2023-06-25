@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.respolhpl.cart.data.CartItem
+import com.example.respolhpl.data.model.domain.CartItem
 import com.example.respolhpl.databinding.ItemCartProductBinding
 import com.example.respolhpl.databinding.ItemCartSummaryBinding
 import com.example.respolhpl.utils.DispatchersProvider

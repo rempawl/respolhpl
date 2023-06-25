@@ -1,11 +1,14 @@
 package com.example.respolhpl.productDetails
 
 import android.os.Bundle
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,7 +18,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.respolhpl.R
-import com.example.respolhpl.data.product.domain.Product
 import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.OnPageChangeCallbackImpl
@@ -75,40 +77,55 @@ class ProductDetailsFragment : Fragment() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.result.collectLatest {
-                        it.checkIfIsSuccessAndType<Product>()?.let { prod ->
-                            imagesAdapter.submitList(prod.images)
-                        }
+                    viewModel.state.collectLatest {
+                        binding!!.loading.root.isVisible = it.isLoading
+                        binding!!.errorRoot.root.isVisible = it.error != null
                     }
+
                 }
                 launch {
-                    viewModel.cartQuantity.collectLatest {
-                        if (binding?.quantity?.text.toString() != it.toString()) {
-                            binding?.quantity?.setText(it.toString())
+                    viewModel.product
+                        .filterNotNull()
+                        .collectLatest {
+                            imagesAdapter.submitList(it.images)
+                            with(binding!!) {
+                                toolbar.label.text = it.name
+                                prodPrice.text = it.toString()
+                                prodDesc.text = SpannableString(
+                                    HtmlCompat.fromHtml(
+                                        it.description,
+                                        HtmlCompat.FROM_HTML_MODE_COMPACT
+                                    )
+                                )
+                                prodName.text = it.name
+                            }
                         }
+                }
+            }
+
+            launch {
+                viewModel.cartQuantity.collectLatest {
+                    if (binding?.quantity?.text.toString() != it.toString()) {
+                        binding?.quantity?.setText(it.toString())
                     }
                 }
-                viewModel.isPlusBtnEnabled
-                    .onEach {
-                        binding?.plusBtn?.isEnabled = it
-                    }
-                    .launchIn(this)
-                viewModel.isMinusBtnEnabled
-                    .onEach {
-                        binding?.minusBtn?.isEnabled = it
-                    }
-                    .launchIn(this)
-
-
             }
-//                viewModel.shouldNavigate.observe(viewLifecycleOwner, EventObserver { curPage ->
-//                    navigateToFullScreenImageFragment(curPage)
-//                }
-//                )
+            viewModel.isPlusBtnEnabled
+                .onEach { binding?.plusBtn?.isEnabled = it }
+                .launchIn(this)
+
+            viewModel.isMinusBtnEnabled
+                .onEach { binding?.minusBtn?.isEnabled = it }
+                .launchIn(this)
+
+            launch {
+                viewModel.shouldNavigate.collectLatest { curPage ->
+                    navigateToFullScreenImageFragment(curPage)
+                }
+            }
 
         }
     }
-
 
     private fun showAddToCartToast(count: Int) {
         Toast.makeText(
@@ -119,7 +136,6 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun ProductDetailsFragmentBinding.setupBinding() {
-        val viewModel1 = this@ProductDetailsFragment.viewModel
         toolbar.cartBtn.setOnClickListener {
             findNavController().navigate(
                 ProductDetailsFragmentDirections.actionProductDetailsToCartFragment()
@@ -129,24 +145,23 @@ class ProductDetailsFragment : Fragment() {
 
 //        quantity.setText(viewModel1.currentCartQuantity.toString())
         quantity.doOnTextChanged { text, _, _, _ ->
-
 //            viewModel1.cartModel.currentCartQuantity = Converter.stringToInt(text.toString())
 
         }
-        lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                addToCartButton.clicks().flatMapLatest {
-                    viewModel1.onAddToCartClick()
-                }.collect {
-                    showAddToCartToast(it)
-                }
-            }
-        }
+//        lifecycleScope.launchWhenStarted {
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                addToCartButton.clicks().flatMapLatest {
+//                    viewModel1.onAddToCartClick()
+//                }.collect {
+//                    showAddToCartToast(it)
+//                }
+//            }
+//        }
         toolbar.backBtn.setOnClickListener { findNavController().navigateUp() }
         toolbar.label.text = getString(R.string.product)
 
 //        viewModel = viewModel1
-        errorRoot.retryButton.setOnClickListener { viewModel1.retry() }
+        errorRoot.retryButton.setOnClickListener { viewModel.retry() }
 
         viewPager.adapter = imagesAdapter
 //        lifecycleOwner = viewLifecycleOwner
@@ -161,10 +176,10 @@ class ProductDetailsFragment : Fragment() {
     }
 
     companion object {
-        const val prodId = "productId"
         const val CURRENT_VIEW_PAGER_ITEM = "currentItem"
     }
 }
+
 
 
 

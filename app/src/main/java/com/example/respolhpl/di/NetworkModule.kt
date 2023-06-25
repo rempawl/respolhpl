@@ -1,10 +1,9 @@
 package com.example.respolhpl.di
 
-import android.net.ConnectivityManager
+import android.content.Context
 import com.example.respolhpl.data.sources.remote.BasicAuthInterceptor
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.sources.remote.WooCommerceApi
-import com.example.respolhpl.network.NetworkCallbackImpl
 import com.example.respolhpl.network.NetworkListener
 import com.example.respolhpl.network.NetworkListenerImpl
 import com.squareup.moshi.Moshi
@@ -12,10 +11,13 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.File
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -24,16 +26,25 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideNetworkListener(): NetworkListener = NetworkListenerImpl()
+    fun provideNetworkListener(@ApplicationContext context: Context): NetworkListener =
+        NetworkListenerImpl(context)
 
-    @Singleton
-    @Provides
-    fun provideNetworkCallback(networkListener: NetworkListener): ConnectivityManager.NetworkCallback =
-        NetworkCallbackImpl(networkListener)
+//    @Singleton
+//    @Provides
+//    fun provideNetworkCallback(networkListener: NetworkListener): ConnectivityManager.NetworkCallback =
+//        NetworkCallbackImpl(networkListener)
 
     @Provides
     @Singleton
     fun provideMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+
+    @Provides
+    @Singleton
+    fun httpCache(@ApplicationContext context: Context): Cache {
+        val httpCacheDir = File(context.filesDir, "cache")
+        val httpCacheSize = (20 * 1024 * 1024 * 8L) // 20 MB
+        return Cache(httpCacheDir, httpCacheSize)
+    }
 
     @Provides
     @Singleton

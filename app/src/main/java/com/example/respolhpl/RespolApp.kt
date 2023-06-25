@@ -11,9 +11,11 @@ import dagger.hilt.android.HiltAndroidApp
 //todo cart summary
 //todo shipping
 
-//todo tests
-//todo ui tests
+// todo tests
+// todo ui tests
 
+// todo encode keys
+// todo splash
 
 @HiltAndroidApp
 class RespolApp : Application()

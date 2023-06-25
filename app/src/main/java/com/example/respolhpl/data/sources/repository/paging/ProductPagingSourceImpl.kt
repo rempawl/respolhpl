@@ -1,8 +1,8 @@
 package com.example.respolhpl.data.sources.repository.paging
 
 import androidx.paging.PagingState
-import com.example.respolhpl.data.product.domain.ProductMinimal
-import com.example.respolhpl.data.product.remote.RemoteProductMinimal
+import com.example.respolhpl.data.model.domain.ProductMinimal
+import com.example.respolhpl.data.model.remote.RemoteProductMinimal
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.utils.mappers.ListMapper
 import com.squareup.moshi.JsonDataException

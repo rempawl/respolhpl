@@ -1,14 +1,11 @@
 package com.example.respolhpl.fakes
 
-import com.example.respolhpl.cart.data.CartProduct
-import com.example.respolhpl.cart.data.CartProductEntity
 import com.example.respolhpl.data.Result
-import com.example.respolhpl.data.product.domain.Product
-import com.example.respolhpl.data.product.domain.ProductMinimal
-import com.example.respolhpl.data.product.entity.FavProductEntity
-import com.example.respolhpl.data.product.remote.ImageRemote
-import com.example.respolhpl.data.product.remote.RemoteProduct
-import com.example.respolhpl.data.product.remote.RemoteProductMinimal
+import com.example.respolhpl.data.model.domain.Product
+import com.example.respolhpl.data.model.domain.ProductMinimal
+import com.example.respolhpl.data.model.remote.ImageRemote
+import com.example.respolhpl.data.model.remote.RemoteProduct
+import com.example.respolhpl.data.model.remote.RemoteProductMinimal
 
 object FakeData {
     val resultSuccessProduct = Result.Success(
@@ -18,8 +15,7 @@ object FakeData {
             5,
             emptyList(),
             "src",
-            22.2,
-            ""
+            22.2
         )
     )
     val remoteProducts: List<RemoteProduct> = listOf(
@@ -102,8 +98,8 @@ object FakeData {
         )
     )
     val products = remoteProducts.map { Product.from(it) }
-    val cartEntities =
-        products.map { CartProductEntity(it.id, it.name, it.price, it.thumbnailSrc, CART_QUANTITY) }
+//    val cartEntities =
+//        products.map { CartProductEntity(it.id, it.name, it.price, it.thumbnailSrc, CART_QUANTITY) }
     val cartProducts = cartEntities.map { CartProduct.from(it) }
 
     val minimalProducts = products.map { ProductMinimal(it.id, it.name, it.price, it.thumbnailSrc) }

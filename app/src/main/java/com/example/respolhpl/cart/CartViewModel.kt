@@ -2,8 +2,8 @@ package com.example.respolhpl.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.respolhpl.cart.data.CartItem
-import com.example.respolhpl.cart.data.sources.CartRepository
+import com.example.respolhpl.data.model.domain.CartItem
+import com.example.respolhpl.data.sources.repository.CartRepository
 import com.example.respolhpl.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -29,6 +29,7 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
                 _result.value = it
             }
         }
+        _result.update { it }
     }
 
     fun deleteFromCart(product: CartItem.CartProduct) {

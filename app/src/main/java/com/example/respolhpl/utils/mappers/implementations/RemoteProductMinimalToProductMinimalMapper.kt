@@ -1,7 +1,7 @@
 package com.example.respolhpl.utils.mappers.implementations
 
-import com.example.respolhpl.data.product.domain.ProductMinimal
-import com.example.respolhpl.data.product.remote.RemoteProductMinimal
+import com.example.respolhpl.data.model.domain.ProductMinimal
+import com.example.respolhpl.data.model.remote.RemoteProductMinimal
 import com.example.respolhpl.utils.mappers.Mapper
 import javax.inject.Inject
 

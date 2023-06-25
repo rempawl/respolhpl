@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.R
-import com.example.respolhpl.data.product.domain.ProductMinimal
+import com.example.respolhpl.data.model.domain.ProductMinimal
 import com.example.respolhpl.databinding.ItemProductBinding
 import com.example.respolhpl.utils.extensions.loadImage
 

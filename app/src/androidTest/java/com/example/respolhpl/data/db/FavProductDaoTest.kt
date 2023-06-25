@@ -6,9 +6,6 @@ import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.respolhpl.data.sources.local.AppDataBase
-import com.example.respolhpl.data.sources.local.FavProductDao
-import com.example.respolhpl.fakes.FakeData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
@@ -20,6 +17,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 
+/*
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -80,3 +78,4 @@ class FavProductDaoTest {
     }
 
 }
+*/

@@ -1,67 +1,47 @@
+@file:OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
+
 package com.example.respolhpl.data.sources.repository
 
 import androidx.paging.PagingData
-import com.example.respolhpl.data.Result
-import com.example.respolhpl.data.product.domain.ProductMinimal
-import com.example.respolhpl.data.product.remote.RemoteProduct
+import com.example.respolhpl.data.model.domain.Image
+import com.example.respolhpl.data.model.domain.Product
+import com.example.respolhpl.data.model.domain.ProductMinimal
+import com.example.respolhpl.data.model.remote.ImageRemote
+import com.example.respolhpl.data.model.remote.RemoteProduct
+import com.example.respolhpl.data.model.remote.toDomain
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
-import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSource
 import com.example.respolhpl.data.sources.repository.paging.ProductsPagerFactory
+import com.example.respolhpl.data.store.ResponseStore
+import com.example.respolhpl.data.store.SOTFactory
 import com.example.respolhpl.utils.DispatchersProvider
 import com.example.respolhpl.utils.mappers.facade.MappersFacade
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
+import kotlin.time.ExperimentalTime
 
 class ProductRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val imagesSource: ImagesSource,
     private val dispatchersProvider: DispatchersProvider,
     private val productsPagerFactory: ProductsPagerFactory,
-    private val mappers: MappersFacade
+    private val mappers: MappersFacade,
+    sotFactory: SOTFactory
 ) : ProductRepository {
+
+    override val productDataStore: ResponseStore<Int, RemoteProduct, Product> =
+        ResponseStore(
+            { remoteDataSource.getProductById(it) },
+            sotFactory.create("product", mapper = { it.toDomain() })
+        )
+
+    override val productImagesDataStore: ResponseStore<Int, List<ImageRemote>, List<Image>> =
+        ResponseStore(
+            { remoteDataSource.getProductById(it).images },
+            sotFactory.create("product_images", mapper = { it.toDomain() })
+        )
 
     override suspend fun getProducts(): Flow<PagingData<ProductMinimal>> {
         return productsPagerFactory.create().flow
-    }
-
-    override suspend fun getProductById(id: Int): Flow<Result<*>> = getDataAsFlow {
-        try {
-            val res = getDataWithTimeout { remoteDataSource.getProductById(id) }
-            cacheImages(res)
-            Result.Success(mappers.prodRemoteToProd.map(res))
-        } catch (e: Exception) {
-            Result.Error(e)
-        }
-    }
-
-    override suspend fun getProductImages(id: Int): Flow<Result<*>> = getDataAsFlow {
-        try {
-            val res = imagesSource.getImages(prodId = id)
-            Result.Success(res)
-        } catch (e: Exception) {
-            Result.Error(e)
-        }
-    }
-
-    private suspend fun cacheImages(prod: RemoteProduct) {
-        val imgs = mappers.imgRemoteToImg.map(prod.images)
-        imagesSource.saveImages(imgs, prod.id)
-    }
-
-    private suspend fun getDataAsFlow(getter: suspend () -> Result<*>) =
-        flow {
-            emit(Result.Loading)
-            emit(getter())
-        }.flowOn(dispatchersProvider.io)
-
-
-    private suspend fun <T> getDataWithTimeout(getter: suspend () -> T): T {
-        return withTimeout(TIMEOUT) {
-            getter()
-        }
     }
 
     companion object {

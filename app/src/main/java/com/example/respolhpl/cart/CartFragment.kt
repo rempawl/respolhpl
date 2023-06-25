@@ -1,7 +1,6 @@
 package com.example.respolhpl.cart
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.respolhpl.R
-import com.example.respolhpl.cart.data.CartItem
+import com.example.respolhpl.data.model.domain.CartItem
 import com.example.respolhpl.data.Result
 import com.example.respolhpl.databinding.CartFragmentBinding
 import com.example.respolhpl.utils.DispatchersProvider

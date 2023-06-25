@@ -1,7 +1,7 @@
 package com.example.respolhpl.home
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.respolhpl.data.product.domain.ProductMinimal
+import com.example.respolhpl.data.model.domain.ProductMinimal
 
 
 class ProductDiff : DiffUtil.ItemCallback<ProductMinimal>() {

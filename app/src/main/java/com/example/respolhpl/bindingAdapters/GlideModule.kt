@@ -13,8 +13,8 @@ class GlideModule : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         super.applyOptions(context, builder)
         builder.setDefaultRequestOptions {
-            RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.ic_loading_black)
+            RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.ic_baseline_error_24)
         }
     }

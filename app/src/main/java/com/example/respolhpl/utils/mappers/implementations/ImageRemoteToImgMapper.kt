@@ -1,7 +1,7 @@
 package com.example.respolhpl.utils.mappers.implementations
 
-import com.example.respolhpl.data.product.domain.Image
-import com.example.respolhpl.data.product.remote.ImageRemote
+import com.example.respolhpl.data.model.domain.Image
+import com.example.respolhpl.data.model.remote.ImageRemote
 import com.example.respolhpl.utils.mappers.Mapper
 import javax.inject.Inject
 

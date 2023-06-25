@@ -49,8 +49,8 @@ class HomeFragment : Fragment() {
         binding.setupBinding()
         setupObservers()
         initAdapter()
-        TODO("migrate product viewmodel")
     }
+//        TODO("migrate product viewmodel")
 
 
     private fun initAdapter() {
@@ -85,9 +85,6 @@ class HomeFragment : Fragment() {
         toolbar.apply {
             label.text = getString(R.string.label_main)
             cartBtn.setOnClickListener { findNavController().navigate(HomeFragmentDirections.actionNavHomeToCartFragment()) }
-            toolbar.menuBtn.setOnClickListener {
-                //todo
-            }
         }
         error.retryButton.setOnClickListener { adapter.retry() }
     }

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.respolhpl.data.product.domain.Image
+import com.example.respolhpl.data.model.domain.Image
 import com.example.respolhpl.databinding.ItemImageBinding
 import com.example.respolhpl.utils.extensions.loadImage
 

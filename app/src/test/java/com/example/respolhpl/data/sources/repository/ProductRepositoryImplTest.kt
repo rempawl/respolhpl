@@ -3,10 +3,9 @@ package com.example.respolhpl.data.sources.repository
 import androidx.paging.PagingData
 import com.example.respolhpl.CoroutineTestRule
 import com.example.respolhpl.TestDispatchersProvider
-import com.example.respolhpl.data.product.domain.Image
-import com.example.respolhpl.data.product.domain.Product
+import com.example.respolhpl.data.model.domain.Image
+import com.example.respolhpl.data.model.domain.Product
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
-import com.example.respolhpl.data.sources.repository.imagesCache.ImagesSource
 import com.example.respolhpl.data.sources.repository.paging.ProductPagingSourceImpl
 import com.example.respolhpl.data.sources.repository.paging.ProductsPagerFactory
 import com.example.respolhpl.data.sources.repository.paging.ProductsPagerFactoryImpl

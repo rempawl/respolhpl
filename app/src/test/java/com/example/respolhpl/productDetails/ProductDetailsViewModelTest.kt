@@ -5,10 +5,10 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.respolhpl.CoroutineTestRule
 import com.example.respolhpl.fakes.FakeCartRepository
 import com.example.respolhpl.fakes.FakeData
-import com.example.respolhpl.cart.data.sources.CartRepository
+import com.example.respolhpl.data.sources.repository.CartRepository
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.getOrAwaitValue
-import com.example.respolhpl.productDetails.currentPageState.CurrentViewPagerPageImpl
+import com.example.respolhpl.productDetails.currentPageState.ViewPagerPageManagerImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -49,13 +49,13 @@ class ProductDetailsViewModelTest {
             productRepository,
             cartRepository,
             cartModel,
-            CurrentViewPagerPageImpl()
+            ViewPagerPageManagerImpl()
         )
     }
 
     @Test
     fun resultInit() {
-        val res = viewModel.result.getOrAwaitValue()
+        val res = viewModel.state.getOrAwaitValue()
         verifyBlocking(productRepository) { getProductById(1) }
         assertThat(res, `is`(FakeData.resultSuccessProduct))
         assertThat(

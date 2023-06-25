@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.respolhpl.data.product.domain.Image
+import com.example.respolhpl.data.model.domain.Image
 import com.example.respolhpl.databinding.FullScreenImagesFragmentBinding
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.OnPageChangeCallbackImpl
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class FullScreenImagesFragment : Fragment() {
 
-    private val viewModel by viewModels<FullScreenImagesViewModel>()
+    private val viewModel by viewModels<ProductImagesViewModel>()
     var imagesAdapter by autoCleared<ImagesAdapter>()
     var binding: FullScreenImagesFragmentBinding? = null
 

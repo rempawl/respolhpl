@@ -1,8 +1,8 @@
 package com.example.respolhpl.data
 
 import com.example.respolhpl.fakes.FakeData
-import com.example.respolhpl.data.product.domain.Image
-import com.example.respolhpl.data.product.domain.Product
+import com.example.respolhpl.data.model.domain.Image
+import com.example.respolhpl.data.model.domain.Product
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.*
 import org.junit.Test

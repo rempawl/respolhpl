@@ -2,7 +2,7 @@ package com.example.respolhpl.utils.extensions
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.example.respolhpl.data.product.domain.Image
+import com.example.respolhpl.data.model.domain.Image
 
 fun ImageView.loadImage(img: Image) {
     Glide.with(context)

@@ -6,25 +6,18 @@
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/colorPrimary">
 
-    <ImageView
-        android:id="@+id/menu_btn"
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:padding="16dp"
-        android:src="@drawable/ic_menu"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         android:textColor="@color/white"
         android:textSize="@dimen/def_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/menu_btn"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Label" />
+
     <ImageView
         android:id="@+id/cart_btn"
         android:layout_width="?attr/actionBarSize"

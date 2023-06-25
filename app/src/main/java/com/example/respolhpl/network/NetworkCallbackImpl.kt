@@ -4,6 +4,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import javax.inject.Inject
 
+/*
 class NetworkCallbackImpl @Inject constructor(private val networkListener: NetworkListener) :
     ConnectivityManager.NetworkCallback() {
 
@@ -17,4 +18,4 @@ class NetworkCallbackImpl @Inject constructor(private val networkListener: Netwo
         networkListener.onUnavailable()
     }
 
-}
+}*/

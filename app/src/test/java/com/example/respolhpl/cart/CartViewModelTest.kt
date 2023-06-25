@@ -3,9 +3,8 @@ package com.example.respolhpl.cart
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.respolhpl.*
 import com.example.respolhpl.cart.data.CartProduct
-import com.example.respolhpl.cart.data.sources.CartRepository
-import com.example.respolhpl.cart.data.sources.CartRepositoryImpl
-import com.example.respolhpl.fakes.FakeCartProductDao
+import com.example.respolhpl.data.sources.repository.CartRepository
+import com.example.respolhpl.data.sources.repository.CartRepositoryImpl
 import com.example.respolhpl.fakes.FakeData
 import junit.framework.Assert.assertNotNull
 import junit.framework.Assert.assertNull

@@ -3,7 +3,7 @@ package com.example.respolhpl.home
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.respolhpl.data.product.domain.ProductMinimal
+import com.example.respolhpl.data.model.domain.ProductMinimal
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.utils.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository,
-) : BaseViewModel() {
+) : BaseViewModel<Unit>(Unit) {
 
     private val _shouldNavigate = MutableSharedFlow<Int>()
     val shouldNavigate: SharedFlow<Int>

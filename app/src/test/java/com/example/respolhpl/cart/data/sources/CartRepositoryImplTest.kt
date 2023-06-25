@@ -2,10 +2,10 @@ package com.example.respolhpl.cart.data.sources
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.respolhpl.CoroutineTestRule
-import com.example.respolhpl.fakes.FakeCartProductDao
 import com.example.respolhpl.fakes.FakeData
 import com.example.respolhpl.TestDispatchersProvider
 import com.example.respolhpl.cart.data.CartProduct
+import com.example.respolhpl.data.sources.repository.CartRepositoryImpl
 import junit.framework.Assert.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
