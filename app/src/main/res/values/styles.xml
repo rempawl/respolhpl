@@ -19,9 +19,7 @@
 
     <style name="DescTextView" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textSize">@dimen/def_text_size</item>
-        <item name="android:layout_margin">@dimen/def_margin</item>
         <item name="android:background">@color/white</item>
-        <item name="android:padding">@dimen/def_padding</item>
     </style>
 
     <style name="cardStyle" parent="Widget.MaterialComponents.CardView">

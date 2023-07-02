@@ -34,14 +34,9 @@ abstract class RepositoryModule {
 
     }
 
-//    @Binds
-//    @Reusable
-//    abstract fun provideImagesSource(impl: ImagesSourceImpl): ImagesSource
-
     @Binds
     @Reusable
     abstract fun providePagerFactory(pagerFactoryImpl: ProductsPagerFactoryImpl): ProductsPagerFactory
-
 
     @Reusable
     @Binds

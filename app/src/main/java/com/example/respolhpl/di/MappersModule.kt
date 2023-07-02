@@ -23,14 +23,6 @@ abstract class MappersModule {
     @Reusable
     abstract fun provideMappersFacade(mappersFacadeImpl: MappersFacadeImpl): MappersFacade
 
-//    @Binds
-//    @Reusable
-//    abstract fun provideRemoteProdToProdMapper(mapper: ProductRemoteToProductMapper): Mapper<RemoteProduct, Product>
-
-//    @Binds
-//    @Reusable
-//    abstract fun provideImgToImgEntityMapper(mapper: ImgToImgEntityMapper): Mapper<Image, ImageEntity>
-
     companion object {
 
         @Provides
@@ -38,10 +30,6 @@ abstract class MappersModule {
         fun provideProductMinimalMapper(): Mapper<RemoteProductMinimal, ProductMinimal> =
             RemoteProductMinimalToProductMinimalMapper()
 
-
-//        @Provides
-//        @Reusable
-//        fun provideImageEntityMapper(): Mapper<ImageEntity, Image> = ImgEntityToImgMapper()
 
         @Provides
         @Reusable
@@ -52,19 +40,9 @@ abstract class MappersModule {
         fun provideProductMinimalListMapper(mapper: Mapper<RemoteProductMinimal, ProductMinimal>)
                 : ListMapper<RemoteProductMinimal, ProductMinimal> = ListMapperImpl(mapper)
 
-//        @Provides
-//        @Reusable
-//        fun provideImgEntityListMapper(mapper: Mapper<ImageEntity, Image>): NullableInputListMapper<ImageEntity, Image> =
-//            NullableInputListMapperImpl(mapper)
-
         @Provides
         @Reusable
         fun providesImgRemoteListMapper(mapper: Mapper<ImageRemote, Image>): ListMapper<ImageRemote, Image> =
             ListMapperImpl(mapper)
-
-//        @Provides
-//        @Reusable
-//        fun provideImgEntityToImgListMapper(mapper: Mapper<Image, ImageEntity>): ListMapper<Image, ImageEntity> =
-//            ListMapperImpl(mapper)
     }
 }

@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 
-
+//todo category filters
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
@@ -48,19 +48,22 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.setupBinding()
         setupObservers()
-        initAdapter()
+        binding.initAdapter()
     }
-//        TODO("migrate product viewmodel")
 
 
-    private fun initAdapter() {
-        binding.productList.adapter = adapter.withLoadStateFooter(
+    private fun FragmentHomeBinding.initAdapter() {
+        productList.apply {
+            layoutManager = chooseLayoutManager()
+            setHasFixedSize(false)
+        }
+        productList.adapter = adapter.withLoadStateFooter(
             footer = ProductLoadStateAdapter { adapter.retry() }
         )
         adapter.addLoadStateListener { loadState ->
-            binding.productList.isVisible = loadState.source.refresh is LoadState.NotLoading
-            binding.error.rootView.isVisible = loadState.source.refresh is LoadState.Error
-            binding.loading.progressView.isVisible = loadState.source.refresh is LoadState.Loading
+            productList.isVisible = loadState.source.refresh is LoadState.NotLoading
+            error.rootView.isVisible = loadState.source.refresh is LoadState.Error
+            loading.progressView.isVisible = loadState.source.refresh is LoadState.Loading
         }
     }
 
@@ -76,12 +79,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun FragmentHomeBinding.setupBinding() {
-        productList.apply {
-            adapter = this@HomeFragment.adapter
-            layoutManager = chooseLayoutManager()
-            setHasFixedSize(false)
-        }
-
         toolbar.apply {
             label.text = getString(R.string.label_main)
             cartBtn.setOnClickListener { findNavController().navigate(HomeFragmentDirections.actionNavHomeToCartFragment()) }

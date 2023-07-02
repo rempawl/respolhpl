@@ -20,7 +20,7 @@
     <string name="buy_now">Kup teraz</string>
     <string name="add_to_cart">Dodaj do koszyka</string>
     <string name="product_image_desc">product_image</string>
-    <string name="from_quantity">z %1$d sztuk</string>
+    <string name="product_max_quantity">z %1$d sztuk</string>
 
     <string name="plus">+</string>
     <string name="minus">-</string>

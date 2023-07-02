@@ -5,9 +5,9 @@ import com.example.respolhpl.productDetails.currentPageState.ViewPagerPageManage
 
 class OnPageChangeCallbackImpl(private val viewPagerPageManager: ViewPagerPageManager) :
     ViewPager2.OnPageChangeCallback() {
+
     override fun onPageSelected(position: Int) {
         super.onPageSelected(position)
         viewPagerPageManager.saveCurrentPage(position)
     }
-
 }

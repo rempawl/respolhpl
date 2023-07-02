@@ -3,35 +3,20 @@ package com.example.respolhpl.utils
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.concurrent.atomic.AtomicInteger
-
-class ProgressCounter {
-    private val count = AtomicInteger()
-    private val progressState = MutableStateFlow(count.get())
-
-    val observeState: Flow<Boolean>
-        get() = progressState.map { it > 0 }.distinctUntilChanged()
-
-    fun addProgress() {
-        progressState.value = count.incrementAndGet()
-    }
-
-    fun removeProgress() {
-        progressState.value = count.decrementAndGet()
-    }
-}
 
 abstract class BaseViewModel<State>(initialState: State) : ViewModel() {
 
     val progress = ProgressCounter()
 
-    private val _state = MutableStateFlow<State>(initialState)
+    private val _state = MutableStateFlow(initialState)
     val state = _state.asStateFlow()
 
-    protected fun setState(update: (State) -> State) {
-        _state.update { update(it) }
+    protected fun setState(update: State.() -> State) {
+        _state.update { it.update() }
     }
 
     fun observeProgress(
@@ -56,24 +41,5 @@ abstract class BaseViewModel<State>(initialState: State) : ViewModel() {
             progressCounter.removeProgress()
         }
     }
-// todo base progress etc
-//
-//    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback) {
-//        callbacks.add(callback)
-//    }
-//
-//    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback) {
-//        callbacks.remove(callback)
-//    }
-
-
-//    @Suppress("unused")
-//    fun notifyChange() {
-//        callbacks.notifyCallbacks(this, 0, null)
-//    }
-//
-//    fun notifyPropertyChanged(fieldId: Int) {
-//        callbacks.notifyCallbacks(this, fieldId, null)
-//    }
 }
 

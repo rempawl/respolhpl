@@ -9,7 +9,7 @@ import com.example.respolhpl.databinding.ItemImageBinding
 import com.example.respolhpl.utils.extensions.loadImage
 
 class ImagesAdapter constructor(
-    private val bindingDecorator: ItemImageBinding.() -> Unit
+    private val bindingDecorator: ItemImageBinding.() -> Unit = {}
 ) : ListAdapter<Image, ImagesAdapter.ImageViewHolder>(ImageDiffUtil()) {
 
     class ImageViewHolder private constructor(private val binding: ItemImageBinding) :
@@ -22,8 +22,6 @@ class ImagesAdapter constructor(
                 decorate()
             }
         }
-
-
 
         companion object {
             fun from(parent: ViewGroup): ImageViewHolder {
@@ -42,6 +40,4 @@ class ImagesAdapter constructor(
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         holder.bind(getItem(position), "${position + 1}/$itemCount", bindingDecorator)
     }
-
-
 }

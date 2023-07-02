@@ -1,6 +1,7 @@
 package com.example.respolhpl.di
 
 import android.content.Context
+import com.example.respolhpl.BuildConfig
 import com.example.respolhpl.data.sources.remote.BasicAuthInterceptor
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.sources.remote.WooCommerceApi
@@ -29,11 +30,6 @@ object NetworkModule {
     fun provideNetworkListener(@ApplicationContext context: Context): NetworkListener =
         NetworkListenerImpl(context)
 
-//    @Singleton
-//    @Provides
-//    fun provideNetworkCallback(networkListener: NetworkListener): ConnectivityManager.NetworkCallback =
-//        NetworkCallbackImpl(networkListener)
-
     @Provides
     @Singleton
     fun provideMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
@@ -58,7 +54,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideOKHTTPClient(): OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(BasicAuthInterceptor(CLI, PRIV))
+        .addInterceptor(BasicAuthInterceptor(BuildConfig.API_CLIENT, BuildConfig.API_PRIVATE))
         .build()
 
 
@@ -67,8 +63,7 @@ object NetworkModule {
     fun provideRemoteDataSource(retrofit: Retrofit): RemoteDataSource =
         retrofit.create(WooCommerceApi::class.java)
 
-    private const val CLI = "ck_07ce9301bc3d1cad02dc4fe9de33eed0a2704ab0"
-    private const val PRIV = "cs_c495e920282576a06ebbe89872c6469ac58df2ff"
+
     private const val BASE_URL = "https://respolhpl-sklep.pl"
 
 }

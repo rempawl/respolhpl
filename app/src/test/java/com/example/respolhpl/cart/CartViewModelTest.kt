@@ -2,7 +2,7 @@ package com.example.respolhpl.cart
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.respolhpl.*
-import com.example.respolhpl.cart.data.CartProduct
+import com.example.respolhpl.data.model.domain.CartItem
 import com.example.respolhpl.data.sources.repository.CartRepository
 import com.example.respolhpl.data.sources.repository.CartRepositoryImpl
 import com.example.respolhpl.fakes.FakeData
@@ -32,7 +32,7 @@ class CartViewModelTest {
 
     @Before
     fun setup() {
-        cartRepository = CartRepositoryImpl(FakeCartProductDao(), dispatcherProvider)
+        cartRepository = CartRepositoryImpl(dispatcherProvider)
         viewModel = CartViewModel(cartRepository)
     }
 
@@ -41,7 +41,7 @@ class CartViewModelTest {
         coroutineTestRule.runBlockingTest {
             val res = viewModel.result.firstOrNull()
             assertNotNull(res)
-            res?.checkIfIsSuccessAndListOf<CartProduct>()?.let { prods ->
+            res?.checkIfIsSuccessAndListOf<CartItem.CartProduct>()?.let { prods ->
                 assertThat(prods, `is`(FakeData.cartProducts))
             }
         }

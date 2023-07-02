@@ -13,15 +13,6 @@
         layout="@layout/toolbar_default"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/loading"
-        layout="@layout/loading_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <include
         android:id="@+id/error_root"
@@ -32,11 +23,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
     <ScrollView
+        android:id="@+id/product_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        >
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,101 +47,102 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="400dp">
+                android:layout_height="400dp" />
 
 
-            </androidx.viewpager2.widget.ViewPager2>
-
-            <androidx.cardview.widget.CardView
-                style="@style/cardStyle"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="wrap_content"
+                android:background="@color/white">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/prod_name"
+                    style="@style/DefaultHeader"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/prod_price"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Antybakteryjna Deska do Krojenia Natura" />
+
+
+                <TextView
+                    android:id="@+id/prod_price"
+                    style="@style/DefaultHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/minus_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/prod_name"
+                    tools:text="42.99 zł" />
+
+                <Button
+                    android:id="@+id/minus_btn"
+                    android:layout_width="@dimen/min_clickable_size"
+                    android:layout_height="@dimen/min_clickable_size"
+                    android:background="@drawable/bg_cart_qnt_btn"
+                    android:text="@string/minus"
+                    android:textColor="@color/light_red"
+                    android:textSize="@dimen/def_text_size"
+                    app:backgroundTint="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/quantity"
+                    app:layout_constraintStart_toStartOf="@id/prod_price"
+                    app:layout_constraintTop_toBottomOf="@id/prod_price" />
+
+                <EditText
+                    android:id="@+id/quantity"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/def_margin">
+                    android:digits="0123456789"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:paddingHorizontal="@dimen/def_padding"
+                    android:textSize="@dimen/def_text_size"
+                    app:layout_constraintBottom_toBottomOf="@id/minus_btn"
+                    app:layout_constraintEnd_toStartOf="@id/plus_btn"
+                    app:layout_constraintStart_toEndOf="@id/minus_btn"
+                    app:layout_constraintTop_toTopOf="@id/minus_btn"
+                    tools:text="5" />
 
-                    <TextView
-                        android:id="@+id/prod_name"
-                        style="@style/DefaultHeader"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Antybakteryjna Deska do Krojenia Natura" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/plus_btn"
+                    android:layout_width="@dimen/min_clickable_size"
+                    android:layout_height="@dimen/min_clickable_size"
+                    android:background="@drawable/bg_cart_qnt_btn"
+                    android:text="@string/plus"
+                    android:textColor="@color/light_red"
+                    android:textSize="@dimen/def_text_size"
+                    app:backgroundTint="@null"
+                    app:layout_constraintBottom_toBottomOf="@id/quantity"
+                    app:layout_constraintEnd_toStartOf="@id/max_quantity"
+                    app:layout_constraintStart_toEndOf="@id/quantity"
+                    app:layout_constraintTop_toTopOf="@id/quantity" />
 
-
-                    <TextView
-                        android:id="@+id/prod_price"
-                        style="@style/DefaultHeader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/prod_name"
-                        tools:text="42.99 zł" />
-
-                    <GridLayout
-                        android:id="@+id/quantity_picker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent">
-
-                        <Button
-                            android:id="@+id/minus_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="0dp"
-                            android:background="@drawable/bg_cart_qnt_btn"
-                            android:text="@string/minus"
-                            android:textColor="@color/light_red"
-                            android:textSize="@dimen/def_text_size"
-                            app:backgroundTint="@null" />
-
-                        <EditText
-                            android:id="@+id/quantity"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_columnWeight="1"
-                            android:digits="0123456789"
-                            android:imeOptions="actionDone"
-                            android:inputType="number"
-                            android:paddingHorizontal="@dimen/def_padding"
-                            android:textSize="@dimen/def_text_size"
-                            tools:text="5" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/plus_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_cart_qnt_btn"
-                            android:text="@string/plus"
-                            android:textColor="@color/light_red"
-                            android:textSize="@dimen/def_text_size"
-                            app:backgroundTint="@null" />
-
-                        <TextView
-                            style="@style/DefaultBodyText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="0dp"
-                            android:padding="@dimen/def_padding"
-                            tools:text="z 10 sztuk" />
+                <TextView
+                    android:id="@+id/max_quantity"
+                    style="@style/DefaultBodyText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/def_padding"
+                    app:layout_constraintBottom_toBottomOf="@id/plus_btn"
+                    app:layout_constraintStart_toEndOf="@id/plus_btn"
+                    app:layout_constraintTop_toTopOf="@id/plus_btn"
+                    tools:text="z 10 sztuk" />
 
 
-                    </GridLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/prod_desc"
                 style="@style/DescTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="12dp"
                 android:background="@color/white"
                 android:focusable="true"
+                android:padding="@dimen/def_padding"
                 tools:text="@string/tools_desc" />
 
             <TextView
@@ -152,13 +154,16 @@
     </ScrollView>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/bottom_bar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/light_red"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/def_padding"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addToCartButton"

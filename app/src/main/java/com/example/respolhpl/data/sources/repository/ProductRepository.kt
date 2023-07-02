@@ -15,10 +15,11 @@ import kotlin.time.ExperimentalTime
 
 interface ProductRepository {
 
-    val productImagesDataStore: ResponseStore<Int, List<ImageRemote>, List<Image>>
     suspend fun getProducts(): Flow<PagingData<ProductMinimal>>
 //    suspend fun getProductById(id: Int): RemoteProduct
 //    suspend fun getProductImages(id : Int): List<Image>
 
     val productDataStore: ResponseStore<Int, RemoteProduct, Product>
+    val productImagesDataStore: ResponseStore<Int, List<ImageRemote>, List<Image>>
+
 }
