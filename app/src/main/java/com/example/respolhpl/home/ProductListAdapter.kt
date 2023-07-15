@@ -2,7 +2,7 @@ package com.example.respolhpl.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.R
 import com.example.respolhpl.data.model.domain.ProductMinimal
@@ -13,7 +13,7 @@ typealias OnItemClickListener = (id: Int) -> Unit
 
 class ProductListAdapter constructor(
     private val onItemClickListener: (id: Int) -> Unit
-) : PagingDataAdapter<ProductMinimal, ProductListAdapter.ProductViewHolder>(ProductDiff()) {
+) : ListAdapter<ProductMinimal, ProductListAdapter.ProductViewHolder>(ProductDiff()) {
 
 
     class ProductViewHolder private constructor(

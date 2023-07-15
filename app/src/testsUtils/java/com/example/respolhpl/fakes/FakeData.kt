@@ -1,6 +1,6 @@
 package com.example.respolhpl.fakes
 
-import com.example.respolhpl.data.Result
+import com.example.respolhpl.data.model.domain.Image
 import com.example.respolhpl.data.model.domain.Product
 import com.example.respolhpl.data.model.domain.ProductMinimal
 import com.example.respolhpl.data.model.remote.ImageRemote
@@ -8,16 +8,15 @@ import com.example.respolhpl.data.model.remote.RemoteProduct
 import com.example.respolhpl.data.model.remote.RemoteProductMinimal
 
 object FakeData {
-    val resultSuccessProduct = Result.Success(
-        Product(
-            1,
-            "test",
-            5,
-            emptyList(),
-            "src",
-            22.2
-        )
-    )
+    //    val resultSuccessProduct = Result.Success(
+//        Product(
+//            1,
+//            "test",
+//            5,
+//            emptyList(),
+//            "src",
+//        )
+//    )
     val remoteProducts: List<RemoteProduct> = listOf(
         RemoteProduct(
 //            tags = listOf(RemoteTag("deska do krojenia")),
@@ -97,19 +96,29 @@ object FakeData {
 //            shipping_class_id = 73
         )
     )
-    val products = remoteProducts.map { Product.from(it) }
+    val products = remoteProducts.map {
+        Product(
+            id = it.id,
+            name = it.name,
+            quantity = it.stock_quantity ?: 0,
+            images = it.images.map { img -> Image(img.src, img.id) },
+            price = it.price,
+            description = it.description,
+            thumbnailSrc = it.images.first().src
+        )
+    }
 //    val cartEntities =
 //        products.map { CartProductEntity(it.id, it.name, it.price, it.thumbnailSrc, CART_QUANTITY) }
-    val cartProducts = cartEntities.map { CartProduct.from(it) }
+//    val cartProducts = cartEntities.map { CartProduct.from(it) }
 
-    val minimalProducts = products.map { ProductMinimal(it.id, it.name, it.price, it.thumbnailSrc) }
+        val minimalProducts = products.map { ProductMinimal(it.id, it.name, it.price, it.thumbnailSrc) }
     val favProductEntities = remoteProducts.map { prod ->
-        FavProductEntity(
-            price = prod.price,
-            id = prod.id,
-            name = prod.name,
-            thumbnailSrc = prod.images.first().src
-        )
+//        FavProductEntity(
+//            price = prod.price,
+//            id = prod.id,
+//            name = prod.name,
+//            thumbnailSrc = prod.images.first().src
+//        )
     }
     val minRemoteProds =
         remoteProducts.map { RemoteProductMinimal(it.id, it.name, it.price, it.images) }

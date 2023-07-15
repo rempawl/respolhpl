@@ -1,7 +1,6 @@
 package com.example.respolhpl.data.sources.repository
 
 import com.example.respolhpl.data.model.domain.CartItem
-import com.example.respolhpl.data.Result
 import kotlinx.coroutines.flow.Flow
 
 interface CartRepository {

@@ -1,8 +1,7 @@
 package com.example.respolhpl.fakes
 
-import com.example.respolhpl.data.sources.repository.CartRepository
-import com.example.respolhpl.data.Result
 import com.example.respolhpl.data.model.domain.CartItem
+import com.example.respolhpl.data.sources.repository.CartRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -10,7 +9,7 @@ class FakeCartRepository : CartRepository {
     private val prods = mutableListOf<CartItem.CartProduct>()
 
     override suspend fun getProducts(): Flow<Result<*>> = flow {
-        emit(Result.Success(prods))
+//        emit(Result.Success(prods))
     }
 
 

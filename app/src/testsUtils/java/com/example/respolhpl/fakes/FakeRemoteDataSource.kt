@@ -21,9 +21,7 @@ class FakeRemoteDataSource @Inject constructor() : RemoteDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getProducts(perPage: Int, page: Int): List<RemoteProductMinimal> {
-        return FakeData.minRemoteProds
-    }
+
 }
 
 class TimeoutFakeDataSource : RemoteDataSource {
@@ -40,12 +38,6 @@ class TimeoutFakeDataSource : RemoteDataSource {
         status: String
     ): List<RemoteProductMinimal> {
         TODO("Not yet implemented")
-    }
-
-
-    override suspend fun getProducts(perPage: Int, page: Int): List<RemoteProductMinimal> {
-        delay(ProductRepositoryImpl.TIMEOUT + 100)
-        return FakeData.minRemoteProds
     }
 
 }

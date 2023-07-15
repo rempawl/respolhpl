@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.respolhpl.R
 import com.example.respolhpl.data.model.domain.CartItem
-import com.example.respolhpl.data.Result
 import com.example.respolhpl.databinding.CartFragmentBinding
 import com.example.respolhpl.utils.DispatchersProvider
 import com.example.respolhpl.utils.autoCleared
@@ -64,16 +63,16 @@ class CartFragment : Fragment() {
     private fun setupObservers() {
         this.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.result.collectLatest {
-                        updateAdapterList(it)
-                    }
-                }
-                viewModel.isEmpty
-                    .onEach {
-                        updateEmptyView(it)
-                    }
-                    .launchIn(this)
+//                launch {
+//                    viewModel.result.collectLatest {
+//                        updateAdapterList(it)
+//                    }
+//                }
+//                viewModel.isEmpty
+//                    .onEach {
+//                        updateEmptyView(it)
+//                    }
+//                    .launchIn(this)
             }
         }
     }
@@ -89,9 +88,9 @@ class CartFragment : Fragment() {
     }
 
     private fun updateAdapterList(res: Result<*>) {
-        res.checkIfIsSuccessAndListOf<CartItem.CartProduct>()?.let { prods ->
-            adapter.createSummaryAndSubmitList(prods)
-        }
+//        res.checkIfIsSuccessAndListOf<CartItem.CartProduct>()?.let { prods ->
+//            adapter.createSummaryAndSubmitList(prods)
+//        }
     }
 
 

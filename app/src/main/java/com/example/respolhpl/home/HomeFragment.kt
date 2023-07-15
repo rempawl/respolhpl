@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +19,7 @@ import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -57,23 +57,24 @@ class HomeFragment : Fragment() {
             layoutManager = chooseLayoutManager()
             setHasFixedSize(false)
         }
-        productList.adapter = adapter.withLoadStateFooter(
-            footer = ProductLoadStateAdapter { adapter.retry() }
-        )
-        adapter.addLoadStateListener { loadState ->
-            productList.isVisible = loadState.source.refresh is LoadState.NotLoading
-            error.rootView.isVisible = loadState.source.refresh is LoadState.Error
-            loading.progressView.isVisible = loadState.source.refresh is LoadState.Loading
-        }
+//        productList.adapter = adapter.withLoadStateFooter(
+//            footer = ProductLoadStateAdapter { adapter.retry() }
+//        )
+//        adapter.addLoadStateListener { loadState ->
+//            productList.isVisible = loadState.source.refresh is LoadState.NotLoading
+//            error.rootView.isVisible = loadState.source.refresh is LoadState.Error
+//            loading.progressView.isVisible = loadState.source.refresh is LoadState.Loading
+//        }
     }
 
 
     private fun setupObservers() = with(viewLifecycleOwner.lifecycleScope) {
         this.launch {
-            viewModel.items.collectLatest { adapter.submitData(it) }
+//            viewModel.items.collectLatest { adapter.submitData(it) }
         }
 
         viewModel.shouldNavigate
+            .map { it.id }
             .onEach { id -> navigateToProductDetails(id) }
             .launchIn(this)
     }
@@ -83,7 +84,7 @@ class HomeFragment : Fragment() {
             label.text = getString(R.string.label_main)
             cartBtn.setOnClickListener { findNavController().navigate(HomeFragmentDirections.actionNavHomeToCartFragment()) }
         }
-        error.retryButton.setOnClickListener { adapter.retry() }
+//        error.retryButton.setOnClickListener { adapter.retry() }
     }
 
     private fun navigateToProductDetails(id: Int) {
