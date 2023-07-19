@@ -1,4 +1,4 @@
-package com.example.respolhpl.data.paging
+package com.example.respolhpl.paging
 
 import com.example.respolhpl.utils.extensions.DefaultError
 import com.example.respolhpl.utils.extensions.EitherResult
@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -75,7 +74,7 @@ class PagingManager<Item>(
         return flow {
             updateLoadingState(phase)
             emitAll(
-                dataSource(PagingParam(loadedItemsSize(), getLimit(phase)))
+                dataSource(PagingParam(currentPage(), getLimit(phase)))
                     .onSuccess { newItems ->
                         _pagingData.update {
                             it.copy(
@@ -101,13 +100,14 @@ class PagingManager<Item>(
                     )
                 )
             }
+
             LoadMorePhase.LoadingMore -> {
                 _pagingData.emit(_pagingData.value.copy(loadState = LoadState.Loading.LoadingMore))
             }
         }
     }
 
-    private fun loadedItemsSize() = _pagingData.value.items.size
+    private fun currentPage() = 1 + _pagingData.value.items.size / config.perPage
 
     private fun getErrorState(phase: LoadMorePhase, error: DefaultError) =
         when (phase) {
@@ -118,9 +118,10 @@ class PagingManager<Item>(
     private fun getLimit(phase: LoadMorePhase) =
         when (phase) {
             LoadMorePhase.Init -> config.prefetchSize
-            LoadMorePhase.LoadingMore -> config.limit
+            LoadMorePhase.LoadingMore -> config.perPage
         }
 }
+
 /**
  *  Code taken from https://github.com/Kotlin/kotlinx.coroutines/issues/1446#issuecomment-625244176
  */

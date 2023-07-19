@@ -39,7 +39,5 @@ class NetworkListenerImpl @Inject constructor(context: Context) : NetworkListene
         }
     }
         .distinctUntilChanged()
-        .flowOn(Dispatchers.IO)
-
 }
 

@@ -19,9 +19,6 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 @Module
 abstract class RepositoryModule {
 
-    companion object {
-
-    }
 
     @Reusable
     @Binds

@@ -5,14 +5,14 @@ package com.example.respolhpl.data.sources.repository
 import com.example.respolhpl.data.model.domain.Product
 import com.example.respolhpl.data.model.domain.ProductMinimal
 import com.example.respolhpl.data.model.remote.RemoteProduct
+import com.example.respolhpl.data.model.remote.RemoteProductMinimal
 import com.example.respolhpl.data.model.remote.toDomain
-import com.example.respolhpl.data.paging.PagingData
+import com.example.respolhpl.paging.PagingParam
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.store.ResponseStore
 import com.example.respolhpl.data.store.SOTFactory
+import com.example.respolhpl.data.usecase.StoreUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
@@ -27,11 +27,12 @@ class ProductRepositoryImpl @Inject constructor(
             { remoteDataSource.getProductById(it) },
             sotFactory.create("product", mapper = { it.toDomain() })
         )
+    override val productsDataStore: ResponseStore<PagingParam, List<RemoteProductMinimal>, List<ProductMinimal>> =
+        ResponseStore(
+            { remoteDataSource.getProducts(it.perPage, it.page) },
+            sotFactory.create("products", mapper = { it.toDomain() })
+        )
 
-    override suspend fun getProducts(): Flow<PagingData<ProductMinimal>> {
-        return flowOf(PagingData())
-//        return productsPagerFactory.create().flow
-    }
 
     companion object {
         const val TIMEOUT: Long = 10_000
@@ -39,3 +40,6 @@ class ProductRepositoryImpl @Inject constructor(
 
 }
 
+
+class GetProductsUseCase @Inject constructor(private val repo: ProductRepository) :
+    StoreUseCase<PagingParam, List<ProductMinimal>>(repo.productsDataStore)

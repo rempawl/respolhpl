@@ -1,6 +1,5 @@
-package com.example.respolhpl.data.paging
+package com.example.respolhpl.paging
 
-import com.example.respolhpl.data.model.domain.ProductMinimal
 
 data class PagingData<T>(
     val items: List<T> = emptyList(),

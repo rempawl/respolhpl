@@ -1,12 +1,14 @@
 package com.example.respolhpl.di
 
 import android.content.Context
+import android.util.Log
 import com.example.respolhpl.BuildConfig
 import com.example.respolhpl.data.sources.remote.BasicAuthInterceptor
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.sources.remote.WooCommerceApi
 import com.example.respolhpl.network.NetworkListener
 import com.example.respolhpl.network.NetworkListenerImpl
+import com.moczul.ok2curl.CurlInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -44,6 +46,14 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun curlLoggingInterceptor(): CurlInterceptor {
+        return CurlInterceptor { message ->
+            Log.d("curl", message)
+        }
+    }
+
+    @Provides
+    @Singleton
     fun provideRetrofit(client: OkHttpClient, moshi: Moshi): Retrofit =
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -53,7 +63,10 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOKHTTPClient(): OkHttpClient = OkHttpClient.Builder()
+    fun provideOKHTTPClient(
+        curlLoggingInterceptor: CurlInterceptor
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(curlLoggingInterceptor)
         .addInterceptor(BasicAuthInterceptor(BuildConfig.API_CLIENT, BuildConfig.API_PRIVATE))
         .build()
 

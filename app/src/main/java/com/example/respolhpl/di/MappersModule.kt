@@ -5,8 +5,6 @@ import com.example.respolhpl.data.model.domain.ProductMinimal
 import com.example.respolhpl.data.model.remote.ImageRemote
 import com.example.respolhpl.data.model.remote.RemoteProductMinimal
 import com.example.respolhpl.utils.mappers.*
-import com.example.respolhpl.utils.mappers.facade.MappersFacade
-import com.example.respolhpl.utils.mappers.facade.MappersFacadeImpl
 import com.example.respolhpl.utils.mappers.implementations.*
 import dagger.Binds
 import dagger.Module
@@ -18,10 +16,6 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class MappersModule {
-
-    @Binds
-    @Reusable
-    abstract fun provideMappersFacade(mappersFacadeImpl: MappersFacadeImpl): MappersFacade
 
     companion object {
 
