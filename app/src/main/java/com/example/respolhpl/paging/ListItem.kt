@@ -10,10 +10,6 @@ interface BaseListItem {
     val itemId: Any
 }
 
-open class UniqueListItem : BaseListItem {
-    override val itemId: Any = this::class.java.simpleName
-}
-
 inline fun <T : BaseListItem> LazyListScope.listItems(
     items: List<T>,
     crossinline itemContent: @Composable LazyItemScope.(item: T) -> Unit
@@ -24,18 +20,3 @@ inline fun <T : BaseListItem> LazyListScope.listItems(
 ) { item ->
     itemContent(item)
 }
-
-inline fun <T : BaseListItem> LazyListScope.listItemsIndexed(
-    items: List<T>,
-    crossinline itemContent: @Composable LazyItemScope.(index: Int, item: T) -> Unit
-) = itemsIndexed(
-    items = items,
-    key = { _, item -> item.itemId },
-    contentType = { _, item -> item.javaClass }
-) { index, item ->
-    itemContent(index, item)
-}
-
-class UnknownListItemException(
-    item: BaseListItem
-) : IllegalArgumentException("Unknown list element: $item")

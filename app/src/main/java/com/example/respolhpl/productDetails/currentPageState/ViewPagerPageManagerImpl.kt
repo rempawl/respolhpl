@@ -14,5 +14,4 @@ class ViewPagerPageManagerImpl @Inject constructor() : ViewPagerPageManager {
     override fun saveCurrentPage(page: Int) {
         _currentPage.update { page }
     }
-
 }

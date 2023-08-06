@@ -107,7 +107,15 @@ class PagingManager<Item>(
         }
     }
 
-    private fun currentPage() = 1 + _pagingData.value.items.size / config.perPage
+    private fun currentPage(): Int {
+        // todo refactor
+        return if (_pagingData.value.items.isEmpty()) 1
+        else {
+            val nextPages = _pagingData.value.items.size - config.prefetchSize //what if below zero
+            val pages = nextPages / config.perPage
+            2 + pages
+        }
+    }
 
     private fun getErrorState(phase: LoadMorePhase, error: DefaultError) =
         when (phase) {

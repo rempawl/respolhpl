@@ -1,27 +1,49 @@
 package com.example.respolhpl.home
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import coil.compose.rememberAsyncImagePainter
 import com.example.respolhpl.R
 import com.example.respolhpl.databinding.FragmentHomeBinding
+import com.example.respolhpl.paging.PagedLazyColumn
+import com.example.respolhpl.paging.pagedContent
 import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 
 //todo category filters
@@ -30,7 +52,6 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
 
-    private var adapter: ProductListAdapter by autoCleared()
     private var binding: FragmentHomeBinding by autoCleared()
 
     override fun onCreateView(
@@ -38,40 +59,89 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        adapter = ProductListAdapter(onItemClickListener = { id -> viewModel.navigate(id) })
         binding = FragmentHomeBinding.inflate(inflater)
 
+        binding.composeView.apply {
+            // Dispose of the Composition when the view's LifecycleOwner
+            // is destroyed
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                MaterialTheme {
+                    val listState = rememberLazyListState()
+                    val pagingData by viewModel.pagingData.collectAsState()
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .systemBarsPadding()
+                            .padding(top = 56.dp) // todo move toolbar from xml
+                    ) {
+                        PagedLazyColumn(
+                            listState = listState,
+                        ) {
+                            pagedContent(
+                                data = pagingData,
+                                retry = { viewModel.retry() },
+                                emptyPlaceholder = { Text(text = "empty data") },
+                                itemView = { ProductItem(it) }
+                            )
+                        }
+                    }
+                }
+            }
+        }
         return binding.root
+    }
+
+    @Composable
+    private fun ProductItem(item: HomeViewModel.ProductMinimalListItem) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.medium)
+                .clickable { viewModel.navigate(item.product.id) }
+        ) {
+            Image(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(0.5f)
+                    .clip(
+                        MaterialTheme.shapes.medium.copy(
+                            topEnd = CornerSize(0.dp),
+                            bottomEnd = CornerSize(0.dp)
+                        )
+                    ),
+                painter = rememberAsyncImagePainter(
+                    model = item.product.thumbnailSrc,
+                    contentScale = ContentScale.FillBounds
+                ), contentDescription = null,
+                contentScale = ContentScale.FillBounds
+            )
+            Column(
+                Modifier
+                    .weight(1f)
+                    .padding(12.dp)
+            ) {
+                Text(text = item.product.name)
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    text = stringResource(
+                        R.string.price,
+                        item.product.price
+                    )
+                )
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.setupBinding()
         setupObservers()
-        binding.initAdapter()
     }
-
-
-    private fun FragmentHomeBinding.initAdapter() {
-        productList.apply {
-            layoutManager = chooseLayoutManager()
-            setHasFixedSize(false)
-        }
-//        productList.adapter = adapter.withLoadStateFooter(
-//            footer = ProductLoadStateAdapter { adapter.retry() }
-//        )
-//        adapter.addLoadStateListener { loadState ->
-//            productList.isVisible = loadState.source.refresh is LoadState.NotLoading
-//            error.rootView.isVisible = loadState.source.refresh is LoadState.Error
-//            loading.progressView.isVisible = loadState.source.refresh is LoadState.Loading
-//        }
-    }
-
 
     private fun setupObservers() = with(viewLifecycleOwner.lifecycleScope) {
-        this.launch {
-//            viewModel.items.collectLatest { adapter.submitData(it) }
-        }
 
         viewModel.shouldNavigate
             .map { it.id }
@@ -84,7 +154,6 @@ class HomeFragment : Fragment() {
             label.text = getString(R.string.label_main)
             cartBtn.setOnClickListener { findNavController().navigate(HomeFragmentDirections.actionNavHomeToCartFragment()) }
         }
-//        error.retryButton.setOnClickListener { adapter.retry() }
     }
 
     private fun navigateToProductDetails(id: Int) {
@@ -92,9 +161,4 @@ class HomeFragment : Fragment() {
             HomeFragmentDirections.navigationHomeToProductDetails(id)
         )
     }
-
-    private fun RecyclerView.chooseLayoutManager(): RecyclerView.LayoutManager =
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
-            GridLayoutManager(context, 2)
-        else LinearLayoutManager(context)
 }

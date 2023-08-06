@@ -9,7 +9,7 @@ sealed class Shipping {
 
     //abstract fun calculateCost() : Double todo
     data class Shipping5pcsLaminat(
-        override val cost: Double = 30.0, override val maxQuantity: Int = 5
+        override val cost: Double = 30.0, override val maxQuantity: Int = 5 // todo from api
     ) : Shipping() {
         override fun toShippingClassID(): Int = SHIPPING_LAMINAT_ID
     }

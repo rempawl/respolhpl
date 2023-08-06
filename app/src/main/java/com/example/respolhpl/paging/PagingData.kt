@@ -6,5 +6,4 @@ data class PagingData<T>(
     val loadState: LoadState = LoadState.Loading.InitialLoading
 ) {
     val isPlaceholderVisible: Boolean = loadState is LoadState.Success && items.isEmpty()
-
 }

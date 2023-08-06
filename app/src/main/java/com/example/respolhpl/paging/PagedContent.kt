@@ -1,8 +1,9 @@
 package com.example.respolhpl.paging
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.R
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,21 +12,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.respolhpl.R
 import com.example.respolhpl.utils.extensions.DefaultError
 
 @Preview(showBackground = true)
 @Composable
 private fun LoadMoreRefreshableErrorPreview() {
-    AppTheme {
+    MaterialTheme {
         LazyColumn {
             item {
-                ListItemRefreshableError(isLoadingVisible = false) {}
+                LoadMoreRefreshableError {}
             }
         }
     }
@@ -66,28 +72,30 @@ fun RefreshableError(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = stringResource(R.string.error_default),
-                style = MaterialTheme.typography.h1,
-                color = MaterialTheme.colors.onSurface
+                text = stringResource(R.string.an_error_occurred),
+//                style = MaterialTheme.typography.h1,
+//                color = MaterialTheme.colors.onSurface
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = stringResource(R.string.error_no_internet_connection_refresh),
-                style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.onSurfaceMedium()
+//                style = MaterialTheme.typography.body1,
+//                color = MaterialTheme.colors.onSurfaceMedium()
             )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        AppOutlinedButton(
-            Modifier.align(Alignment.CenterHorizontally),
-            text = stringResource(R.string.refresh),
-            isLoadingVisible = isLoadingVisible,
+        OutlinedButton(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = onRefreshClick
-        )
+        ) {
+            Text(text = stringResource(R.string.retry))
+//            isLoadingVisible = isLoadingVisible,
+        }
     }
 }
+
 internal object PagerPreviewDataCreator {
     data class FakeItem(val id: String, override val itemId: Any = id) : BaseListItem
 
@@ -106,7 +114,7 @@ internal object PagerPreviewDataCreator {
 @Preview(showBackground = true)
 @Composable
 private fun LoadingPreview() {
-    AppTheme {
+    MaterialTheme {
         LazyColumn(Modifier.fillMaxSize()) {
             pagedContent(PagerPreviewDataCreator.loadingData, {}, {}) {
                 PreviewListItem(it)
@@ -118,7 +126,7 @@ private fun LoadingPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun SuccessPreview() {
-    AppTheme {
+    MaterialTheme {
         LazyColumn(Modifier.fillMaxSize()) {
             pagedContent(PagerPreviewDataCreator.successData, {}, {}) {
                 PreviewListItem(it)
@@ -130,7 +138,7 @@ private fun SuccessPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun LoadMorePreview() {
-    AppTheme {
+    MaterialTheme {
         LazyColumn(Modifier.fillMaxSize()) {
             pagedContent(PagerPreviewDataCreator.loadMoreData, {}, {}) {
                 PreviewListItem(item = it)
@@ -142,7 +150,7 @@ private fun LoadMorePreview() {
 @Preview(showBackground = true)
 @Composable
 private fun LoadMoreErrorPreview() {
-    AppTheme {
+    MaterialTheme {
         LazyColumn(Modifier.fillMaxSize()) {
             pagedContent(PagerPreviewDataCreator.loadMoreErrorData, {}, {}) {
                 PreviewListItem(item = it)
@@ -154,7 +162,7 @@ private fun LoadMoreErrorPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun ErrorPreview() {
-    AppTheme {
+    MaterialTheme {
         LazyColumn(Modifier.fillMaxSize()) {
             pagedContent(PagerPreviewDataCreator.errorData, {}, {}) {
                 PreviewListItem(item = it)
@@ -172,6 +180,7 @@ private fun PreviewListItem(item: PagerPreviewDataCreator.FakeItem) {
             .fillMaxWidth()
     )
 }
+
 fun <T : BaseListItem> LazyListScope.pagedContent(
     data: PagingData<T>,
     retry: () -> Unit,
@@ -187,11 +196,13 @@ fun <T : BaseListItem> LazyListScope.pagedContent(
                 onRefreshClick = retry
             )
         }
+
         data.loadState is LoadState.Loading.InitialLoading -> item {
             Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
+
         else -> listItems(data.items) { itemView(it) }
     }
 
@@ -199,6 +210,7 @@ fun <T : BaseListItem> LazyListScope.pagedContent(
         is LoadState.Error.LoadMoreError -> item {
             LoadMoreRefreshableError(onRefreshClick = retry)
         }
+
         LoadState.Loading.LoadingMore -> item {
             Row(
                 Modifier
@@ -209,6 +221,21 @@ fun <T : BaseListItem> LazyListScope.pagedContent(
                 CircularProgressIndicator()
             }
         }
+
         else -> Unit // handled above
     }
+}
+
+
+@Composable
+fun LazyItemScope.LoadMoreRefreshableError(
+    modifier: Modifier = Modifier,
+    onRefreshClick: () -> Unit
+) {
+    RefreshableError(
+        modifier = modifier,
+        isLoadingVisible = false,
+        showButtonAtBottom = false,
+        onRefreshClick = onRefreshClick,
+    )
 }

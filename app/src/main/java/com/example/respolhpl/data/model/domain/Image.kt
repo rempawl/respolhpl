@@ -15,6 +15,5 @@ data class Image(
     }
 }
 
-
 @kotlinx.serialization.Serializable
 data class Images(val images: List<Image>) : Serializable

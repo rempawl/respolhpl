@@ -32,6 +32,8 @@
     <string name="server_error">500 - Server Error</string>
     <string name="connection_error">Connection Problem</string>
     <string name="timeout_error">The connection with server has timed out</string>
+    <string name="error_no_internet_connection_refresh">Please make sure your connection is stable and refresh the page to load the data.</string>
+
     <string name="retry">Spróbuj ponownie</string>
     <string name="cart">Koszyk</string>
     <string name="add_to_favs">Dodaj do ulubionych</string>

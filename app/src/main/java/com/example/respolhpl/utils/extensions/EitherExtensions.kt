@@ -4,6 +4,7 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -26,6 +27,14 @@ fun <T> Flow<EitherResult<T>>.onSuccess(block: suspend (T) -> Unit): Flow<Either
 fun <T> Flow<EitherResult<T>>.onError(block: suspend (DefaultError) -> Unit): Flow<EitherResult<T>> {
     return this.onEach { result ->
         result.onError { block(it) }
+    }
+}
+
+fun <T, R> Flow<EitherResult<T>>.mapSuccess(mapper: suspend (T) -> R): Flow<EitherResult<R>> {
+    return map { upstreamResult ->
+        upstreamResult.map {
+            mapper(it)
+        }
     }
 }
 
