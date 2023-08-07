@@ -29,10 +29,7 @@ class MainActivity : AppCompatActivity() {
     private fun ActivityMainBinding.setupBinding() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isConnected.collectLatest {
-                    Log.d("kruci", "is connected $it")
-                    connectionInfo.isVisible = !it
-                }
+                viewModel.isConnected.collectLatest { connectionInfo.isVisible = !it }
             }
         }
     }

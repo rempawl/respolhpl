@@ -3,7 +3,7 @@ package com.example.respolhpl.home
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
-import com.example.respolhpl.data.sources.repository.GetProductsUseCase
+import com.example.respolhpl.data.usecase.GetProductsUseCase
 import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.data.usecase.ActionFlowResultUseCase
 import com.example.respolhpl.data.usecase.ActionResultUseCase
@@ -14,8 +14,8 @@ import com.example.respolhpl.data.usecase.ResultUseCase
 import com.example.respolhpl.data.usecase.StoreUseCase
 import com.example.respolhpl.data.usecase.UseCase
 import com.example.respolhpl.fakes.FakeData
-import com.example.respolhpl.paging.LoadState
-import com.example.respolhpl.paging.PagingConfig
+import com.example.respolhpl.data.paging.LoadState
+import com.example.respolhpl.data.paging.PagingConfig
 import com.example.respolhpl.utils.BaseCoroutineTest
 import com.example.respolhpl.utils.assertLatestItemEquals
 import com.example.respolhpl.utils.extensions.DefaultError

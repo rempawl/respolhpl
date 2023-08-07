@@ -1,4 +1,4 @@
-package com.example.respolhpl.paging
+package com.example.respolhpl.data.paging
 
 import com.example.respolhpl.utils.extensions.DefaultError
 

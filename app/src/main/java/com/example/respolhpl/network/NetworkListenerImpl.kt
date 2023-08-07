@@ -3,13 +3,10 @@ package com.example.respolhpl.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
-import dagger.hilt.android.qualifiers.ActivityContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class NetworkListenerImpl @Inject constructor(context: Context) : NetworkListener {

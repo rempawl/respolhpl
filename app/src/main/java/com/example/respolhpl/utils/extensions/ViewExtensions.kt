@@ -7,10 +7,6 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-fun View.makeVisible() {
-    this.visibility = View.VISIBLE
-}
-
 fun EditText.setTextIfDifferent(textToSet: String) {
     if (this.text.toString() != textToSet) {
         setText(textToSet)

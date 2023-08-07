@@ -37,8 +37,8 @@ import androidx.navigation.fragment.findNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.respolhpl.R
 import com.example.respolhpl.databinding.FragmentHomeBinding
-import com.example.respolhpl.paging.PagedLazyColumn
-import com.example.respolhpl.paging.pagedContent
+import com.example.respolhpl.data.paging.PagedLazyColumn
+import com.example.respolhpl.data.paging.pagedContent
 import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -62,8 +62,6 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater)
 
         binding.composeView.apply {
-            // Dispose of the Composition when the view's LifecycleOwner
-            // is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 MaterialTheme {
@@ -142,7 +140,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupObservers() = with(viewLifecycleOwner.lifecycleScope) {
-
         viewModel.shouldNavigate
             .map { it.id }
             .onEach { id -> navigateToProductDetails(id) }

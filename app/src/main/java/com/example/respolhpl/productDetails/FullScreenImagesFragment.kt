@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.respolhpl.databinding.FullScreenImagesFragmentBinding
+import com.example.respolhpl.databinding.FragmentFullScreenImagesBinding
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +25,7 @@ class FullScreenImagesFragment : Fragment() {
 
     private val viewModel by viewModels<ProductImagesViewModel>()
     var imagesAdapter by autoCleared<ImagesAdapter>()
-    var binding: FullScreenImagesFragmentBinding? = null
+    var binding: FragmentFullScreenImagesBinding? = null
     val navArgs by navArgs<FullScreenImagesFragmentArgs>()
 
     override fun onCreateView(
@@ -33,7 +33,7 @@ class FullScreenImagesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FullScreenImagesFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentFullScreenImagesBinding.inflate(inflater, container, false)
         imagesAdapter = ImagesAdapter()
 
         binding!!.setupBinding()
@@ -57,7 +57,7 @@ class FullScreenImagesFragment : Fragment() {
         binding!!.viewPager.currentItem = navArgs.currentPage
     }
 
-    private fun FullScreenImagesFragmentBinding.setupBinding() {
+    private fun FragmentFullScreenImagesBinding.setupBinding() {
         with(viewPager) {
             adapter = imagesAdapter
         }

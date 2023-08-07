@@ -7,7 +7,7 @@
     <string name="app_name">RespolHPL</string>
     <string name="nav_header_title">RespolHPL</string>
     <string name="nav_header_subtitle">www.respolhpl.pl</string>
-    <string name="nav_header_desc">Navigation header</string>
+
     <string name="action_settings">Ustawienia</string>
 
     <string name="menu_home">Strona Główna</string>
@@ -19,8 +19,8 @@
     <string name="product_image_desc">product_image</string>
     <string name="product_max_quantity">z %1$d sztuk</string>
 
-    <string name="plus">+</string>
-    <string name="minus">-</string>
+    <string name="plus" translatable="false">+</string>
+    <string name="minus" translatable="false">-</string>
 
     <string name="an_error_occurred">Wystąpił błąd</string>
     <string name="not_found_error"> 404 - Not Found</string>
@@ -60,5 +60,4 @@
     <string name="cart_cost">Cart cost: %1$f</string>
     <string name="your_cart_is_empty">Your cart is empty.</string>
     <string name="payment_and_shipping">Dostawa i płatność</string>
-
 </resources>

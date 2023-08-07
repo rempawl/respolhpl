@@ -1,5 +1,6 @@
 package com.example.respolhpl.data.usecase
 
+import arrow.core.raise.either
 import arrow.core.right
 import com.example.respolhpl.utils.extensions.EitherResult
 import com.example.respolhpl.utils.extensions.runAsResult
@@ -15,7 +16,7 @@ interface AsyncUseCase<in Param, out Output> {
 interface ResultUseCase<in Param, out Output> : AsyncUseCase<Param, EitherResult<Output>>
 
 abstract class ActionResultUseCase<in Param, out Output> : ResultUseCase<Param, Output> {
-    override suspend fun call(parameter: Param): EitherResult<Output> = runAsResult {
+    override suspend fun call(parameter: Param): EitherResult<Output> = either {
         doWork(parameter)
     }
 

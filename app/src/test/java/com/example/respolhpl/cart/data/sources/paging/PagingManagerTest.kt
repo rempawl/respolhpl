@@ -5,10 +5,10 @@ package com.example.respolhpl.cart.data.sources.paging
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
-import com.example.respolhpl.paging.LoadState
-import com.example.respolhpl.paging.PagingConfig
-import com.example.respolhpl.paging.PagingManager
-import com.example.respolhpl.paging.PagingParam
+import com.example.respolhpl.data.paging.LoadState
+import com.example.respolhpl.data.paging.PagingConfig
+import com.example.respolhpl.data.paging.PagingManager
+import com.example.respolhpl.data.paging.PagingParam
 import com.example.respolhpl.utils.BaseCoroutineTest
 import com.example.respolhpl.utils.cancelAndConsumeRemainingItems
 import com.example.respolhpl.utils.extensions.DefaultError

@@ -37,16 +37,3 @@ fun <T, R> Flow<EitherResult<T>>.mapSuccess(mapper: suspend (T) -> R): Flow<Eith
         }
     }
 }
-
-inline fun <R> runAsResult(block: () -> R): EitherResult<R> {
-    return try {
-        block().right()
-    } catch (e: Throwable) {
-        if (e !is CancellationException) {
-            e.toResult()
-        } else {
-            throw e
-        }
-    }
-}
-

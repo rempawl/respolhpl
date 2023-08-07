@@ -2,6 +2,7 @@ package com.example.respolhpl.productDetails
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import arrow.core.right
 import com.example.respolhpl.data.model.domain.Images
 import com.example.respolhpl.productDetails.ProductImagesViewModel.ProductImagesState
 import com.example.respolhpl.productDetails.currentPageState.ViewPagerPageManager
@@ -9,7 +10,7 @@ import com.example.respolhpl.utils.BaseViewModel
 import com.example.respolhpl.utils.extensions.DefaultError
 import com.example.respolhpl.utils.extensions.onError
 import com.example.respolhpl.utils.extensions.onSuccess
-import com.example.respolhpl.utils.extensions.runAsResult
+import com.example.respolhpl.utils.extensions.toResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class ProductImagesViewModel @Inject constructor(
 
     private fun getImages() {
         viewModelScope.launch {
-            getNavArguments()
+            getImagesFromNavArg()
                 .onSuccess { images ->
                     setState { copy(images = images) }
                 }
@@ -36,14 +37,9 @@ class ProductImagesViewModel @Inject constructor(
         }
     }
 
-    private fun getNavArguments() =
-        runAsResult {
-            with(savedStateHandle) {
-                get<Images>(KEY_IMAGES)
-                    ?: throw IllegalStateException(" product id is null")
-            }
-
-        }
+    private fun getImagesFromNavArg() =
+        savedStateHandle.get<Images>(KEY_IMAGES)?.right()
+            ?: IllegalStateException("product id is null").toResult()
 
 
     fun retry() {
@@ -58,6 +54,4 @@ class ProductImagesViewModel @Inject constructor(
     companion object {
         const val KEY_IMAGES = "images"
     }
-
-
 }

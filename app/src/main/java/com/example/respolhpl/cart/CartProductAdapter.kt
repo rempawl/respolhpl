@@ -114,17 +114,18 @@ class CartProductAdapter(
                 getItem(position) as CartItem.CartProduct,
                 onDeleteClickListener
             )
+
             is CartSummaryViewHolder -> holder.bind(getItem(position) as CartItem.Summary)
         }
     }
 
     class Diff : DiffUtil.ItemCallback<CartItem>() {
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            return oldItem === newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
     }

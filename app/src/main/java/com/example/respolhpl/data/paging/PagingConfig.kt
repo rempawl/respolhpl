@@ -1,4 +1,4 @@
-package com.example.respolhpl.paging
+package com.example.respolhpl.data.paging
 
 import javax.inject.Inject
 

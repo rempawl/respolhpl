@@ -1,11 +1,11 @@
 package com.example.respolhpl.data.store
 
 import arrow.core.left
+import arrow.core.raise.either
 import arrow.core.right
 import com.dropbox.android.external.store4.*
 import com.example.respolhpl.utils.extensions.DefaultError
 import com.example.respolhpl.utils.extensions.EitherResult
-import com.example.respolhpl.utils.extensions.runAsResult
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.util.concurrent.TimeUnit
@@ -46,22 +46,9 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
         return cacheAndFreshWrapped(key).unwrap()
     }
 
-    fun cacheOrFreshWrapped(key: Key): Flow<StoreResponse<Output>> {
-        return store.stream(StoreRequest.cached(key, refresh = false))
-    }
-
-    /**
-     * Note that this stream cannot be refreshed as it completely ignores Fetcher.
-     * TODO it would be nice to add support for this.
-     * Although it will receive new values from the sourceOfTruth
-     */
-    fun cacheOrFresh(key: Key): Flow<EitherResult<Output>> {
-        return cacheOrFreshWrapped(key).unwrap()
-    }
-
     suspend fun refresh(key: Key) {
         withContext(dispatcher) {
-            launch { // launch returning immediately without waiting until freshResult ends
+            launch {
                 fresh(key)
             }
         }
@@ -71,11 +58,11 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
         store.stream(request).flowOn(dispatcher)
 
     suspend fun get(key: Key): EitherResult<Output> = withContext(dispatcher) {
-        runAsResult { store.get(key) }
+        either { store.get(key) }
     }
 
     suspend fun fresh(key: Key): EitherResult<Output> = withContext(dispatcher) {
-        runAsResult { store.fresh(key) }
+        either { store.fresh(key) }
     }
 
     suspend fun clear(key: Key): Unit = withContext(dispatcher) { store.clear(key) }
@@ -106,10 +93,12 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
                     when (response) {
                         is StoreResponse.Error.Exception ->
                             StoreError.Exception(response.error).left()
+
                         is StoreResponse.Error.Message ->
                             StoreError.Message(response.message).left()
                     }
                 }
+
                 else -> null
             }
         }

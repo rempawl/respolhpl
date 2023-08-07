@@ -36,7 +36,6 @@ import kotlin.math.min
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-//    private val cartRepository: CartRepository, add to cart usecase
     private val getProductUseCase: GetProductUseCase,
 ) : BaseViewModel<ProductDetailsViewModel.ProductDetailsState>(ProductDetailsState()) {
 

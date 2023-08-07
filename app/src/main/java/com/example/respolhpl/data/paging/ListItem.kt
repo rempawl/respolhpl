@@ -1,4 +1,4 @@
-package com.example.respolhpl.paging
+package com.example.respolhpl.data.paging
 
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope

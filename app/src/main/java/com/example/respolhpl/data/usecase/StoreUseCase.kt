@@ -22,9 +22,6 @@ abstract class StoreUseCase<Key : Any, Output : Any>(
     fun cacheAndFresh(key: Key): Flow<EitherResult<Output>> =
         store.cacheAndFresh(key)
 
-    fun cacheOrFresh(key: Key): Flow<EitherResult<Output>> =
-        store.cacheOrFresh(key)
-
     suspend fun refresh(key: Key) = store.refresh(key)
 
     fun stream(request: StoreRequest<Key>): Flow<StoreResponse<Output>> =

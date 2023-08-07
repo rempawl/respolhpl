@@ -20,7 +20,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.respolhpl.R
 import com.example.respolhpl.data.model.domain.Images
 import com.example.respolhpl.data.model.domain.Product
-import com.example.respolhpl.databinding.ProductDetailsFragmentBinding
+import com.example.respolhpl.databinding.FragmentProductDetailsBinding
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.autoCleared
 import com.example.respolhpl.utils.extensions.setTextIfDifferent
@@ -42,15 +42,14 @@ class ProductDetailsFragment : Fragment() {
 
     private var imagesAdapter: ImagesAdapter by autoCleared()
 
-    private var binding: ProductDetailsFragmentBinding? = null
-
+    private var binding: FragmentProductDetailsBinding? = null
     private val viewModel: ProductDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = ProductDetailsFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
         return binding!!.root
     }
 
@@ -114,12 +113,6 @@ class ProductDetailsFragment : Fragment() {
                 viewModel.isMinusBtnEnabled
                     .onEach { binding!!.minusBtn.isEnabled = it }
                     .launchIn(this)
-
-                launch {
-//                    viewModel.shouldNavigate.collectLatest { curPage ->
-//                        navigateToFullScreenImageFragment(curPage)
-//                    }
-                }
             }
         }
     }
@@ -147,7 +140,7 @@ class ProductDetailsFragment : Fragment() {
         ).show()
     }
 
-    private fun ProductDetailsFragmentBinding.setupBinding() {
+    private fun FragmentProductDetailsBinding.setupBinding() {
         with(toolbar) {
             cartBtn.setOnClickListener {
                 findNavController().navigate(ProductDetailsFragmentDirections.actionProductDetailsToCartFragment()) //todo some extension on base fragment

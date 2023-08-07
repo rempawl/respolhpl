@@ -2,11 +2,11 @@ package com.example.respolhpl.home
 
 import androidx.lifecycle.viewModelScope
 import com.example.respolhpl.data.model.domain.ProductMinimal
-import com.example.respolhpl.data.sources.repository.GetProductsUseCase
-import com.example.respolhpl.paging.BaseListItem
-import com.example.respolhpl.paging.PagingConfig
-import com.example.respolhpl.paging.PagingData
-import com.example.respolhpl.paging.PagingManager
+import com.example.respolhpl.data.usecase.GetProductsUseCase
+import com.example.respolhpl.data.paging.BaseListItem
+import com.example.respolhpl.data.paging.PagingConfig
+import com.example.respolhpl.data.paging.PagingData
+import com.example.respolhpl.data.paging.PagingManager
 import com.example.respolhpl.utils.BaseViewModel
 import com.example.respolhpl.utils.extensions.mapSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel

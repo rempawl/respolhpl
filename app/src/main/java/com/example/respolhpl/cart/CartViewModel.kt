@@ -12,24 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CartViewModel @Inject constructor(private val cartRepository: CartRepository) : ViewModel() {
 
-
-//    private val _result = MutableStateFlow<Result<*>>(Result.Loading)
-//    val result: StateFlow<Result<*>>
-//        get() = _result
-//    private val successRes = result.filter { it.isSuccess }
-//
-//    val isEmpty: Flow<Boolean> = successRes.map {
-//        (it as Result.Success<List<*>>).data.isEmpty()
-//    }
-
-    init {
-//        viewModelScope.launch {
-//            cartRepository.getProducts().collectLatest {
-//                _result.value = it
-//            }
-//        }
-//        _result.update { it }
-    }
+    // todo
 
     fun deleteFromCart(product: CartItem.CartProduct) {
         viewModelScope.launch {
