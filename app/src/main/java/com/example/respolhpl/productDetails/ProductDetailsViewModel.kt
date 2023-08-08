@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
@@ -51,18 +52,13 @@ class ProductDetailsViewModel @Inject constructor(
 
     private val _product = MutableStateFlow<Product?>(null)
     val product = _product.asStateFlow().filterNotNull()
+
     private val maxQuantity = product.filterNotNull().map { it.quantity }
-
     val isMinusBtnEnabled: Flow<Boolean> = cartQuantity.map { it > 1 }
-
     val isPlusBtnEnabled: Flow<Boolean> =
         maxQuantity.combine(cartQuantity) { maxQuantity, currentQuantity ->
             currentQuantity < maxQuantity
         }
-
-//    private val _shouldNavigate = MutableSharedFlow<Int>()
-//    val shouldNavigate: SharedFlow<Int>
-//        get() = _shouldNavigate
 
 
     private val productId
@@ -81,11 +77,8 @@ class ProductDetailsViewModel @Inject constructor(
 
     fun onAddToCartClick() = Unit
 //        product.flatMapLatest {
-//            it
 //            flow {
 ////                cartRepository.addProduct(createCartProduct(it)) todo usecase
-//                emit(_cartQuantity.value)
-//                _cartQuantity.update { 0 }
 //            }
 //        }
 
@@ -100,6 +93,7 @@ class ProductDetailsViewModel @Inject constructor(
 
     fun setQuantityChangedListener(quantityText: Flow<CharSequence>) =
         quantityText
+            .distinctUntilChanged()
             .mapLatest { it.toString() }
             .filter { it.isNotBlank() }
             .map { it.toInt() }
@@ -143,6 +137,5 @@ class ProductDetailsViewModel @Inject constructor(
 
     companion object {
         const val KEY_PROD_ID = "productId"
-
     }
 }

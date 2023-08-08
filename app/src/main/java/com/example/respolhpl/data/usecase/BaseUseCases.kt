@@ -3,7 +3,6 @@ package com.example.respolhpl.data.usecase
 import arrow.core.raise.either
 import arrow.core.right
 import com.example.respolhpl.utils.extensions.EitherResult
-import com.example.respolhpl.utils.extensions.runAsResult
 import com.example.respolhpl.utils.extensions.toResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

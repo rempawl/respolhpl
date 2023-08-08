@@ -8,15 +8,6 @@ import com.example.respolhpl.data.model.remote.RemoteProduct
 import com.example.respolhpl.data.model.remote.RemoteProductMinimal
 
 object FakeData {
-    //    val resultSuccessProduct = Result.Success(
-//        Product(
-//            1,
-//            "test",
-//            5,
-//            emptyList(),
-//            "src",
-//        )
-//    )
     val remoteProducts: List<RemoteProduct> = listOf(
         RemoteProduct(
             description = "<h2>Właściwości:</h2>\n",
@@ -76,19 +67,7 @@ object FakeData {
     }
 //    val cartEntities =
 //        products.map { CartProductEntity(it.id, it.name, it.price, it.thumbnailSrc, CART_QUANTITY) }
-//    val cartProducts = cartEntities.map { CartProduct.from(it) }
+//    val cartProducts = cartEntities.map { CartProduct.from(it) } todo
 
     val minimalProducts = products.map { ProductMinimal(it.id, it.name, it.price, it.thumbnailSrc) }
-    val favProductEntities = remoteProducts.map { prod ->
-//        FavProductEntity(
-//            price = prod.price,
-//            id = prod.id,
-//            name = prod.name,
-//            thumbnailSrc = prod.images.first().src
-//        )
-    }
-    val minRemoteProds =
-        remoteProducts.map { RemoteProductMinimal(it.id, it.name, it.price, it.images) }
-
-    const val CART_QUANTITY = 2
 }

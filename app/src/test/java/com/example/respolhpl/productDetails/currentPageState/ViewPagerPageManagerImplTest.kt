@@ -13,22 +13,17 @@ class ViewPagerPageManagerImplTest : BaseCoroutineTest() {
         currentPageState = ViewPagerPageManagerImpl()
     }
 
+    // todo
     @Test
     fun init() {
     }
 
     @Test
     fun saveStateTo5Then3() {
-//        val res = currentPageState.currentPage.getOrAwaitValue()
-//        assertThat(res, `is`(0))
 
         currentPageState.saveCurrentPage(5)
-//        val five = currentPageState.currentPage.getOrAwaitValue()
-//        assertThat(five, `is`(5))
 
         currentPageState.saveCurrentPage(3)
 
-//        val three = currentPageState.currentPage.getOrAwaitValue()
-//        assertThat(three, `is`(3))
     }
 }

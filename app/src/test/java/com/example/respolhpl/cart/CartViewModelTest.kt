@@ -1,17 +1,12 @@
 package com.example.respolhpl.cart
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.respolhpl.*
+import com.example.respolhpl.TestDispatchersProvider
 import com.example.respolhpl.data.sources.repository.CartRepository
 import com.example.respolhpl.data.sources.repository.CartRepositoryImpl
-import com.example.respolhpl.fakes.FakeData
 import com.example.respolhpl.utils.BaseCoroutineTest
-import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -19,7 +14,6 @@ class CartViewModelTest : BaseCoroutineTest() {
     lateinit var viewModel: CartViewModel
     lateinit var cartRepository: CartRepository
     private val dispatcherProvider = TestDispatchersProvider()
-
 
 
     @Before

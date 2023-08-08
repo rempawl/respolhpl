@@ -3,8 +3,6 @@
 package com.example.respolhpl.cart.data.sources.paging
 
 import app.cash.turbine.test
-import arrow.core.left
-import arrow.core.right
 import com.example.respolhpl.data.paging.LoadState
 import com.example.respolhpl.data.paging.PagingConfig
 import com.example.respolhpl.data.paging.PagingManager
@@ -13,15 +11,15 @@ import com.example.respolhpl.utils.BaseCoroutineTest
 import com.example.respolhpl.utils.cancelAndConsumeRemainingItems
 import com.example.respolhpl.utils.extensions.DefaultError
 import com.example.respolhpl.utils.extensions.EitherResult
-import io.mockk.MockKStubScope
+import com.example.respolhpl.utils.extensions.lastButOne
+import com.example.respolhpl.utils.mockFlowError
+import com.example.respolhpl.utils.mockFlowResponse
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -32,7 +30,8 @@ import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class PagingManagerTest : BaseCoroutineTest() {
-    internal data class TestItem(val id: String)
+
+    private data class TestItem(val id: String)
 
     private val loadMoreTrigger = MutableSharedFlow<Unit>()
 
@@ -307,50 +306,6 @@ internal class PagingManagerTest : BaseCoroutineTest() {
         const val TEST_DELAY = 2L
         const val PREFETCH = 3
         const val LIMIT = 1
-        val testItems = buildList<TestItem> {
-            repeat(10) {
-                add(TestItem("$it"))
-            }
-        }
+        val testItems = (0..10).map { TestItem("$it") }
     }
-}
-fun <FlowType, T : Flow<FlowType>, B : Flow<FlowType>> MockKStubScope<T, B>.mockFlow(
-    delayMillis: Long? = null,
-    response: () -> FlowType
-) =
-    answers {
-        flow {
-            if (delayMillis != null) delay(delayMillis)
-            emit(response())
-        } as T
-    }
-
-fun <FlowType, T : Flow<FlowType>, B : Flow<FlowType>> MockKStubScope<T, B>.mockFlowResult(
-    delayMillis: Long? = null,
-    response: FlowType,
-    error: DefaultError? = null,
-) =
-    answers {
-        flow {
-            if (delayMillis != null) delay(delayMillis)
-            if (error != null) {
-                emit(error.left())
-            } else {
-                emit(response.right())
-            }
-        } as T
-    }
-
-fun <ResultType, T : Flow<EitherResult<ResultType>>, B : Flow<EitherResult<ResultType>>> MockKStubScope<T, B>.mockFlowResponse(
-    delayMillis: Long? = null,
-    response: () -> ResultType
-) = mockFlow(delayMillis) { response().right() }
-
-fun <ResultType, T : Flow<EitherResult<ResultType>>, B : Flow<EitherResult<ResultType>>> MockKStubScope<T, B>.mockFlowError(
-    delayMillis: Long? = null,
-    error: () -> DefaultError
-) = mockFlow(delayMillis) { error().left() }
-
-fun <T> List<T>.lastButOne(): T {
-    return get(lastIndex - 1)
 }

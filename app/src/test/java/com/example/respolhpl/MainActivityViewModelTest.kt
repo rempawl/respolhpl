@@ -14,7 +14,8 @@ import org.junit.jupiter.api.Test
 
 class MainActivityViewModelTest : BaseCoroutineTest() {
     private val isConnectedFlow = MutableSharedFlow<Boolean>()
-    fun createSut() = MainActivityViewModel(
+
+    private fun createSut() = MainActivityViewModel(
         networkListener = mockk {
             every { isConnected } returns isConnectedFlow
         }
