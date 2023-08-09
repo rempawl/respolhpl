@@ -4,19 +4,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.respolhpl.data.product.domain.Image
+import com.example.respolhpl.data.model.domain.Image
 import com.example.respolhpl.databinding.ItemImageBinding
+import com.example.respolhpl.utils.extensions.loadImage
 
 class ImagesAdapter constructor(
-    private val bindingDecorator: ItemImageBinding.() -> Unit
+    private val bindingDecorator: ItemImageBinding.() -> Unit = {}
 ) : ListAdapter<Image, ImagesAdapter.ImageViewHolder>(ImageDiffUtil()) {
 
     class ImageViewHolder private constructor(private val binding: ItemImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(image: Image, count: String, decorate: ItemImageBinding.() -> Unit) {
+        fun bind(img: Image, count: String, decorate: ItemImageBinding.() -> Unit) {
             binding.apply {
-                img = image
+                image.loadImage(img)
                 imgCounter.text = count
                 decorate()
             }
@@ -39,6 +40,4 @@ class ImagesAdapter constructor(
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         holder.bind(getItem(position), "${position + 1}/$itemCount", bindingDecorator)
     }
-
-
 }

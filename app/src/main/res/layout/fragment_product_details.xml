@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".productDetails.ProductDetailsFragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_default"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <include
+        android:id="@+id/error_root"
+        layout="@layout/error_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <ScrollView
+        android:id="@+id/product_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="400dp" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/prod_name"
+                    style="@style/DefaultHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/prod_price"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Antybakteryjna Deska do Krojenia Natura" />
+
+
+                <TextView
+                    android:id="@+id/prod_price"
+                    style="@style/DefaultHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/minus_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/prod_name"
+                    tools:text="42.99 zł" />
+
+                <Button
+                    android:id="@+id/minus_btn"
+                    android:layout_width="@dimen/min_clickable_size"
+                    android:layout_height="@dimen/min_clickable_size"
+                    android:background="@drawable/bg_cart_qnt_btn"
+                    android:text="@string/minus"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textColor="@color/light_red"
+                    android:textSize="@dimen/def_text_size"
+                    app:backgroundTint="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/quantity"
+                    app:layout_constraintStart_toStartOf="@id/prod_price"
+                    app:layout_constraintTop_toBottomOf="@id/prod_price" />
+
+                <EditText
+                    android:id="@+id/quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:digits="0123456789"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:paddingHorizontal="@dimen/def_padding"
+                    android:textSize="@dimen/def_text_size"
+                    app:layout_constraintBottom_toBottomOf="@id/minus_btn"
+                    app:layout_constraintEnd_toStartOf="@id/plus_btn"
+                    app:layout_constraintStart_toEndOf="@id/minus_btn"
+                    app:layout_constraintTop_toTopOf="@id/minus_btn"
+                    tools:text="5" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/plus_btn"
+                    android:layout_width="@dimen/min_clickable_size"
+                    android:layout_height="@dimen/min_clickable_size"
+                    android:background="@drawable/bg_cart_qnt_btn"
+                    android:text="@string/plus"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textColor="@color/light_red"
+                    android:textSize="@dimen/def_text_size"
+                    app:backgroundTint="@null"
+                    app:layout_constraintBottom_toBottomOf="@id/quantity"
+                    app:layout_constraintEnd_toStartOf="@id/max_quantity"
+                    app:layout_constraintStart_toEndOf="@id/quantity"
+                    app:layout_constraintTop_toTopOf="@id/quantity" />
+
+                <TextView
+                    android:id="@+id/max_quantity"
+                    style="@style/DefaultBodyText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/def_padding"
+                    app:layout_constraintBottom_toBottomOf="@id/plus_btn"
+                    app:layout_constraintStart_toEndOf="@id/plus_btn"
+                    app:layout_constraintTop_toTopOf="@id/plus_btn"
+                    tools:text="z 10 sztuk" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/prod_desc"
+                style="@style/DescTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="12dp"
+                android:background="@color/white"
+                android:focusable="true"
+                android:padding="@dimen/def_padding"
+                tools:text="@string/tools_desc" />
+
+            <TextView
+                android:id="@+id/footer"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="@dimen/def_margin" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/light_red"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/def_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addToCartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/def_margin"
+            android:backgroundTint="@color/white"
+            android:text="@string/add_to_cart"
+            android:textColor="@color/light_red" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buy_now_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/def_margin"
+            android:backgroundTint="@color/white"
+            android:text="@string/buy_now"
+            android:textColor="@color/light_red" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

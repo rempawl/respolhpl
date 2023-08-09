@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.respolhpl.cart.data.CartItem
+import com.example.respolhpl.data.model.domain.CartItem
 import com.example.respolhpl.databinding.ItemCartProductBinding
 import com.example.respolhpl.databinding.ItemCartSummaryBinding
 import com.example.respolhpl.utils.DispatchersProvider
@@ -57,7 +57,7 @@ class CartProductAdapter(
             onDeleteClickListener: (CartItem.CartProduct) -> Unit
         ) {
             binding.apply {
-                product = item
+//                product = item
                 deleteBtn.setOnClickListener { onDeleteClickListener(item) }
             }
         }
@@ -114,17 +114,18 @@ class CartProductAdapter(
                 getItem(position) as CartItem.CartProduct,
                 onDeleteClickListener
             )
+
             is CartSummaryViewHolder -> holder.bind(getItem(position) as CartItem.Summary)
         }
     }
 
     class Diff : DiffUtil.ItemCallback<CartItem>() {
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            return oldItem === newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
     }

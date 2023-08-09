@@ -1,9 +1,7 @@
 package com.example.respolhpl.network
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 
 interface NetworkListener {
-    val isConnected : LiveData<Boolean>
-    fun onAvailable()
-    fun onUnavailable()
+    val isConnected: Flow<Boolean>
 }

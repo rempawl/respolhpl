@@ -45,6 +45,9 @@
         <argument
             android:name="currentPage"
             app:argType="java.lang.Integer" />
+        <argument
+            android:name="images"
+            app:argType="com.example.respolhpl.data.model.domain.Images" />
     </fragment>
 
 <fragment

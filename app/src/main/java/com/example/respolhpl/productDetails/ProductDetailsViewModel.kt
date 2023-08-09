@@ -1,52 +1,69 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.example.respolhpl.productDetails
 
 
-import android.util.Log
-import androidx.lifecycle.*
-import com.example.respolhpl.cart.data.CartItem
-import com.example.respolhpl.cart.data.sources.CartRepository
-import com.example.respolhpl.data.Result
-import com.example.respolhpl.data.product.domain.Product
-import com.example.respolhpl.data.sources.repository.ProductRepository
-import com.example.respolhpl.productDetails.currentPageState.CurrentViewPagerPage
-import com.example.respolhpl.utils.ObservableViewModel
-import com.example.respolhpl.utils.event.Event
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import com.example.respolhpl.data.model.domain.CartItem
+import com.example.respolhpl.data.model.domain.Images
+import com.example.respolhpl.data.model.domain.Product
+import com.example.respolhpl.data.usecase.GetProductUseCase
+import com.example.respolhpl.utils.BaseViewModel
+import com.example.respolhpl.utils.extensions.DefaultError
+import com.example.respolhpl.utils.extensions.onError
+import com.example.respolhpl.utils.extensions.onSuccess
+import com.example.respolhpl.utils.watchProgress
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+import kotlin.math.min
 
-//todo change quantity while adding to cart and set timeout for block
+// todo pass current image position to full screen image
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val productRepository: ProductRepository,
-    private val cartRepository: CartRepository,
-    currentViewPagerPage: CurrentViewPagerPage
-) : ObservableViewModel(), CurrentViewPagerPage by currentViewPagerPage {
-    //todo maxQuantity
+    private val getProductUseCase: GetProductUseCase,
+) : BaseViewModel<ProductDetailsViewModel.ProductDetailsState>(ProductDetailsState()) {
 
-    private val _cartQuantity = MutableStateFlow(0)
+    init {
+        observeProgress { isLoading ->
+            setState { copy(isLoading = isLoading) }
+        }
+    }
+
+    private val _cartQuantity = MutableStateFlow(1)
     val cartQuantity: StateFlow<Int>
-        get() = _cartQuantity
+        get() = _cartQuantity.asStateFlow()
 
-    val isMinusBtnEnabled: Flow<Boolean> = cartQuantity.map {
-        it > 1
-    }
+    private val _product = MutableStateFlow<Product?>(null)
+    val product = _product.asStateFlow().filterNotNull()
 
-    val isPlusBtnEnabled = cartQuantity.map {
-        it < 10
-    }
+    private val maxQuantity = product.filterNotNull().map { it.quantity }
+    val isMinusBtnEnabled: Flow<Boolean> = cartQuantity.map { it > 1 }
+    val isPlusBtnEnabled: Flow<Boolean> =
+        maxQuantity.combine(cartQuantity) { maxQuantity, currentQuantity ->
+            currentQuantity < maxQuantity
+        }
 
-    private val _shouldNavigate = MediatorLiveData<Event<Int>>()
-    val shouldNavigate: LiveData<Event<Int>>
-        get() = _shouldNavigate
 
-    private val _result = MutableStateFlow<Result<*>>(Result.Loading)
-    val result: StateFlow<Result<*>>
-        get() = _result
-
-    private val productId = getProdId()
+    private val productId
+        get() = (savedStateHandle.get<Int>(KEY_PROD_ID)
+            ?: throw java.lang.IllegalStateException("productId is null"))
 
     init {
         getProduct(productId)
@@ -56,21 +73,15 @@ class ProductDetailsViewModel @Inject constructor(
         getProduct(productId)
     }
 
-    fun navigateToFullScreenImage() : StateFlow<Int> {
-        return currentPage
-    }
+    fun navigateToFullScreenImage() = product.map { Images(it.images) }.take(1)
 
+    fun onAddToCartClick() = Unit
+//        product.flatMapLatest {
+//            flow {
+////                cartRepository.addProduct(createCartProduct(it)) todo usecase
+//            }
+//        }
 
-    fun onAddToCartClick(): Flow<Int> {
-        return _result.value.checkIfIsSuccessAndType<Product>()?.let {
-            flow {
-                cartRepository.addProduct(createCartProduct(it))
-                emit(_cartQuantity.value)
-                _cartQuantity.update { 0 }
-                //todo set maxQuant
-            }
-        } ?: emptyFlow<Int>()
-    }
 
     fun onMinusBtnClick() {
         _cartQuantity.update { it - 1 }
@@ -79,6 +90,20 @@ class ProductDetailsViewModel @Inject constructor(
     fun onPlusBtnClick() {
         _cartQuantity.update { it + 1 }
     }
+
+    fun setQuantityChangedListener(quantityText: Flow<CharSequence>) =
+        quantityText
+            .distinctUntilChanged()
+            .mapLatest { it.toString() }
+            .filter { it.isNotBlank() }
+            .map { it.toInt() }
+            .combine(maxQuantity) { quantity, maxQuantity ->
+                min(quantity, maxQuantity)
+            }
+            .onEach { quantity ->
+                _cartQuantity.update { quantity }
+            }
+            .launchIn(viewModelScope)
 
 
     private fun createCartProduct(product: Product) = CartItem.CartProduct(
@@ -89,28 +114,28 @@ class ProductDetailsViewModel @Inject constructor(
         thumbnailSrc = product.thumbnailSrc
     )
 
-
-
-
-
     private fun getProduct(id: Int) {
-        viewModelScope.launch {
-            productRepository.getProductById(id).collectLatest { res ->
-                _result.value = (res)
-                setMaxQuantityAndProduct(res)
+        getProductUseCase.cacheAndFresh(id)
+            .watchProgress(progress)
+            .onSuccess { product ->
+                setState { copy(error = null) }
+                _product.update { product }
             }
-        }
+            .onError { error ->
+                setState { copy(error = error) }
+            }
+            .launchIn(viewModelScope)
     }
 
-    private fun setMaxQuantityAndProduct(res: Result<*>) {
-        res.checkIfIsSuccessAndType<Product>()?.let { prod ->
-//            maxQuantity = (prod.quantity)
-        }
-
+    data class ProductDetailsState(
+        val isLoading: Boolean = true,
+        val error: DefaultError? = null,
+    ) {
+        val isSuccess: Boolean
+            get() = !isLoading && error == null
     }
 
-    private fun getProdId() = (savedStateHandle.get<Int>(ProductDetailsFragment.prodId)
-        ?: throw java.lang.IllegalStateException("productId is null"))
-
-
+    companion object {
+        const val KEY_PROD_ID = "productId"
+    }
 }

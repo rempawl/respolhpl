@@ -1,7 +1,6 @@
 package com.example.respolhpl.cart
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,18 +12,15 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.respolhpl.R
-import com.example.respolhpl.cart.data.CartItem
-import com.example.respolhpl.data.Result
-import com.example.respolhpl.databinding.CartFragmentBinding
+import com.example.respolhpl.data.model.domain.CartItem
+import com.example.respolhpl.databinding.FragmentCartBinding
 import com.example.respolhpl.utils.DispatchersProvider
 import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// todo compose??
 @AndroidEntryPoint
 class CartFragment : Fragment() {
 
@@ -37,13 +33,13 @@ class CartFragment : Fragment() {
 
     private val viewModel: CartViewModel by viewModels()
     private var adapter by autoCleared<CartProductAdapter>()
-    private var binding by autoCleared<CartFragmentBinding>()
+    private var binding by autoCleared<FragmentCartBinding>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = CartFragmentBinding.inflate(inflater)
+    ): View {
+        binding = FragmentCartBinding.inflate(inflater)
 
         return binding.root
     }
@@ -65,16 +61,7 @@ class CartFragment : Fragment() {
     private fun setupObservers() {
         this.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.result.collectLatest {
-                        updateAdapterList(it)
-                    }
-                }
-                viewModel.isEmpty
-                    .onEach {
-                        updateEmptyView(it)
-                    }
-                    .launchIn(this)
+                // todo
             }
         }
     }
@@ -89,14 +76,8 @@ class CartFragment : Fragment() {
         }
     }
 
-    private fun updateAdapterList(res: Result<*>) {
-        res.checkIfIsSuccessAndListOf<CartItem.CartProduct>()?.let { prods ->
-            adapter.createSummaryAndSubmitList(prods)
-        }
-    }
 
-
-    private fun CartFragmentBinding.setupBinding() {
+    private fun FragmentCartBinding.setupBinding() {
         setupProductsListAdapter()
         backBtn.setOnClickListener { findNavController().navigateUp() }
         clearBtn.setOnClickListener {
@@ -105,14 +86,13 @@ class CartFragment : Fragment() {
             }.show(childFragmentManager, "")
         }
         label.setText(R.string.cart)
-        lifecycleOwner = viewLifecycleOwner
-        viewModel = this@CartFragment.viewModel
     }
 
-    private fun CartFragmentBinding.setupProductsListAdapter() {
+    private fun FragmentCartBinding.setupProductsListAdapter() {
         prodsList.apply {
             adapter = this@CartFragment.adapter
             layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
         }
     }
 

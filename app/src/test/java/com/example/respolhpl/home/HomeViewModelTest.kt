@@ -1,51 +1,148 @@
 package com.example.respolhpl.home
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.paging.PagingData
-import com.example.respolhpl.CoroutineTestRule
-import com.example.respolhpl.data.sources.repository.ProductRepository
-import com.example.respolhpl.fakes.FakeData
+import app.cash.turbine.test
+import arrow.core.left
+import arrow.core.right
+import com.example.respolhpl.data.paging.LoadState
+import com.example.respolhpl.data.paging.PagingConfig
+import com.example.respolhpl.data.usecase.GetProductsUseCase
+import com.example.respolhpl.fakes.FakeData.minimalProducts
+import com.example.respolhpl.home.HomeViewModel.ProductMinimalListItem
+import com.example.respolhpl.utils.BaseCoroutineTest
+import com.example.respolhpl.utils.assertLatestItemEquals
+import com.example.respolhpl.utils.extensions.DefaultError
+import com.example.respolhpl.utils.mockCacheAndFreshWithInputParameters
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verifyBlocking
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
-@ExperimentalCoroutinesApi
-class HomeViewModelTest {
-    lateinit var repository: ProductRepository
-    lateinit var savedStateHandle: SavedStateHandle
 
-    lateinit var viewModel: HomeViewModel
+@OptIn(ExperimentalCoroutinesApi::class)
+class HomeViewModelTest : BaseCoroutineTest() {
 
-    @get:Rule
-    val coroutineTestRule = CoroutineTestRule(TestCoroutineDispatcher())
+    private val getProductsUseCase = mockk<GetProductsUseCase>()
 
-    @Before
-    fun setup() {
-        savedStateHandle = mock<SavedStateHandle>()
-        repository =
-            mock { onBlocking { getProducts() } doReturn flow { emit(PagingData.from(FakeData.minimalProducts)) } }
-        viewModel = HomeViewModel(repository, savedStateHandle)
+    private fun mockProducts(fetchDelay: Long = TEST_DELAY, isSuccess: Boolean = true) {
+        getProductsUseCase.mockCacheAndFreshWithInputParameters(fetchDelay) { param ->
+            if (!isSuccess) return@mockCacheAndFreshWithInputParameters DefaultError().left()
+
+            when (param.page) {
+                1 -> minimalProducts.take(PREFETCH).right()
+                2 -> minimalProducts.drop(PREFETCH).take(param.perPage).right()
+                else -> DefaultError().left()
+            }
+        }
+    }
+
+    private fun createSUT(isSuccess: Boolean = true): HomeViewModel {
+        mockProducts(isSuccess = isSuccess)
+
+        return HomeViewModel(
+            getProductsUseCase = getProductsUseCase,
+            pagingConfig = PagingConfig(PREFETCH, PAGE_SIZE)
+        )
+    }
+
+
+    @Test
+    fun `when initialized then correct state set`() = runTest {
+        createSUT().pagingData.test {
+            awaitItem().run {
+                assertIs<LoadState.Loading.InitialLoading>(loadState)
+                assertTrue { items.isEmpty() }
+            }
+
+            expectNoEvents()
+            advanceTimeBy(TEST_DELAY + 1)
+
+            expectMostRecentItem().run {
+                assertIs<LoadState.Success>(loadState)
+                assertTrue { items.size == PREFETCH }
+                assertEquals(
+                    expected = minimalProducts.take(PREFETCH).map { ProductMinimalListItem(it) },
+                    actual = items
+                )
+            }
+            expectNoEvents()
+        }
     }
 
     @Test
-    fun initResult() {
-        coroutineTestRule.runBlockingTest {
-            val res = viewModel.result?.first()
-            verifyBlocking(repository) { getProducts() }
+    fun `when init fails then error set`() = runTest {
+        createSUT(isSuccess = false).pagingData.test {
+            awaitItem().run {
+                assertIs<LoadState.Loading.InitialLoading>(loadState)
+                assertTrue { items.isEmpty() }
+            }
+
+            expectNoEvents()
+            advanceTimeBy(TEST_DELAY + 1)
+
+            expectMostRecentItem().run {
+                assertIs<LoadState.Error>(loadState)
+                assertTrue { items.isEmpty() }
+            }
+        }
+    }
+
+    @Test
+    fun `given items loaded, when load more triggered then next list loaded`() = runTest {
+        val sut = createSUT()
+        sut.pagingData.test {
+            awaitItem().run {
+                assertIs<LoadState.Loading.InitialLoading>(loadState)
+                assertTrue { items.isEmpty() }
+            }
+            expectNoEvents()
+            advanceTimeBy(TEST_DELAY + 1)
+            expectMostRecentItem().run {
+                assertIs<LoadState.Success>(loadState)
+                assertTrue { items.size == PREFETCH }
+            }
+            sut.loadMore()
+
+            awaitItem().run {
+                assertIs<LoadState.Loading.LoadingMore>(loadState)
+                assertTrue { items.size == PREFETCH }
+            }
+            expectNoEvents()
+            advanceTimeBy(TEST_DELAY + 1)
+
+            expectMostRecentItem().run {
+                assertIs<LoadState.Success>(loadState)
+                val expectedSize = PREFETCH + PAGE_SIZE
+
+                assertTrue { items.size == expectedSize }
+                assertEquals(
+                    expected = minimalProducts.take(expectedSize)
+                        .map { ProductMinimalListItem(it) },
+                    actual = items
+                )
+            }
 
         }
     }
 
     @Test
-    fun doTaskTest() {
+    fun `when navigate to product details, then correct destination id set`() = runTest {
+        val sut = createSUT()
+        sut.shouldNavigate.test {
+            expectNoEvents()
 
+            sut.navigateToProductDetails(1)
+
+            assertLatestItemEquals(DestinationId(1))
+        }
+    }
+
+    companion object {
+        const val TEST_DELAY = 2L
+        const val PREFETCH = 2
+        const val PAGE_SIZE = 1
     }
 }
