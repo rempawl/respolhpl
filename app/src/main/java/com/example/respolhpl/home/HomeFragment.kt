@@ -98,7 +98,7 @@ class HomeFragment : Fragment() {
                 .fillMaxWidth()
                 .height(200.dp)
                 .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.medium)
-                .clickable { viewModel.navigate(item.product.id) }
+                .clickable { viewModel.navigateToProductDetails(item.product.id) }
         ) {
             Image(
                 modifier = Modifier

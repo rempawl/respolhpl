@@ -5,9 +5,9 @@ import arrow.core.left
 import arrow.core.right
 import com.example.respolhpl.data.paging.LoadState
 import com.example.respolhpl.data.paging.PagingConfig
-import com.example.respolhpl.data.sources.repository.ProductRepository
 import com.example.respolhpl.data.usecase.GetProductsUseCase
-import com.example.respolhpl.fakes.FakeData
+import com.example.respolhpl.fakes.FakeData.minimalProducts
+import com.example.respolhpl.home.HomeViewModel.ProductMinimalListItem
 import com.example.respolhpl.utils.BaseCoroutineTest
 import com.example.respolhpl.utils.assertLatestItemEquals
 import com.example.respolhpl.utils.extensions.DefaultError
@@ -15,9 +15,9 @@ import com.example.respolhpl.utils.mockCacheAndFreshWithInputParameters
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
@@ -32,14 +32,16 @@ class HomeViewModelTest : BaseCoroutineTest() {
             if (!isSuccess) return@mockCacheAndFreshWithInputParameters DefaultError().left()
 
             when (param.page) {
-                1 -> FakeData.minimalProducts.take(PREFETCH).right()
-                2 -> FakeData.minimalProducts.drop(PREFETCH).take(param.perPage).right()
+                1 -> minimalProducts.take(PREFETCH).right()
+                2 -> minimalProducts.drop(PREFETCH).take(param.perPage).right()
                 else -> DefaultError().left()
             }
         }
     }
 
-    private fun createSUT(): HomeViewModel {
+    private fun createSUT(isSuccess: Boolean = true): HomeViewModel {
+        mockProducts(isSuccess = isSuccess)
+
         return HomeViewModel(
             getProductsUseCase = getProductsUseCase,
             pagingConfig = PagingConfig(PREFETCH, PAGE_SIZE)
@@ -49,7 +51,6 @@ class HomeViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `when initialized then correct state set`() = runTest {
-        mockProducts()
         createSUT().pagingData.test {
             awaitItem().run {
                 assertIs<LoadState.Loading.InitialLoading>(loadState)
@@ -62,7 +63,10 @@ class HomeViewModelTest : BaseCoroutineTest() {
             expectMostRecentItem().run {
                 assertIs<LoadState.Success>(loadState)
                 assertTrue { items.size == PREFETCH }
-//                assertEquals(FakeData.minimalProducts.take(PREFETCH), items) //todo
+                assertEquals(
+                    expected = minimalProducts.take(PREFETCH).map { ProductMinimalListItem(it) },
+                    actual = items
+                )
             }
             expectNoEvents()
         }
@@ -70,8 +74,7 @@ class HomeViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `when init fails then error set`() = runTest {
-        mockProducts(isSuccess = false)
-        createSUT().pagingData.test {
+        createSUT(isSuccess = false).pagingData.test {
             awaitItem().run {
                 assertIs<LoadState.Loading.InitialLoading>(loadState)
                 assertTrue { items.isEmpty() }
@@ -89,7 +92,6 @@ class HomeViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `given items loaded, when load more triggered then next list loaded`() = runTest {
-        mockProducts()
         val sut = createSUT()
         sut.pagingData.test {
             awaitItem().run {
@@ -102,9 +104,7 @@ class HomeViewModelTest : BaseCoroutineTest() {
                 assertIs<LoadState.Success>(loadState)
                 assertTrue { items.size == PREFETCH }
             }
-            println("before")
             sut.loadMore()
-            println("after")
 
             awaitItem().run {
                 assertIs<LoadState.Loading.LoadingMore>(loadState)
@@ -116,28 +116,25 @@ class HomeViewModelTest : BaseCoroutineTest() {
             expectMostRecentItem().run {
                 assertIs<LoadState.Success>(loadState)
                 val expectedSize = PREFETCH + PAGE_SIZE
-                println("data  ${items.size} $expectedSize $this")
 
                 assertTrue { items.size == expectedSize }
-//                assertEquals(FakeData.minimalProducts.take(expectedSize), items) //todo
+                assertEquals(
+                    expected = minimalProducts.take(expectedSize)
+                        .map { ProductMinimalListItem(it) },
+                    actual = items
+                )
             }
 
         }
     }
 
-    /* when item clicked then navigate to detail */
-
     @Test
-    fun `when navigate to destination, then correct state set`() = runTest {
-        mockProducts()
+    fun `when navigate to product details, then correct destination id set`() = runTest {
         val sut = createSUT()
-        println("before")
         sut.shouldNavigate.test {
-//            expectNoEvents()
-            println("turbine")
+            expectNoEvents()
 
-            advanceUntilIdle()
-            sut.navigate(1)
+            sut.navigateToProductDetails(1)
 
             assertLatestItemEquals(DestinationId(1))
         }

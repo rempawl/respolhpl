@@ -2,11 +2,9 @@ package com.example.respolhpl.utils.extensions
 
 import arrow.core.Either
 import arrow.core.left
-import arrow.core.right
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlin.coroutines.cancellation.CancellationException
 
 typealias EitherResult<T> = Either<DefaultError, T>
 

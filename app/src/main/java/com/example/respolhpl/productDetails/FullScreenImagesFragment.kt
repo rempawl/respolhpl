@@ -21,12 +21,11 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FullScreenImagesFragment : Fragment() {
-    //todo pass single image
 
     private val viewModel by viewModels<ProductImagesViewModel>()
-    var imagesAdapter by autoCleared<ImagesAdapter>()
-    var binding: FragmentFullScreenImagesBinding? = null
-    val navArgs by navArgs<FullScreenImagesFragmentArgs>()
+    private var imagesAdapter by autoCleared<ImagesAdapter>()
+    private var binding: FragmentFullScreenImagesBinding? = null
+    private val navArgs by navArgs<FullScreenImagesFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +49,11 @@ class FullScreenImagesFragment : Fragment() {
                         with(binding!!) {
                             errorRoot.root.isVisible = state.error != null
                         }
+                    }
+                }
+                launch {
+                    viewModel.error.collectLatest { error ->
+
                     }
                 }
             }

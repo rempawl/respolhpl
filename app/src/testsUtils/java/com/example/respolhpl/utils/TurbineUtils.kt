@@ -13,8 +13,6 @@ suspend fun <T> ReceiveTurbine<T>.assertLatestItemEquals(expected: T) = coroutin
     assertEquals(expected, expectMostRecentItem())
 }
 
-
-
 suspend fun <T> ReceiveTurbine<T>.cancelAndConsumeRemainingItems(): List<T> {
     return cancelAndConsumeRemainingEvents()
         .filterIsInstance<Event.Item<T>>()

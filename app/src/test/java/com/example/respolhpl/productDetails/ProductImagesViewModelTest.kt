@@ -1,40 +1,57 @@
 package com.example.respolhpl.productDetails
 
 import androidx.lifecycle.SavedStateHandle
-import com.example.respolhpl.data.sources.repository.ProductRepository
+import app.cash.turbine.test
+import com.example.respolhpl.data.model.domain.Images
+import com.example.respolhpl.fakes.FakeData
+import com.example.respolhpl.productDetails.currentPageState.ViewPagerPageManagerImpl
 import com.example.respolhpl.utils.BaseCoroutineTest
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Before
-import org.junit.Test
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertNotNull
 
 @ExperimentalCoroutinesApi
 class ProductImagesViewModelTest : BaseCoroutineTest() {
-    private lateinit var viewModel: ProductImagesViewModel
-    lateinit var repository: ProductRepository
-    lateinit var stateHandle: SavedStateHandle
 
-//    val imgs = FakeData.products.first().images
+    private val stateHandle: SavedStateHandle = mockk()
 
-    @Before
-    fun setup() {
-        val id = 1
-        /*     repository =
-                 mock { onBlocking { getProductImages(id) } doReturn flow { emit(Result.Success(imgs)) } }
-             stateHandle = mock { on { get<Int>(ProductDetailsFragment.prodId) } doReturn id }
-             viewModel = ProductImagesViewModel(repository, stateHandle, ViewPagerPageManagerImpl())*/
+    private fun createSUT(images: Images? = TEST_IMAGES): ProductImagesViewModel {
+        mockSavedStateHandle(images)
+        return ProductImagesViewModel(stateHandle, ViewPagerPageManagerImpl())
+    }
+
+    private fun mockSavedStateHandle(images: Images? = TEST_IMAGES) {
+        every { stateHandle.get<Images>(any()) } returns images
     }
 
     @Test
-    fun getImages() {
-        /*  coroutineTestRule.runBlockingTest {
+    fun `when init, then images set`() = runTest {
+        createSUT().state.test {
 
-              val res = viewModel.result.getOrAwaitValue()
-              assertTrue(res.isSuccess)
-              assertNotNull(res.checkIfIsSuccessAndListOf<Image>())
-              res as Result.Success
-              assertThat(res.data, `is`(imgs))
-          }*/
+            assertEquals(TEST_IMAGES, expectMostRecentItem().images)
+            expectNoEvents()
+        }
     }
 
+    @Test
+    fun `when init fails, then error set`() = runTest {
+        createSUT(images = null).state.test {
 
+            expectMostRecentItem().run {
+                assertNotNull(this.error)
+                assertIs<IllegalStateException>(error!!.throwable)
+            }
+            expectNoEvents()
+        }
+    }
+
+    private companion object {
+        val TEST_IMAGES = Images(FakeData.products.first().images)
+    }
 }
+

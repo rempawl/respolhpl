@@ -8,11 +8,8 @@ data class RemoteProduct(
     val id: Int,
     val name: String,
     val stock_quantity: Int?,
-//    val shipping_class_id: Int,
     val price: Double,
     val images: List<ImageRemote>,
-//    val categories: List<RemoteCategory>,
-//    val tags : List<RemoteTag>,
     val description: String
 )
 
@@ -28,4 +25,6 @@ fun RemoteProduct.toDomain(): Product {
         description = description
     )
 }
-
+//    val shipping_class_id: Int, todo
+//    val categories: List<RemoteCategory>,
+//    val tags : List<RemoteTag>,

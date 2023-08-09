@@ -4,11 +4,10 @@ import com.example.respolhpl.utils.extensions.DefaultError
 import com.example.respolhpl.utils.extensions.EitherResult
 import com.example.respolhpl.utils.extensions.onError
 import com.example.respolhpl.utils.extensions.onSuccess
+import com.example.respolhpl.utils.extensions.refreshWhen
+import com.example.respolhpl.utils.extensions.throttleFirst
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,10 +20,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PagingManager<Item>(
@@ -130,30 +127,3 @@ class PagingManager<Item>(
         }
 }
 
-/**
- *  Code taken from https://github.com/Kotlin/kotlinx.coroutines/issues/1446#issuecomment-625244176
- */
-fun <T> Flow<T>.throttleFirst(windowDuration: Long): Flow<T> {
-    var delayJob: Job = Job().apply { complete() }
-    return onCompletion { delayJob.cancel() }.run {
-        flow {
-            coroutineScope {
-                collect { value ->
-                    if (!delayJob.isActive) {
-                        emit(value)
-                        delayJob = launch { delay(windowDuration) }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalCoroutinesApi::class)
-fun <T> Flow<T>.refreshWhen(refreshFlow: SharedFlow<Unit>): Flow<T> {
-    return refreshFlow
-        .onSubscription { emit(Unit) }
-        .flatMapLatest {
-            this
-        }
-}

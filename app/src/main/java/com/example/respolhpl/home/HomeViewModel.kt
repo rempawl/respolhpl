@@ -2,11 +2,11 @@ package com.example.respolhpl.home
 
 import androidx.lifecycle.viewModelScope
 import com.example.respolhpl.data.model.domain.ProductMinimal
-import com.example.respolhpl.data.usecase.GetProductsUseCase
 import com.example.respolhpl.data.paging.BaseListItem
 import com.example.respolhpl.data.paging.PagingConfig
 import com.example.respolhpl.data.paging.PagingData
 import com.example.respolhpl.data.paging.PagingManager
+import com.example.respolhpl.data.usecase.GetProductsUseCase
 import com.example.respolhpl.utils.BaseViewModel
 import com.example.respolhpl.utils.extensions.mapSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,7 +50,7 @@ class HomeViewModel @Inject constructor(
         getProducts()
     }
 
-    fun navigate(id: Int) {
+    fun navigateToProductDetails(id: Int) {
         viewModelScope.launch { _shouldNavigate.emit(DestinationId(id)) }
     }
 

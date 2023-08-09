@@ -5,7 +5,6 @@ import com.example.respolhpl.data.model.domain.Product
 import com.example.respolhpl.data.model.domain.ProductMinimal
 import com.example.respolhpl.data.model.remote.ImageRemote
 import com.example.respolhpl.data.model.remote.RemoteProduct
-import com.example.respolhpl.data.model.remote.RemoteProductMinimal
 
 object FakeData {
     val remoteProducts: List<RemoteProduct> = listOf(
