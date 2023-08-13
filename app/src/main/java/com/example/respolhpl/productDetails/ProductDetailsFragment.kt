@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -17,12 +19,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.example.respolhpl.R
 import com.example.respolhpl.data.model.domain.Images
 import com.example.respolhpl.data.model.domain.Product
 import com.example.respolhpl.databinding.FragmentProductDetailsBinding
+import com.example.respolhpl.productDetails.ProductDetailsFragmentDirections.*
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.autoCleared
+import com.example.respolhpl.utils.extensions.dpToPx
 import com.example.respolhpl.utils.extensions.setTextIfDifferent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -61,6 +66,14 @@ class ProductDetailsFragment : Fragment() {
                 .flatMapLatest { viewModel.navigateToFullScreenImage() }
                 .onEach { images -> navigateToFullScreenImageFragment(images) }
                 .launchIn(lifecycleScope)
+            card.updateLayoutParams<RecyclerView.LayoutParams> {
+                updateMargins(
+                    left = 16.dpToPx(resources),
+                    top = 16.dpToPx(resources),
+                    right = 16.dpToPx(resources),
+                    bottom = 16.dpToPx(resources)
+                )
+            }
         }
         binding?.setupBinding()
         setupObservers()
@@ -69,10 +82,9 @@ class ProductDetailsFragment : Fragment() {
 
     private fun navigateToFullScreenImageFragment(images: Images) {
         val currentItem = binding!!.viewPager.currentItem
-        Log.d("kruci", "navigateToFullScreenImageFragment: $currentItem")
 
         findNavController().navigate(
-            ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment(
+            navigationProductDetailsToFullScreenImagesFragment(
                 /* productId = */ args.productId,
                 /* currentPage = */currentItem,
                 /* images = */images
@@ -143,7 +155,7 @@ class ProductDetailsFragment : Fragment() {
     private fun FragmentProductDetailsBinding.setupBinding() {
         with(toolbar) {
             cartBtn.setOnClickListener {
-                findNavController().navigate(ProductDetailsFragmentDirections.actionProductDetailsToCartFragment()) //todo some extension on base fragment
+                findNavController().navigate(actionProductDetailsToCartFragment()) //todo some extension on base fragment
             }
             backBtn.setOnClickListener { findNavController().navigateUp() }
             label.text = getString(R.string.product)
