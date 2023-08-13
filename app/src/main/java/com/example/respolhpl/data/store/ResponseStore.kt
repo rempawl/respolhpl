@@ -38,7 +38,7 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
         )
         .build()
 
-    fun cacheAndFreshWrapped(key: Key): Flow<StoreResponse<Output>> {
+    private fun cacheAndFreshWrapped(key: Key): Flow<StoreResponse<Output>> {
         return store.stream(StoreRequest.cached(key, refresh = !isMemoryCacheValid(key)))
     }
 

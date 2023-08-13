@@ -1,9 +1,8 @@
-package com.example.respolhpl.data.paging
+package com.example.respolhpl.paging
 
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 
 interface BaseListItem {

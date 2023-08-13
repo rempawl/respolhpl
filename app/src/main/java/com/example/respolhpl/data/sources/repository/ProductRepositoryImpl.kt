@@ -7,7 +7,7 @@ import com.example.respolhpl.data.model.domain.ProductMinimal
 import com.example.respolhpl.data.model.remote.RemoteProduct
 import com.example.respolhpl.data.model.remote.RemoteProductMinimal
 import com.example.respolhpl.data.model.remote.toDomain
-import com.example.respolhpl.data.paging.PagingParam
+import com.example.respolhpl.paging.PagingParam
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.store.ResponseStore
 import com.example.respolhpl.data.store.SOTFactory

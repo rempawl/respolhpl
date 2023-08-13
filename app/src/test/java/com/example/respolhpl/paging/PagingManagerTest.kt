@@ -1,12 +1,8 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package com.example.respolhpl.cart.data.sources.paging
+package com.example.respolhpl.paging
 
 import app.cash.turbine.test
-import com.example.respolhpl.data.paging.LoadState
-import com.example.respolhpl.data.paging.PagingConfig
-import com.example.respolhpl.data.paging.PagingManager
-import com.example.respolhpl.data.paging.PagingParam
 import com.example.respolhpl.utils.BaseCoroutineTest
 import com.example.respolhpl.utils.cancelAndConsumeRemainingItems
 import com.example.respolhpl.utils.extensions.DefaultError
@@ -35,74 +31,38 @@ internal class PagingManagerTest : BaseCoroutineTest() {
 
     private val loadMoreTrigger = MutableSharedFlow<Unit>()
 
-    private val dataSource = mockk<(PagingParam) -> Flow<EitherResult<List<TestItem>>>> {
-        every { this@mockk.invoke(PagingParam(0, PREFETCH)) }.mockFlowResponse(TEST_DELAY) {
-            testItems.take(PREFETCH)
-        }
-        every { this@mockk.invoke(PagingParam(PREFETCH, LIMIT)) }.mockFlowResponse(TEST_DELAY) {
-            testItems.drop(PREFETCH).take(LIMIT)
-        }
-        every { this@mockk.invoke(PagingParam(PREFETCH + LIMIT, LIMIT)) }
-            .mockFlowResponse(TEST_DELAY) {
-                testItems.drop(PREFETCH + LIMIT).take(LIMIT)
-            }
-    }
+    private val dataSource = mockk<(PagingParam) -> Flow<EitherResult<List<TestItem>>>>()
 
     private fun createSUT(): PagingManager<TestItem> {
+        mockFirstPage()
+        mockSecondPage()
+        mockThirdPage()
+
         return PagingManager(
-            PagingConfig(PREFETCH, LIMIT),
-            CoroutineScope(this.testDispatcher),
-            loadMoreTrigger
-        ) {
-            dataSource.invoke(it)
-        }
+            config = PagingConfig(PREFETCH, LIMIT),
+            scope = CoroutineScope(this.testDispatcher),
+            loadMoreTrigger = loadMoreTrigger,
+            idProducer = { it.id },
+            dataSource = { dataSource.invoke(it) }
+        )
     }
 
     @Test
-    fun `when init called then prefetch items returned`() = runTest {
+    fun `when init, then prefetch items returned`() = runTest {
         val sut = createSUT()
         sut.pagingData.test {
-
-            advanceUntilIdle()
-
-            cancelAndConsumeRemainingItems().run {
-                lastButOne().run {
-                    assertIs<LoadState.Loading.InitialLoading>(loadState)
-                    assertTrue(items.isEmpty())
-                }
-                last().run {
-                    assertEquals(3, items.size)
-                    assertEquals("0", items[0].id)
-                    assertEquals("1", items[1].id)
-                    assertEquals("2", items[2].id)
-                    assertIs<LoadState.Success>(loadState)
-                }
-            }
-        }
-    }
-
-    @Test
-    fun `when init triggered then prefetch items returned`() = runTest {
-        val sut = createSUT()
-        val emitter = MutableSharedFlow<Unit>()
-
-        sut.pagingData.test {
-            expectMostRecentItem().run {
-                assertTrue(items.isEmpty())
+            awaitItem().run {
                 assertIs<LoadState.Loading.InitialLoading>(loadState)
+                assertTrue(items.isEmpty())
             }
-
-            emitter.emit(Unit)
             advanceUntilIdle()
 
-            cancelAndConsumeRemainingItems().run {
-                last().run {
-                    assertIs<LoadState.Success>(loadState)
-                    assertEquals(3, items.size)
-                    assertEquals("0", items[0].id)
-                    assertEquals("1", items[1].id)
-                    assertEquals("2", items[2].id)
-                }
+            expectMostRecentItem().run {
+                assertEquals(3, items.size)
+                assertEquals("0", items[0].id)
+                assertEquals("1", items[1].id)
+                assertEquals("2", items[2].id)
+                assertIs<LoadState.Success>(loadState)
             }
         }
     }
@@ -222,9 +182,9 @@ internal class PagingManagerTest : BaseCoroutineTest() {
         }
 
     @Test
-    fun `when error returned then correct state set`() = runTest {
-        mockError()
+    fun `when error returned, then correct state set`() = runTest {
         val sut = createSUT()
+        mockError()
         sut.pagingData.test {
             advanceUntilIdle()
             cancelAndConsumeRemainingItems().run {
@@ -238,10 +198,10 @@ internal class PagingManagerTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun `given load error when retry clicked and loading successful then prefetch items returned`() =
+    fun `given load error, when retry clicked and loading successful, then prefetch items returned`() =
         runTest {
-            mockError()
             val sut = createSUT()
+            mockError()
             sut.pagingData.test {
                 advanceUntilIdle()
                 mockFirstPage()
@@ -291,14 +251,55 @@ internal class PagingManagerTest : BaseCoroutineTest() {
         }
     }
 
+    @Test
+    fun `given load more, when duplicated item returned, then correct state set`() = runTest {
+        val sut = createSUT()
+        sut.pagingData.test {
+            advanceUntilIdle()
+            mockSecondPageWithDuplicate()
+
+            loadMoreTrigger.emit(Unit)
+
+            expectMostRecentItem().run {
+                assertIs<LoadState.Loading.LoadingMore>(loadState)
+                assertEquals(3, items.size)
+            }
+            advanceUntilIdle()
+            expectMostRecentItem().run {
+                assertIs<LoadState.Success>(loadState)
+                assertEquals(3, items.size)
+                assertEquals("2", items[PREFETCH - 1].id)
+            }
+        }
+    }
+
     private fun mockFirstPage() {
-        every { dataSource.invoke(PagingParam(0, PREFETCH)) }.mockFlowResponse(TEST_DELAY) {
+        every { dataSource.invoke(PagingParam(1, PREFETCH)) }.mockFlowResponse(TEST_DELAY) {
             testItems.take(PREFETCH)
         }
     }
 
+    private fun mockSecondPage() {
+        every { dataSource.invoke(PagingParam(PREFETCH + 1, LIMIT)) }.mockFlowResponse(TEST_DELAY) {
+            testItems.drop(PREFETCH).take(LIMIT)
+        }
+    }
+
+    private fun mockSecondPageWithDuplicate() {
+        every { dataSource.invoke(PagingParam(PREFETCH + 1, LIMIT)) }.mockFlowResponse(TEST_DELAY) {
+            testItems.drop(PREFETCH - 1).take(LIMIT)
+        }
+    }
+
+    private fun mockThirdPage() {
+        every { dataSource.invoke(PagingParam(PREFETCH + LIMIT + 1, LIMIT)) }
+            .mockFlowResponse(TEST_DELAY) {
+                testItems.drop(PREFETCH + LIMIT).take(LIMIT)
+            }
+    }
+
     private fun mockError() {
-        every { dataSource.invoke(PagingParam(0, PREFETCH)) }
+        every { dataSource.invoke(any()) }
             .mockFlowError(TEST_DELAY) { DefaultError() }
     }
 

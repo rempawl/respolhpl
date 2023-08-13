@@ -16,16 +16,10 @@ abstract class StoreUseCase<Key : Any, Output : Any>(
     private val store: ResponseStore<Key, *, Output>,
 ) {
 
-    fun cacheAndFreshWrapped(key: Key): Flow<StoreResponse<Output>> =
-        store.cacheAndFreshWrapped(key)
-
     fun cacheAndFresh(key: Key): Flow<EitherResult<Output>> =
         store.cacheAndFresh(key)
 
     suspend fun refresh(key: Key) = store.refresh(key)
-
-    fun stream(request: StoreRequest<Key>): Flow<StoreResponse<Output>> =
-        store.stream(request)
 
     suspend fun get(key: Key): EitherResult<Output> = store.get(key)
 

@@ -1,4 +1,4 @@
-package com.example.respolhpl.data.paging
+package com.example.respolhpl.paging
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.respolhpl.data.paging.LoadState.*
+import com.example.respolhpl.paging.LoadState.*
 import com.example.respolhpl.utils.extensions.DefaultError
 
 internal object PagerPreviewDataCreator {

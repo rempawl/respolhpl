@@ -3,8 +3,8 @@ package com.example.respolhpl.home
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
-import com.example.respolhpl.data.paging.LoadState
-import com.example.respolhpl.data.paging.PagingConfig
+import com.example.respolhpl.paging.LoadState
+import com.example.respolhpl.paging.PagingConfig
 import com.example.respolhpl.data.usecase.GetProductsUseCase
 import com.example.respolhpl.fakes.FakeData.minimalProducts
 import com.example.respolhpl.home.HomeViewModel.ProductMinimalListItem

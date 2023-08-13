@@ -1,5 +1,5 @@
 package com.example.respolhpl.utils.extensions
 
 fun <T> List<T>.lastButOne(): T {
-    return get(lastIndex - 1)
+    return (lastIndex - 1).takeIf { it >= 0 }?.let { get(it) } ?: get(0)
 }

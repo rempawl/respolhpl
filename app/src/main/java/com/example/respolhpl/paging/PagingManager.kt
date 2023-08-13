@@ -1,4 +1,4 @@
-package com.example.respolhpl.data.paging
+package com.example.respolhpl.paging
 
 import com.example.respolhpl.utils.extensions.DefaultError
 import com.example.respolhpl.utils.extensions.EitherResult
@@ -11,7 +11,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filter
@@ -28,7 +27,8 @@ class PagingManager<Item>(
     private val config: PagingConfig,
     scope: CoroutineScope,
     loadMoreTrigger: Flow<Unit>,
-    private val dataSource: (PagingParam) -> Flow<EitherResult<List<Item>>>
+    private val dataSource: (PagingParam) -> Flow<EitherResult<List<Item>>>,
+    private val idProducer: (Item) -> Any
 ) {
 
     private val _pagingData = MutableStateFlow(PagingData<Item>())
@@ -48,7 +48,7 @@ class PagingManager<Item>(
 
         val loadMore = loadMoreTrigger
             .filter { _pagingData.value.loadState !is LoadState.Loading }
-            .throttleFirst(100)
+            .throttleFirst(50) // to avoid multiple request for the same page
             .map { LoadMorePhase.LoadingMore }
 
         merge(init, loadMore)
@@ -71,11 +71,11 @@ class PagingManager<Item>(
         return flow {
             updateLoadingState(phase)
             emitAll(
-                dataSource(PagingParam(currentPage(), getLimit(phase)))
+                dataSource(PagingParam(currentPageToLoad(), getPageSize(phase)))
                     .onSuccess { newItems ->
                         _pagingData.update {
                             it.copy(
-                                items = it.items + newItems,
+                                items = getListWithoutDuplicates(it.items, newItems),
                                 loadState = LoadState.Success
                             )
                         }
@@ -86,6 +86,14 @@ class PagingManager<Item>(
             )
         }
     }
+
+    private fun getListWithoutDuplicates(
+        items: List<Item>,
+        newItems: List<Item>
+    ) = (items + newItems)
+        .asReversed() // reversing so latest items are left in list if they are duplicates
+        .distinctBy(idProducer)
+        .asReversed()
 
     private suspend fun updateLoadingState(phase: LoadMorePhase) {
         when (phase) {
@@ -104,13 +112,16 @@ class PagingManager<Item>(
         }
     }
 
-    private fun currentPage(): Int {
-        // todo refactor
-        return if (_pagingData.value.items.isEmpty()) 1
-        else {
-            val nextPages = _pagingData.value.items.size - config.prefetchSize //what if below zero
-            val pages = nextPages / config.perPage
-            2 + pages
+    private fun currentPageToLoad(): Int {
+        val itemsCount = _pagingData.value.items.size
+        return if (itemsCount == 0) {
+            1
+        } else {
+            with(config) {
+                val nextPages = (itemsCount - prefetchSize).takeIf { it > 0 } ?: 0
+                val pages = nextPages / perPage
+                prefetchSize.div(perPage).plus(pages).plus(1)
+            }
         }
     }
 
@@ -120,7 +131,7 @@ class PagingManager<Item>(
             LoadMorePhase.LoadingMore -> LoadState.Error.LoadMoreError(error)
         }
 
-    private fun getLimit(phase: LoadMorePhase) =
+    private fun getPageSize(phase: LoadMorePhase) =
         when (phase) {
             LoadMorePhase.Init -> config.prefetchSize
             LoadMorePhase.LoadingMore -> config.perPage

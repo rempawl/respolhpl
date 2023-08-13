@@ -8,17 +8,13 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.respolhpl.home.HomeFragment"
-        android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/navigation_home_to_product_details"
-            app:destination="@id/product_details"
-
-            />
+            app:destination="@id/product_details" />
         <action
             android:id="@+id/action_nav_home_to_cart_fragment"
             app:destination="@id/cart_fragment" />
-
     </fragment>
 
     <fragment
@@ -38,7 +34,7 @@
     <fragment
         android:id="@+id/fullScreenImagesFragment"
         android:name="com.example.respolhpl.productDetails.FullScreenImagesFragment"
-        android:label="" >
+        android:label="">
         <argument
             android:name="productId"
             app:argType="java.lang.Integer" />
@@ -50,9 +46,8 @@
             app:argType="com.example.respolhpl.data.model.domain.Images" />
     </fragment>
 
-<fragment
-    android:id="@+id/cart_fragment"
-    android:name="com.example.respolhpl.cart.CartFragment"
-    android:label="@string/cart"
-    />
+    <fragment
+        android:id="@+id/cart_fragment"
+        android:name="com.example.respolhpl.cart.CartFragment"
+        android:label="@string/cart" />
 </navigation>

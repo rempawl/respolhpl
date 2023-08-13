@@ -1,7 +1,10 @@
-package com.example.respolhpl.data.paging
+package com.example.respolhpl.paging
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -21,9 +24,9 @@ fun PagedLazyColumn(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
             .then(modifier),
         state = listState,
+        contentPadding = PaddingValues(16.dp)  ,
         verticalArrangement = Arrangement.spacedBy(verticalSpacing)
     ) {
         content()
