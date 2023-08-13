@@ -1,14 +1,14 @@
 package com.example.respolhpl.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.respolhpl.data.model.domain.ProductMinimal
-import com.example.respolhpl.data.paging.BaseListItem
-import com.example.respolhpl.data.paging.PagingConfig
-import com.example.respolhpl.data.paging.PagingData
-import com.example.respolhpl.data.paging.PagingManager
 import com.example.respolhpl.data.usecase.GetProductsUseCase
+import com.example.respolhpl.paging.BaseListItem
+import com.example.respolhpl.paging.PagingConfig
+import com.example.respolhpl.paging.PagingData
+import com.example.respolhpl.paging.PagingManager
 import com.example.respolhpl.utils.BaseViewModel
-import com.example.respolhpl.utils.extensions.mapSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,11 +17,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-// todo add timber
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -35,13 +35,19 @@ class HomeViewModel @Inject constructor(
 
     private val loadMoreTrigger = MutableSharedFlow<Unit>()
 
-    private val pagingManager = PagingManager(
+    private val pagingManager = PagingManager<ProductMinimalListItem>(
         config = pagingConfig,
         scope = viewModelScope,
-        loadMoreTrigger = loadMoreTrigger
-    ) { pagingParam ->
-        getProductsUseCase.cacheAndFresh(pagingParam).mapSuccess { it.toListItems() }
-    }
+        loadMoreTrigger = loadMoreTrigger,
+        idProducer = { it.itemId },
+        dataSource = { pagingParam ->
+            flow {
+                emit(
+                    getProductsUseCase.fresh(pagingParam).map { it.toListItems() }
+                )
+            }
+        }
+    )
 
     private val _pagingData = MutableStateFlow<PagingData<ProductMinimalListItem>>(PagingData())
     val pagingData: StateFlow<PagingData<ProductMinimalListItem>> = _pagingData.asStateFlow()
@@ -79,7 +85,7 @@ class HomeViewModel @Inject constructor(
 
     data class ProductMinimalListItem(
         val product: ProductMinimal,
-        override val itemId: Any = product.id
+        override val itemId: Int = product.id
     ) : BaseListItem
 }
 

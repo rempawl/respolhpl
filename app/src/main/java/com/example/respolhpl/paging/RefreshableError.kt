@@ -1,4 +1,4 @@
-package com.example.respolhpl.data.paging
+package com.example.respolhpl.paging
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

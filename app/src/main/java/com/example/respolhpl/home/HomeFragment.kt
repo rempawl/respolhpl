@@ -37,8 +37,9 @@ import androidx.navigation.fragment.findNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.respolhpl.R
 import com.example.respolhpl.databinding.FragmentHomeBinding
-import com.example.respolhpl.data.paging.PagedLazyColumn
-import com.example.respolhpl.data.paging.pagedContent
+import com.example.respolhpl.paging.LoadMoreManager
+import com.example.respolhpl.paging.PagedLazyColumn
+import com.example.respolhpl.paging.pagedContent
 import com.example.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -67,12 +68,16 @@ class HomeFragment : Fragment() {
                 MaterialTheme {
                     val listState = rememberLazyListState()
                     val pagingData by viewModel.pagingData.collectAsState()
+                    LoadMoreManager(
+                        listState = listState,
+                        onLoadMore = { viewModel.loadMore() }
+                    )
 
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .systemBarsPadding()
-                            .padding(top = 56.dp) // todo move toolbar from xml
+                            .padding(top = 56.dp) // todo move toolbar from xml to compose
                     ) {
                         PagedLazyColumn(
                             listState = listState,
