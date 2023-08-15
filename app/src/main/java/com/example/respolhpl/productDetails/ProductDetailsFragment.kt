@@ -2,7 +2,6 @@ package com.example.respolhpl.productDetails
 
 import android.os.Bundle
 import android.text.SpannableString
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,9 +23,11 @@ import com.example.respolhpl.R
 import com.example.respolhpl.data.model.domain.Images
 import com.example.respolhpl.data.model.domain.Product
 import com.example.respolhpl.databinding.FragmentProductDetailsBinding
-import com.example.respolhpl.productDetails.ProductDetailsFragmentDirections.*
+import com.example.respolhpl.productDetails.ProductDetailsFragmentDirections.actionProductDetailsToCartFragment
+import com.example.respolhpl.productDetails.ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.autoCleared
+import com.example.respolhpl.utils.extensions.DefaultError
 import com.example.respolhpl.utils.extensions.dpToPx
 import com.example.respolhpl.utils.extensions.setTextIfDifferent
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,7 +76,7 @@ class ProductDetailsFragment : Fragment() {
                 )
             }
         }
-        binding?.setupBinding()
+        binding!!.setupBinding()
         setupObservers()
     }
 
@@ -100,24 +101,31 @@ class ProductDetailsFragment : Fragment() {
                         with(binding!!) {
                             productDetails.isVisible = state.isSuccess
                             loading.root.isVisible = state.isLoading
-                            errorRoot.root.isVisible = state.error != null
+                            errorRoot.root.isVisible = state.productError != null
                         }
                     }
                 }
                 launch {
-                    viewModel.product
-                        .collectLatest { product ->
+                    viewModel.product.collectLatest { product ->
                             imagesAdapter.submitList(product.images)
                             setProduct(product)
                         }
                 }
-
                 launch {
                     viewModel.cartQuantity.collectLatest { quantity ->
                         binding?.quantity?.setTextIfDifferent(quantity.toString())
                     }
                 }
-
+                launch {
+                    viewModel.showError.collectLatest {
+                        showError(it)
+                    }
+                }
+                launch {
+                    viewModel.itemAddedToCart.collectLatest { count ->
+                        showAddToCartToast(count)
+                    }
+                }
                 viewModel.isPlusBtnEnabled
                     .onEach { binding!!.plusBtn.isEnabled = it }
                     .launchIn(this)
@@ -127,6 +135,14 @@ class ProductDetailsFragment : Fragment() {
                     .launchIn(this)
             }
         }
+    }
+
+    private fun showError(error: DefaultError) {
+        Toast.makeText(
+            requireContext(),
+            error.message,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun setProduct(product: Product) {
@@ -163,8 +179,9 @@ class ProductDetailsFragment : Fragment() {
         plusBtn.setOnClickListener { viewModel.onPlusBtnClick() }
         minusBtn.setOnClickListener { viewModel.onMinusBtnClick() }
         viewModel.setQuantityChangedListener(quantity.textChanges())
-
+        addToCartButton.setOnClickListener { viewModel.onAddToCartClick() }
         errorRoot.retryButton.setOnClickListener { viewModel.retry() }
+
         with(viewPager) {
             adapter = imagesAdapter
         }

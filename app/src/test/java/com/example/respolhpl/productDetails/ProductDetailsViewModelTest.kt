@@ -3,6 +3,7 @@ package com.example.respolhpl.productDetails
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import app.cash.turbine.turbineScope
+import com.example.respolhpl.data.usecase.AddToCartUseCase
 import com.example.respolhpl.data.usecase.GetProductUseCase
 import com.example.respolhpl.fakes.FakeData
 import com.example.respolhpl.utils.BaseCoroutineTest
@@ -11,6 +12,7 @@ import com.example.respolhpl.utils.coVerifyNever
 import com.example.respolhpl.utils.coVerifyOnce
 import com.example.respolhpl.utils.extensions.DefaultError
 import com.example.respolhpl.utils.mockCacheAndFresh
+import com.example.respolhpl.utils.mockFlowResult
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,13 +33,15 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
     private val handle: SavedStateHandle = mockk { every { get<Int>(any()) } returns 1 }
 
     private val getProductUseCase = mockk<GetProductUseCase>()
+    private val addToCartUseCase = mockk<AddToCartUseCase>()
     private val quantityTextFlow = MutableSharedFlow<CharSequence>()
 
-    private fun createSUT(error: DefaultError? = null): ProductDetailsViewModel {
-        mockProduct(error)
+    private fun createSUT(productError: DefaultError? = null): ProductDetailsViewModel {
+        mockProduct(productError)
         return ProductDetailsViewModel(
-            handle,
-            getProductUseCase = getProductUseCase
+            savedStateHandle = handle,
+            getProductUseCase = getProductUseCase,
+            addToCartUseCase = addToCartUseCase
         )
     }
 
@@ -47,6 +51,15 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
             error = error,
             value = FakeData.products.first()
         )
+    }
+
+    private fun mockAddToCart(error: DefaultError? = null) {
+        every { addToCartUseCase.call(any()) }.mockFlowResult(
+            delayMillis = TEST_DELAY,
+            response = Unit,
+            error = error
+        )
+
     }
 
 
@@ -77,11 +90,11 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
     @Test
     fun `when init fails, then error set`() = runTest {
         createSUT(DefaultError()).state.test {
-            assertNull(awaitItem().error)
+            assertNull(awaitItem().productError)
 
             advanceTimeBy(TEST_DELAY + 1)
 
-            assertNotNull(awaitItem().error)
+            assertNotNull(awaitItem().productError)
             coVerifyOnce { getProductUseCase.cacheAndFresh(any()) }
         }
     }
@@ -128,7 +141,6 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
                 assertFalse { isPlusBtnEnabled.expectMostRecentItem() }
             }
         }
-
 
 
     @Test
@@ -191,6 +203,49 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
                 assertFalse { isMinusBtnEnabled.expectMostRecentItem() }
             }
         }
+
+
+    @Test
+    fun `given quantity equal to two, when add to cart clicked and succeeds, then two items added to cart and reset quantity `() =
+        runTest {
+            val sut = createSUT()
+            mockAddToCart()
+            turbineScope {
+                val itemAddedFlow = sut.itemAddedToCart.testIn(backgroundScope)
+                val quantity = sut.cartQuantity.testIn(backgroundScope)
+                sut.onPlusBtnClick()
+                coVerifyNever { addToCartUseCase.call(any()) }
+                assertEquals(2, quantity.expectMostRecentItem())
+
+                sut.onAddToCartClick()
+                advanceUntilIdle()
+
+                assertEquals(2, itemAddedFlow.expectMostRecentItem())
+                assertEquals(1, quantity.expectMostRecentItem())
+                coVerifyOnce { addToCartUseCase.call(any()) }
+            }
+        }
+
+    @Test
+    fun `when add to cart fails, then error is displayed`()= runTest {
+        val sut = createSUT()
+        val error = DefaultError(message = "error occurred when adding to cart")
+        mockAddToCart(error)
+
+        sut.showError.test {
+            expectNoEvents()
+            coVerifyNever { addToCartUseCase.call(any()) }
+
+            sut.onAddToCartClick()
+            advanceTimeBy(TEST_DELAY + 1)
+
+            awaitItem().run {
+                assertNotNull(this)
+                assertEquals(error, this)
+            }
+            coVerifyOnce { addToCartUseCase.call(any()) }
+        }
+    }
 
     private companion object {
         const val TEST_DELAY = 2L

@@ -24,10 +24,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CartFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = CartFragment()
-    }
-
     @Inject
     lateinit var dispatchersProvider: DispatchersProvider
 
@@ -61,7 +57,7 @@ class CartFragment : Fragment() {
     private fun setupObservers() {
         this.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // todo
+
             }
         }
     }

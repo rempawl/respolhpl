@@ -18,6 +18,7 @@ class CartProductAdapter(
     private val dispatchersProvider: DispatchersProvider,
     private val onDeleteClickListener: (CartItem.CartProduct) -> Unit
 ) : ListAdapter<CartItem, RecyclerView.ViewHolder>(Diff()) {
+
     companion object {
         const val PRODUCT_TYPE = 1
         const val SUMMARY_TYPE = 2

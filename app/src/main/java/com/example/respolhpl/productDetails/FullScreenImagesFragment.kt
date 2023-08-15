@@ -52,7 +52,7 @@ class FullScreenImagesFragment : Fragment() {
                     }
                 }
                 launch {
-                    viewModel.error.collectLatest { error ->
+                    viewModel.showError.collectLatest { error ->
 
                     }
                 }

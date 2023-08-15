@@ -17,6 +17,7 @@ apply plugin: 'kotlinx-serialization'
 android {
     compileSdk 33
     sourceSets {
+        // todo update
         androidTest {
             java.srcDirs += "src/testsUtils/java"
         }
@@ -96,9 +97,9 @@ dependencies {
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.compose.material:material-icons-core'
     // Optional - Add full set of material icons
-    implementation 'androidx.compose.material:material-icons-extended'
+//    implementation 'androidx.compose.material:material-icons-extended'
     // Optional - Add window size utils
-    implementation 'androidx.compose.material3:material3-window-size-class'
+//    implementation 'androidx.compose.material3:material3-window-size-class'
 //    implementation 'androidx.activity:activity-compose:1.7.3'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1'
     implementation("io.coil-kt:coil-compose:2.4.0")
@@ -170,39 +171,37 @@ dependencies {
     testImplementation "io.mockk:mockk:1.13.5"
     testImplementation "io.mockk:mockk-android:1.13.5"
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'junit:junit:4.13.2'
+//    testImplementation 'junit:junit:4.13.2'
+//    androidTestImplementation 'junit:junit:4.13.2'
 
     testImplementation "androidx.test:core-ktx:1.5.0"
     testImplementation "androidx.test:rules:1.5.0"
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation "androidx.test:rules:1.5.0"
-    androidTestImplementation "androidx.test:core-ktx:1.5.0"
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+//    androidTestImplementation "androidx.test:rules:1.5.0"
+//    androidTestImplementation "androidx.test:core-ktx:1.5.0"
 
-    androidTestImplementation 'androidx.test.ext:truth:1.5.0'
-    testImplementation 'androidx.test.ext:truth:1.5.0'
+//    androidTestImplementation 'androidx.test.ext:truth:1.5.0'
+//    testImplementation 'androidx.test.ext:truth:1.5.0'
 
-    androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
-    testImplementation "androidx.arch.core:core-testing:2.2.0"
+//    androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
+//    testImplementation "androidx.arch.core:core-testing:2.2.0"
 
     def espressoVersion = "3.5.1"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+//    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+//    testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 
     testImplementation "com.squareup.okhttp3:mockwebserver:4.10.0"
-
-    testImplementation 'org.robolectric:robolectric:4.5.1'
 
     testImplementation("app.cash.turbine:turbine:1.0.0")
 
     //hilt
-    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+//    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+//    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
-
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+//    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+//    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 
 }

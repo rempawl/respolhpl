@@ -106,7 +106,6 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
     }
 }
 
-
 sealed class StoreError : DefaultError() {
     data class Exception(override val throwable: Throwable) : StoreError()
     data class Message(override val message: String) : StoreError()
