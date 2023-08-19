@@ -3,10 +3,8 @@ package com.example.respolhpl.utils
 import arrow.core.left
 import arrow.core.right
 import com.example.respolhpl.data.usecase.AsyncUseCase
-import com.example.respolhpl.data.usecase.ResultUseCase
 import com.example.respolhpl.data.usecase.StoreUseCase
 import com.example.respolhpl.data.usecase.invoke
-import com.example.respolhpl.utils.extensions.DefaultError
 import com.example.respolhpl.utils.extensions.EitherResult
 import io.mockk.MockKStubScope
 import io.mockk.coEvery
@@ -24,16 +22,14 @@ inline fun <reified P : Any, R, T : AsyncUseCase<P, R>> T.mock(
     value
 }
 
-inline fun <reified Param : Any, Result, T : StoreUseCase<Param, Result>> T.mockCacheAndFreshWithInputParameters(
+inline fun <reified Param : Any, Result, T : StoreUseCase<Param, Result>> T.mockFreshWithInputParameters(
     delayMillis: Long = 0,
     crossinline valueFactory: (Param) -> EitherResult<Result>
 ) {
     val argument = slot<Param>()
-    coEvery { this@mockCacheAndFreshWithInputParameters.cacheAndFresh(capture(argument)) } coAnswers {
-        flow {
-            delay(delayMillis)
-            emit(valueFactory(argument.captured))
-        }
+    coEvery { this@mockFreshWithInputParameters.fresh(capture(argument)) } coAnswers {
+        if (delayMillis > 0) delay(delayMillis)
+        valueFactory(argument.captured)
     }
 }
 

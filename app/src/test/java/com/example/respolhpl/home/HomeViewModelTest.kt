@@ -3,15 +3,15 @@ package com.example.respolhpl.home
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
-import com.example.respolhpl.paging.LoadState
-import com.example.respolhpl.paging.PagingConfig
 import com.example.respolhpl.data.usecase.GetProductsUseCase
 import com.example.respolhpl.fakes.FakeData.minimalProducts
 import com.example.respolhpl.home.HomeViewModel.ProductMinimalListItem
+import com.example.respolhpl.paging.LoadState
+import com.example.respolhpl.paging.PagingConfig
 import com.example.respolhpl.utils.BaseCoroutineTest
+import com.example.respolhpl.utils.DefaultError
 import com.example.respolhpl.utils.assertLatestItemEquals
-import com.example.respolhpl.utils.extensions.DefaultError
-import com.example.respolhpl.utils.mockCacheAndFreshWithInputParameters
+import com.example.respolhpl.utils.mockFreshWithInputParameters
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
@@ -28,12 +28,11 @@ class HomeViewModelTest : BaseCoroutineTest() {
     private val getProductsUseCase = mockk<GetProductsUseCase>()
 
     private fun mockProducts(fetchDelay: Long = TEST_DELAY, isSuccess: Boolean = true) {
-        getProductsUseCase.mockCacheAndFreshWithInputParameters(fetchDelay) { param ->
-            if (!isSuccess) return@mockCacheAndFreshWithInputParameters DefaultError().left()
-
+        getProductsUseCase.mockFreshWithInputParameters(fetchDelay) { param ->
+            if (!isSuccess) return@mockFreshWithInputParameters DefaultError().left()
             when (param.page) {
                 1 -> minimalProducts.take(PREFETCH).right()
-                2 -> minimalProducts.drop(PREFETCH).take(param.perPage).right()
+                3 -> minimalProducts.drop(PREFETCH).take(param.perPage).right()
                 else -> DefaultError().left()
             }
         }
@@ -116,7 +115,6 @@ class HomeViewModelTest : BaseCoroutineTest() {
             expectMostRecentItem().run {
                 assertIs<LoadState.Success>(loadState)
                 val expectedSize = PREFETCH + PAGE_SIZE
-
                 assertTrue { items.size == expectedSize }
                 assertEquals(
                     expected = minimalProducts.take(expectedSize)

@@ -1,4 +1,6 @@
-package com.example.respolhpl.utils.extensions
+package com.example.respolhpl.utils
+
+import com.example.respolhpl.productDetails.NullProductIdError
 
 open class DefaultError(open val throwable: Throwable? = null, open val message: String? = null) {
 
@@ -13,9 +15,7 @@ open class DefaultError(open val throwable: Throwable? = null, open val message:
         other as DefaultError
 
         if (throwable != other.throwable) return false
-        if (message != other.message) return false
-
-        return true
+        return message == other.message
     }
 
     override fun hashCode(): Int {
@@ -26,3 +26,9 @@ open class DefaultError(open val throwable: Throwable? = null, open val message:
 }
 
 fun Throwable.toDefaultError() = DefaultError(this)
+
+fun DefaultError.getErrorMessage() = when (this) {
+    is NullProductIdError -> "Error: null product id"
+    else -> "Something went wrong"
+
+}

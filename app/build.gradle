@@ -1,9 +1,8 @@
 plugins {
     id('com.google.secrets_gradle_plugin') version('0.4')
-    id 'com.google.gms.google-services'
-
     //for junit5 on gradle 7+
     id("de.mannodermaus.android-junit5") version "1.9.3.0"
+    id 'com.google.gms.google-services'
 }
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'

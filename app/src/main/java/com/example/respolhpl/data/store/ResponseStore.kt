@@ -4,7 +4,7 @@ import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.right
 import com.dropbox.android.external.store4.*
-import com.example.respolhpl.utils.extensions.DefaultError
+import com.example.respolhpl.utils.DefaultError
 import com.example.respolhpl.utils.extensions.EitherResult
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*

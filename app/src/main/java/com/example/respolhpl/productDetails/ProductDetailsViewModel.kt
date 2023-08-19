@@ -12,7 +12,7 @@ import com.example.respolhpl.data.usecase.AddToCartUseCase
 import com.example.respolhpl.data.usecase.AddToCartUseCase.Param
 import com.example.respolhpl.data.usecase.GetProductUseCase
 import com.example.respolhpl.utils.BaseViewModel
-import com.example.respolhpl.utils.extensions.DefaultError
+import com.example.respolhpl.utils.DefaultError
 import com.example.respolhpl.utils.extensions.onError
 import com.example.respolhpl.utils.extensions.onSuccess
 import com.example.respolhpl.utils.watchProgress

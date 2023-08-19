@@ -44,7 +44,7 @@ class ProductImagesViewModelTest : BaseCoroutineTest() {
 
             expectMostRecentItem().run {
                 assertNotNull(this.error)
-                assertIs<IllegalStateException>(error!!.throwable)
+                assertIs<NullProductIdError>(error!!)
             }
             expectNoEvents()
         }

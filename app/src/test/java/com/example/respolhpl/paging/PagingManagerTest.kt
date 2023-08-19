@@ -5,7 +5,7 @@ package com.example.respolhpl.paging
 import app.cash.turbine.test
 import com.example.respolhpl.utils.BaseCoroutineTest
 import com.example.respolhpl.utils.cancelAndConsumeRemainingItems
-import com.example.respolhpl.utils.extensions.DefaultError
+import com.example.respolhpl.utils.DefaultError
 import com.example.respolhpl.utils.extensions.EitherResult
 import com.example.respolhpl.utils.extensions.lastButOne
 import com.example.respolhpl.utils.mockFlowError

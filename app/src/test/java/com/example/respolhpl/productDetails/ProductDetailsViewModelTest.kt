@@ -10,7 +10,7 @@ import com.example.respolhpl.utils.BaseCoroutineTest
 import com.example.respolhpl.utils.assertLatestItemEquals
 import com.example.respolhpl.utils.coVerifyNever
 import com.example.respolhpl.utils.coVerifyOnce
-import com.example.respolhpl.utils.extensions.DefaultError
+import com.example.respolhpl.utils.DefaultError
 import com.example.respolhpl.utils.mockCacheAndFresh
 import com.example.respolhpl.utils.mockFlowResult
 import io.mockk.every

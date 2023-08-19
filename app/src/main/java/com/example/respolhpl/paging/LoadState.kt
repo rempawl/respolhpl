@@ -1,6 +1,6 @@
 package com.example.respolhpl.paging
 
-import com.example.respolhpl.utils.extensions.DefaultError
+import com.example.respolhpl.utils.DefaultError
 
 sealed class LoadState {
     object Success : LoadState()
