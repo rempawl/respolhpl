@@ -23,10 +23,8 @@ class SOTFactory @Inject constructor(
     cacheProvider: ApiCacheProvider
 ) : DiskSOTFactory(cacheProvider)
 
+open class DiskSOTFactory(val cacheProvider: CacheProvider) {
 
-open class DiskSOTFactory(
-    val cacheProvider: CacheProvider,
-) {
     inline fun <Key, reified WriteData, ReadData> create(
         cacheKeyPrefix: String,
         noinline mapper: suspend (WriteData) -> ReadData

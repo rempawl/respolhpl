@@ -10,6 +10,7 @@
     <string name="app_name">RespolHPL</string>
     <string name="nav_header_title">RespolHPL</string>
     <string name="nav_header_subtitle">www.respolhpl.pl</string>
+    <string name="connection_lost">Brak połączenia z internetem</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Ustawienia</string>
 

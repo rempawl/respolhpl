@@ -2,7 +2,6 @@ package com.example.respolhpl.productDetails
 
 import android.os.Bundle
 import android.text.SpannableString
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -24,11 +21,13 @@ import com.example.respolhpl.R
 import com.example.respolhpl.data.model.domain.Images
 import com.example.respolhpl.data.model.domain.Product
 import com.example.respolhpl.databinding.FragmentProductDetailsBinding
-import com.example.respolhpl.productDetails.ProductDetailsFragmentDirections.*
+import com.example.respolhpl.productDetails.ProductDetailsFragmentDirections.actionProductDetailsToCartFragment
+import com.example.respolhpl.productDetails.ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.autoCleared
 import com.example.respolhpl.utils.extensions.dpToPx
 import com.example.respolhpl.utils.extensions.setTextIfDifferent
+import com.example.respolhpl.utils.getErrorMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -38,6 +37,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import reactivecircus.flowbinding.android.view.clicks
 import reactivecircus.flowbinding.android.widget.textChanges
+
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -66,6 +66,7 @@ class ProductDetailsFragment : Fragment() {
                 .flatMapLatest { viewModel.navigateToFullScreenImage() }
                 .onEach { images -> navigateToFullScreenImageFragment(images) }
                 .launchIn(lifecycleScope)
+
             card.updateLayoutParams<RecyclerView.LayoutParams> {
                 updateMargins(
                     left = 16.dpToPx(resources),
@@ -75,7 +76,7 @@ class ProductDetailsFragment : Fragment() {
                 )
             }
         }
-        binding?.setupBinding()
+        binding!!.setupBinding()
         setupObservers()
     }
 
@@ -93,41 +94,48 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.state.collectLatest { state ->
-                        with(binding!!) {
-                            productDetails.isVisible = state.isSuccess
-                            loading.root.isVisible = state.isLoading
-                            errorRoot.root.isVisible = state.error != null
-                        }
+        observeOnStart {
+            launch {
+                viewModel.state.collectLatest { state ->
+                    with(binding!!) {
+                        productDetails.isVisible = state.isSuccess
+                        loading.root.isVisible = state.isLoading
+                        errorRoot.root.isVisible = state.productError != null
                     }
                 }
-                launch {
-                    viewModel.product
-                        .collectLatest { product ->
-                            imagesAdapter.submitList(product.images)
-                            setProduct(product)
-                        }
+            }
+            launch {
+                viewModel.product.collectLatest { product ->
+                    imagesAdapter.submitList(product.images)
+                    setProduct(product)
                 }
-
-                launch {
-                    viewModel.cartQuantity.collectLatest { quantity ->
-                        binding?.quantity?.setTextIfDifferent(quantity.toString())
-                    }
+            }
+            launch {
+                viewModel.cartQuantity.collectLatest { quantity ->
+                    binding?.quantity?.setTextIfDifferent(quantity.toString())
                 }
-
+            }
+            launch {
+                viewModel.showError.collectLatest {
+                    showToast(it.getErrorMessage())
+                }
+            }
+            launch {
+                viewModel.itemAddedToCart.collectLatest { count ->
+                    showAddToCartToast(count)
+                }
+            }
+            launch {
                 viewModel.isPlusBtnEnabled
-                    .onEach { binding!!.plusBtn.isEnabled = it }
-                    .launchIn(this)
-
+                    .collectLatest { binding!!.plusBtn.isEnabled = it }
+            }
+            launch {
                 viewModel.isMinusBtnEnabled
-                    .onEach { binding!!.minusBtn.isEnabled = it }
-                    .launchIn(this)
+                    .collectLatest { binding!!.minusBtn.isEnabled = it }
             }
         }
     }
+
 
     private fun setProduct(product: Product) {
         with(binding!!) {
@@ -144,12 +152,12 @@ class ProductDetailsFragment : Fragment() {
         }
     }
 
+
     private fun showAddToCartToast(count: Int) {
-        Toast.makeText(
-            requireContext(),
+        showToast(
             resources.getQuantityString(R.plurals.add_to_cart_quantity, count, count),
             Toast.LENGTH_LONG
-        ).show()
+        )
     }
 
     private fun FragmentProductDetailsBinding.setupBinding() {
@@ -163,8 +171,9 @@ class ProductDetailsFragment : Fragment() {
         plusBtn.setOnClickListener { viewModel.onPlusBtnClick() }
         minusBtn.setOnClickListener { viewModel.onMinusBtnClick() }
         viewModel.setQuantityChangedListener(quantity.textChanges())
-
+        addToCartButton.setOnClickListener { viewModel.onAddToCartClick() }
         errorRoot.retryButton.setOnClickListener { viewModel.retry() }
+
         with(viewPager) {
             adapter = imagesAdapter
         }

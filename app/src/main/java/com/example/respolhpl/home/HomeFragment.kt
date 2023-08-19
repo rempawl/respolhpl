@@ -47,7 +47,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 
-//todo category filters
+// todo category filters
+// todo compose theme
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
@@ -85,7 +86,7 @@ class HomeFragment : Fragment() {
                             pagedContent(
                                 data = pagingData,
                                 retry = { viewModel.retry() },
-                                emptyPlaceholder = { Text(text = "empty data") },
+                                emptyPlaceholder = { Text(text = "empty data") }, //todo empty placeholder
                                 itemView = { ProductItem(it) }
                             )
                         }

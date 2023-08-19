@@ -8,22 +8,27 @@ import androidx.lifecycle.viewModelScope
 import com.example.respolhpl.data.model.domain.CartItem
 import com.example.respolhpl.data.model.domain.Images
 import com.example.respolhpl.data.model.domain.Product
+import com.example.respolhpl.data.usecase.AddToCartUseCase
+import com.example.respolhpl.data.usecase.AddToCartUseCase.Param
 import com.example.respolhpl.data.usecase.GetProductUseCase
 import com.example.respolhpl.utils.BaseViewModel
-import com.example.respolhpl.utils.extensions.DefaultError
+import com.example.respolhpl.utils.DefaultError
 import com.example.respolhpl.utils.extensions.onError
 import com.example.respolhpl.utils.extensions.onSuccess
 import com.example.respolhpl.utils.watchProgress
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
@@ -38,6 +43,7 @@ import kotlin.math.min
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getProductUseCase: GetProductUseCase,
+    private val addToCartUseCase: AddToCartUseCase
 ) : BaseViewModel<ProductDetailsViewModel.ProductDetailsState>(ProductDetailsState()) {
 
     init {
@@ -45,6 +51,9 @@ class ProductDetailsViewModel @Inject constructor(
             setState { copy(isLoading = isLoading) }
         }
     }
+
+    private val _itemAddedToCart = MutableSharedFlow<Int>()
+    val itemAddedToCart = _itemAddedToCart.asSharedFlow()
 
     private val _cartQuantity = MutableStateFlow(1)
     val cartQuantity: StateFlow<Int>
@@ -75,12 +84,23 @@ class ProductDetailsViewModel @Inject constructor(
 
     fun navigateToFullScreenImage() = product.map { Images(it.images) }.take(1)
 
-    fun onAddToCartClick() = Unit
-//        product.flatMapLatest {
-//            flow {
-////                cartRepository.addProduct(createCartProduct(it)) todo usecase
-//            }
-//        }
+    fun onAddToCartClick() {
+        combine(product, cartQuantity) { product, quantity ->
+            product.id to quantity
+        }
+            .flatMapLatest { (id, quantity) ->
+                addToCartUseCase.call(Param(id, quantity))
+            }
+            .take(1)
+            .onSuccess {
+                _itemAddedToCart.emit(_cartQuantity.value)
+                _cartQuantity.update { 1 }
+            }
+            .onError { error ->
+                addError(error)
+            }
+            .launchIn(viewModelScope)
+    }
 
 
     fun onMinusBtnClick() {
@@ -118,21 +138,21 @@ class ProductDetailsViewModel @Inject constructor(
         getProductUseCase.cacheAndFresh(id)
             .watchProgress(progress)
             .onSuccess { product ->
-                setState { copy(error = null) }
+                setState { copy(productError = null) }
                 _product.update { product }
             }
             .onError { error ->
-                setState { copy(error = error) }
+                setState { copy(productError = error) }
             }
             .launchIn(viewModelScope)
     }
 
     data class ProductDetailsState(
         val isLoading: Boolean = true,
-        val error: DefaultError? = null,
+        val productError: DefaultError? = null,
     ) {
         val isSuccess: Boolean
-            get() = !isLoading && error == null
+            get() = !isLoading && productError == null
     }
 
     companion object {

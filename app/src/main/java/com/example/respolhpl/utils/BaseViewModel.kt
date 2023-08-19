@@ -2,7 +2,6 @@ package com.example.respolhpl.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.respolhpl.utils.extensions.DefaultError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +14,8 @@ abstract class BaseViewModel<State>(initialState: State) : ViewModel() {
 
     val progress = ProgressCounter()
 
-    private val _error = MutableSharedFlow<DefaultError>()
-    val error = _error.asSharedFlow()
+    private val _showError = MutableSharedFlow<DefaultError>()
+    val showError = _showError.asSharedFlow()
 
     private val _state = MutableStateFlow(initialState)
     val state = _state.asStateFlow()
@@ -27,7 +26,7 @@ abstract class BaseViewModel<State>(initialState: State) : ViewModel() {
 
     protected fun addError(error: DefaultError) {
         viewModelScope.launch {
-            _error.emit(error)
+            _showError.emit(error)
         }
     }
 

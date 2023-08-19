@@ -7,14 +7,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.respolhpl.databinding.FragmentFullScreenImagesBinding
 import com.example.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.example.respolhpl.utils.autoCleared
+import com.example.respolhpl.utils.getErrorMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -41,27 +39,27 @@ class FullScreenImagesFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.state.collectLatest { state ->
-                        imagesAdapter.submitList(state.images.images)
-                        with(binding!!) {
-                            errorRoot.root.isVisible = state.error != null
-                        }
-                    }
-                }
-                launch {
-                    viewModel.error.collectLatest { error ->
-
+        observeOnStart {
+            launch {
+                viewModel.state.collectLatest { state ->
+                    imagesAdapter.submitList(state.images.images)
+                    with(binding!!) {
+                        errorRoot.root.isVisible = state.error != null
                     }
                 }
             }
+            launch {
+                viewModel.showError.collectLatest { error ->
+                    showToast(error.getErrorMessage())
+                }
+            }
         }
-        binding!!.viewPager.currentItem = navArgs.currentPage
     }
 
+
     private fun FragmentFullScreenImagesBinding.setupBinding() {
+        binding!!.viewPager.currentItem = navArgs.currentPage
+
         with(viewPager) {
             adapter = imagesAdapter
         }

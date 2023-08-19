@@ -10,9 +10,9 @@
 
     <string name="action_settings">Ustawienia</string>
 
-    <string name="menu_home">Strona Główna</string>
+    <string name="menu_home">Main Page</string>
 
-    <string name="image_desc">productMinimal image</string>
+    <string name="image_desc">product Minimal image</string>
     <string name="price"> %1$.2f zł</string>
     <string name="buy_now">Kup teraz</string>
     <string name="add_to_cart">Dodaj do koszyka</string>
@@ -33,31 +33,17 @@
     <string name="timeout_error">The connection with server has timed out</string>
     <string name="retry">Spróbuj ponownie</string>
     <string name="cart">Koszyk</string>
-    <string name="add_to_favs">Dodaj do ulubionych</string>
 
-
-    <string name="tools_desc"><h2>Właściwości:</h2>\n
-                    <ul>                    " \t<li>Wysoka odporność na ścieranie, zadrapania, uderzenia,zginanie</li>\n" +
-                    " \t<li>Odporne na temperaturę do 230°C</li>\n" +
-                    " \t<li>Łatwe do czyszczenia</li>\n" +
-                    " \t<li>Bezpieczne w bezpośrednim kontakcie z żywnością</li>\n" +
-                    " \t<li>Antybakteryjna w całym przekroju</li>\n" +
-                    " \t<li>Światłoodporna</li>\n" +
-                    " \t<li>Obustronny kolor</li>\n" +
-                    "</ul>\n" +
-                    "Deski do krojenia, które oferujemy Państwu są wykonane z najwyższej jakości płyt kompakt HPL marki Polyrey®.Materiał jest niezwykle sztywny i odporny mechanicznie,a dzięki zastosowaniu technologii Sanitized® są one antybakteryjne w całym przekroju przez co zwiększają bezpieczeństwo użytkowania.\n" +
-                    "\n" +
-                    " Są łatwe w czyszczenia, do ich wyczyszczenia wystarczy woda i gąbka lub woda z detergentem w przypadku silniejszych zabrudzeń. Nie potrzeba ich wyparzać w zmywarce, aby pozbyć  się bakterii z ich powierzchni."</string>
     <string name="quantity">Ilość: %1$d</string>
     <string name="cost">Koszt: %1$.2f</string>
     <string name="confirm">Potwierdz</string>
     <string name="cancel">Anuluj</string>
     <string name="deletion_confirmation_title">Czy na pewno chcesz usunąć produkt z koszyka?</string>
-    <string name="connection_lost">Brak połączenia z internetem</string>
     <string name="product">Product</string>
     <string name="label_main">RespolHPL</string>
     <string name="confirm_clear_cart">Are you sure you want to clear the cart</string>
     <string name="cart_cost">Cart cost: %1$f</string>
     <string name="your_cart_is_empty">Your cart is empty.</string>
     <string name="payment_and_shipping">Dostawa i płatność</string>
+    <string name="connection_lost">No internet connection</string>
 </resources>

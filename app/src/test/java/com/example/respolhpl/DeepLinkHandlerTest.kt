@@ -7,11 +7,13 @@ import com.example.respolhpl.utils.extensions.getSerializable
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 class DeepLinkHandlerTest {
+
     private fun mockNotificationIntent(payload: HashMap<String, String>? = null): Intent =
         mockk<Intent> {
             every { data } returns Uri.EMPTY
@@ -48,5 +50,6 @@ class DeepLinkHandlerTest {
             assertIs<DeepLinkHandler.DeepLink.Product>(result)
             assertEquals(1401, result.id)
         }
+        unmockkStatic(Uri::class)
     }
 }

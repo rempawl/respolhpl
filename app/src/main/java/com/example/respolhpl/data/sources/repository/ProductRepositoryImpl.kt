@@ -7,11 +7,12 @@ import com.example.respolhpl.data.model.domain.ProductMinimal
 import com.example.respolhpl.data.model.remote.RemoteProduct
 import com.example.respolhpl.data.model.remote.RemoteProductMinimal
 import com.example.respolhpl.data.model.remote.toDomain
-import com.example.respolhpl.paging.PagingParam
 import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.store.ResponseStore
 import com.example.respolhpl.data.store.SOTFactory
+import com.example.respolhpl.paging.PagingParam
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
@@ -23,7 +24,9 @@ class ProductRepositoryImpl @Inject constructor(
     override val productDataStore: ResponseStore<Int, RemoteProduct, Product> =
         ResponseStore(
             request = { remoteDataSource.getProductById(it) },
-            sourceOfTruth = sotFactory.create("product", mapper = { it.toDomain() })
+            sourceOfTruth = sotFactory.create("product", mapper = { it.toDomain() }),
+            cacheTimeout = 2,
+            timeUnit = TimeUnit.HOURS
         )
 
     override val productsDataStore: ResponseStore<PagingParam, List<RemoteProductMinimal>, List<ProductMinimal>> =

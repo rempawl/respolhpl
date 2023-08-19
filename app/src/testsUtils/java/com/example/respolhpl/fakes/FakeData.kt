@@ -28,7 +28,7 @@ object FakeData {
             ),
         RemoteProduct(
             description = "<h1>Laminat HPL RESOPAL ®</h1>\n",
-            id = 134,
+            id = 133,
             name = "Laminat HPL 4134 EM Missisipi Pine",
             price = 309.99,
             images = listOf(

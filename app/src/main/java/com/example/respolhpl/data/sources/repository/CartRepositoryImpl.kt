@@ -1,21 +1,21 @@
 package com.example.respolhpl.data.sources.repository
 
 import com.example.respolhpl.data.model.domain.CartItem
+import com.example.respolhpl.data.sources.local.CartDao
 import com.example.respolhpl.utils.DispatchersProvider
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CartRepositoryImpl @Inject constructor(
-    private val dispatchersProvider: DispatchersProvider
+    private val dispatchersProvider: DispatchersProvider,
+    private val dao: CartDao
 ) : CartRepository {
 
-    override suspend fun getProducts(): Flow<Result<*>> = emptyFlow()
+    override suspend fun getProducts() = dao.getCartProducts()
 
-    override suspend fun addProduct(product: CartItem.CartProduct) {
+    override suspend fun addProduct(id: Int, quantity: Int) {
         withContext(dispatchersProvider.io) {
-            // todo room?
+            dao.add(id, quantity)
         }
     }
 
@@ -23,10 +23,6 @@ class CartRepositoryImpl @Inject constructor(
     }
 
     override suspend fun clearCart() {
-    }
-
-
-    private suspend fun updateProduct(product: CartItem.CartProduct) {
     }
 
 

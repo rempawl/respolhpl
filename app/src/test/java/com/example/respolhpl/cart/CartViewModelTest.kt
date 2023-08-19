@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 @ExperimentalCoroutinesApi
 class CartViewModelTest : BaseCoroutineTest() {
 
-    private fun createSUT() = CartViewModel(mockk())
+    private fun createSUT() = CartViewModel()
 
     // todo
     @Test

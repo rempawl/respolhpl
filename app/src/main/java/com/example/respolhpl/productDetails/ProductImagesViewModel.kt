@@ -7,7 +7,7 @@ import com.example.respolhpl.data.model.domain.Images
 import com.example.respolhpl.productDetails.ProductImagesViewModel.ProductImagesState
 import com.example.respolhpl.productDetails.currentPageState.ViewPagerPageManager
 import com.example.respolhpl.utils.BaseViewModel
-import com.example.respolhpl.utils.extensions.DefaultError
+import com.example.respolhpl.utils.DefaultError
 import com.example.respolhpl.utils.extensions.EitherResult
 import com.example.respolhpl.utils.extensions.onError
 import com.example.respolhpl.utils.extensions.onSuccess
@@ -42,8 +42,7 @@ class ProductImagesViewModel @Inject constructor(
     }
 
     private fun getImagesFromNavArg(): EitherResult<Images> = either {
-        savedStateHandle.get<Images>(KEY_IMAGES)
-            ?: raise(DefaultError(IllegalStateException("product id is null")))
+        savedStateHandle.get<Images>(KEY_IMAGES) ?: raise(NullProductIdError)
     }
 
 
@@ -60,3 +59,5 @@ class ProductImagesViewModel @Inject constructor(
         const val KEY_IMAGES = "images"
     }
 }
+
+object NullProductIdError : DefaultError()

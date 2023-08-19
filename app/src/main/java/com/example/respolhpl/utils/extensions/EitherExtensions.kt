@@ -2,6 +2,8 @@ package com.example.respolhpl.utils.extensions
 
 import arrow.core.Either
 import arrow.core.left
+import com.example.respolhpl.utils.DefaultError
+import com.example.respolhpl.utils.toDefaultError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
