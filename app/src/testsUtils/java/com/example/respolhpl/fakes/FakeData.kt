@@ -64,9 +64,5 @@ object FakeData {
             thumbnailSrc = it.images.first().src
         )
     }
-//    val cartEntities =
-//        products.map { CartProductEntity(it.id, it.name, it.price, it.thumbnailSrc, CART_QUANTITY) }
-//    val cartProducts = cartEntities.map { CartProduct.from(it) } todo
-
     val minimalProducts = products.map { ProductMinimal(it.id, it.name, it.price, it.thumbnailSrc) }
 }
