@@ -11,3 +11,6 @@
 .externalNativeBuild
 .cxx
 google-services.json
+/app/release/app-release.aab
+/app/release/app-release.apk
+/app/release/output-metadata.json

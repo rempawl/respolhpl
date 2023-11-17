@@ -91,7 +91,7 @@ class PagingManager<Item>(
         items: List<Item>,
         newItems: List<Item>
     ) = (items + newItems)
-        .asReversed() // reversing so latest items are left in list if they are duplicates
+        .asReversed() // reversing so latest items are left in list if they are duplicates todo pass param into result
         .distinctBy(idProducer)
         .asReversed()
 

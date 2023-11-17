@@ -5,61 +5,47 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.respolhpl.data.model.domain.CartItem
+import com.example.respolhpl.cart.CartViewModel.CartItem
 import com.example.respolhpl.databinding.ItemCartProductBinding
 import com.example.respolhpl.databinding.ItemCartSummaryBinding
-import com.example.respolhpl.utils.DispatchersProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.respolhpl.utils.extensions.loadImage
 
-class CartProductAdapter(
-    private val dispatchersProvider: DispatchersProvider,
-    private val onDeleteClickListener: (CartItem.CartProduct) -> Unit
-) : ListAdapter<CartItem, RecyclerView.ViewHolder>(Diff()) {
+class CartProductAdapter(private val onBuyClick: () -> Unit) :
+    ListAdapter<CartItem, RecyclerView.ViewHolder>(diff) {
 
-    companion object {
-        const val PRODUCT_TYPE = 1
-        const val SUMMARY_TYPE = 2
-    }
-
-
-    fun createSummaryAndSubmitList(list: List<CartItem.CartProduct>) {
-        CoroutineScope(dispatchersProvider.default + Job()).launch {
-            if (list.isEmpty()) {
-                submitItems(list)
-                return@launch
-            }
-            val summary = createSummary(list)
-            val items = list + summary
-            submitItems(items)
-        }
-
-    }
-
-    private suspend fun submitItems(items: List<CartItem>) {
-        withContext(dispatchersProvider.main) {
-            submitList(items)
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is CartItem.Product -> PRODUCT_TYPE
+            is CartItem.Summary -> SUMMARY_TYPE
         }
     }
 
-    private fun createSummary(list: List<CartItem.CartProduct>): CartItem.Summary {
-        return CartItem.Summary(cost = list.sumOf {
-            it.cost
-        })
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            PRODUCT_TYPE -> CartProductViewHolder.from(parent)
+            SUMMARY_TYPE -> CartSummaryViewHolder.from(parent, onBuyClick)
+            else -> throw java.lang.IllegalStateException("wrong viewType")
+        }
     }
 
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is CartProductViewHolder -> holder.bind(getItem(position) as CartItem.Product)
+            is CartSummaryViewHolder -> holder.bind(getItem(position) as CartItem.Summary)
+        }
+    }
 
     class CartProductViewHolder private constructor(private val binding: ItemCartProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            item: CartItem.CartProduct,
-            onDeleteClickListener: (CartItem.CartProduct) -> Unit
+            item: CartItem.Product,
         ) {
             binding.apply {
-//                product = item
-                deleteBtn.setOnClickListener { onDeleteClickListener(item) }
+//                dele.setOnClickListener { item.onDeleteClick() } todo
+                price.text = "Cena za sztukę ${item.price} zł"
+                quantity.text = "Ilośc: ${item.quantity}" // todo extract
+                prodName.text = item.name
+                thumbnail.loadImage(item.thumbnailSrc)
             }
         }
 
@@ -77,57 +63,43 @@ class CartProductAdapter(
         }
     }
 
-    class CartSummaryViewHolder private constructor(private val binding: ItemCartSummaryBinding) :
+    class CartSummaryViewHolder private constructor(
+        private val binding: ItemCartSummaryBinding,
+        private val onBuyClick: () -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CartItem.Summary) {
-            binding.cartCost.text = "Koszt: ${String.format("%.2f", item.cost)} zł"
+            with(binding) {
+                cartCost.text = " Całkowity Koszt: ${item.cost} zł" // todo extract
+                buyBtn.setOnClickListener { onBuyClick() }
+            }
         }
 
         companion object {
-            fun from(parent: ViewGroup): CartSummaryViewHolder {
+            fun from(parent: ViewGroup, onBuyClick: () -> Unit): CartSummaryViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
                 return CartSummaryViewHolder(
-                    ItemCartSummaryBinding.inflate(inflater, parent, false)
+                    binding = ItemCartSummaryBinding.inflate(inflater, parent, false),
+                    onBuyClick = onBuyClick
                 )
             }
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        val item = getItem(position)
-        return when (item) {
-            is CartItem.CartProduct -> PRODUCT_TYPE
-            is CartItem.Summary -> SUMMARY_TYPE
+
+    private companion object {
+        const val PRODUCT_TYPE = 1
+        const val SUMMARY_TYPE = 2
+        val diff by lazy {
+            object : DiffUtil.ItemCallback<CartItem>() {
+                override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+                    return oldItem.itemId == newItem.itemId
+                }
+
+                override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+                    return oldItem == newItem
+                }
+            }
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            PRODUCT_TYPE -> CartProductViewHolder.from(parent)
-            SUMMARY_TYPE -> CartSummaryViewHolder.from(parent)
-            else -> throw java.lang.IllegalStateException("wrong viewType")
-        }
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is CartProductViewHolder -> holder.bind(
-                getItem(position) as CartItem.CartProduct,
-                onDeleteClickListener
-            )
-
-            is CartSummaryViewHolder -> holder.bind(getItem(position) as CartItem.Summary)
-        }
-    }
-
-    class Diff : DiffUtil.ItemCallback<CartItem>() {
-        override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            return oldItem == newItem
-        }
-
     }
 }

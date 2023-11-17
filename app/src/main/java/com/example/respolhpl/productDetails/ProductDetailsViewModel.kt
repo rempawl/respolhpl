@@ -5,14 +5,15 @@ package com.example.respolhpl.productDetails
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.respolhpl.data.model.domain.CartItem
 import com.example.respolhpl.data.model.domain.Images
 import com.example.respolhpl.data.model.domain.Product
 import com.example.respolhpl.data.usecase.AddToCartUseCase
 import com.example.respolhpl.data.usecase.AddToCartUseCase.Param
 import com.example.respolhpl.data.usecase.GetProductUseCase
+import com.example.respolhpl.productDetails.ProductDetailsViewModel.*
 import com.example.respolhpl.utils.BaseViewModel
 import com.example.respolhpl.utils.DefaultError
+import com.example.respolhpl.utils.NoEffects
 import com.example.respolhpl.utils.extensions.onError
 import com.example.respolhpl.utils.extensions.onSuccess
 import com.example.respolhpl.utils.watchProgress
@@ -44,7 +45,7 @@ class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getProductUseCase: GetProductUseCase,
     private val addToCartUseCase: AddToCartUseCase
-) : BaseViewModel<ProductDetailsViewModel.ProductDetailsState>(ProductDetailsState()) {
+) : BaseViewModel<ProductDetailsState, NoEffects>(ProductDetailsState()) {
 
     init {
         observeProgress { isLoading ->
@@ -125,14 +126,6 @@ class ProductDetailsViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
 
-
-    private fun createCartProduct(product: Product) = CartItem.CartProduct(
-        product.id,
-        price = product.price,
-        quantity = _cartQuantity.value,
-        name = product.name,
-        thumbnailSrc = product.thumbnailSrc
-    )
 
     private fun getProduct(id: Int) {
         getProductUseCase.cacheAndFresh(id)

@@ -8,6 +8,7 @@ import com.example.respolhpl.productDetails.ProductImagesViewModel.ProductImages
 import com.example.respolhpl.productDetails.currentPageState.ViewPagerPageManager
 import com.example.respolhpl.utils.BaseViewModel
 import com.example.respolhpl.utils.DefaultError
+import com.example.respolhpl.utils.NoEffects
 import com.example.respolhpl.utils.extensions.EitherResult
 import com.example.respolhpl.utils.extensions.onError
 import com.example.respolhpl.utils.extensions.onSuccess
@@ -20,7 +21,7 @@ import javax.inject.Inject
 class ProductImagesViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     viewPagerPageManager: ViewPagerPageManager
-) : BaseViewModel<ProductImagesState>(ProductImagesState()),
+) : BaseViewModel<ProductImagesState,NoEffects>(ProductImagesState()),
     ViewPagerPageManager by viewPagerPageManager {
 
     init {

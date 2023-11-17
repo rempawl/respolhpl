@@ -9,15 +9,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 import javax.inject.Inject
-
-abstract class TypeReference<T> : Comparable<TypeReference<T>> {
-    val type: Type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
-
-    override fun compareTo(other: TypeReference<T>) = 0
-}
+import kotlin.reflect.KType
+import kotlin.reflect.typeOf
 
 class SOTFactory @Inject constructor(
     cacheProvider: ApiCacheProvider
@@ -25,30 +19,30 @@ class SOTFactory @Inject constructor(
 
 open class DiskSOTFactory(val cacheProvider: CacheProvider) {
 
-    inline fun <Key, reified WriteData, ReadData> create(
+    inline fun <Key, reified WriteData : Any, ReadData : Any> create(
         cacheKeyPrefix: String,
         noinline mapper: suspend (WriteData) -> ReadData
     ) = DiskSourceOfTruth<Key, WriteData, ReadData>(
         cacheProvider,
         cacheKeyPrefix,
-        object : TypeReference<WriteData>() {}.type,
+        typeOf<WriteData>(),
         mapper
     )
 
-    inline fun <Key, reified WriteData> create(
+    inline fun <Key, reified WriteData : Any> create(
         cacheKeyPrefix: String,
     ) = DiskSourceOfTruth<Key, WriteData, WriteData>(
         cacheProvider,
         cacheKeyPrefix,
-        object : TypeReference<WriteData>() {}.type,
-        mapper = { writeData -> writeData!! }
+        typeOf<WriteData>(),
+        mapper = { writeData -> writeData }
     )
 }
 
-class DiskSourceOfTruth<Key, CacheModel, OutputModel>(
+class DiskSourceOfTruth<Key, CacheModel : Any, OutputModel : Any>(
     private val cacheProvider: CacheProvider,
     private val cacheKeyPrefix: String,
-    private val type: Type,
+    private val type: KType,
     private val mapper: suspend (CacheModel) -> OutputModel
 ) : SourceOfTruth<Key, CacheModel, OutputModel> {
 

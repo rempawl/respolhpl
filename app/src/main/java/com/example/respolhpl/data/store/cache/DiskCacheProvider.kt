@@ -1,15 +1,13 @@
 package com.example.respolhpl.data.store.cache
 
 import android.content.Context
-import com.squareup.moshi.Moshi
 import java.io.File
-import java.lang.reflect.Type
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.reflect.KType
 
 open class DiskCacheProvider(
     private val context: Context,
-    private val moshi: Moshi,
-    private val cacheFolderName: String
+    private val cacheFolderName: String,
 ) : CacheProvider {
 
     // It's better to cache specific caches as they are based on locking. If we created many
@@ -17,33 +15,34 @@ open class DiskCacheProvider(
     // the file could be accessed simultaneously from many places.
     private val cachesMap: ConcurrentHashMap<String, JsonDiskCache<*>> = ConcurrentHashMap()
 
-    val cacheDir by lazy {
-        File(
-            "${context.filesDir.path}${File.separator}$cacheFolderName"
-        ).apply { mkdirs() }
+    private val cacheDir by lazy {
+        File(context.filesDir.path, cacheFolderName).apply { mkdirs() }
     }
 
-    override fun <T> getCacheForKey(key: String, type: Type): Cache<T> {
+    override fun <T : Any> getCacheForKey(key: String, type: KType): Cache<T> {
         return if (cachesMap.containsKey(key)) {
             cachesMap[key] as Cache<T>
         } else {
-            val keyWithoutForbiddenChars = key.replace("[\\\\/:*?\"<>|]", "")
-            JsonDiskCache<T>(
-                moshi,
-                type,
-                cacheFile = { File(cacheDir, "$keyWithoutForbiddenChars.json") }
-            ).also {
+            createCache<T>(key, type).also {
                 cachesMap[key] = it
             }
         }
     }
 
-    override fun <T> getAllCaches(cachePrefix: String?, type: Type): List<Cache<T>> {
+    private fun <T : Any> createCache(key: String, type: KType): JsonDiskCache<T> {
+        val keyWithoutForbiddenChars = key.replace("[\\\\/:*?\"<>|]", "")
+        return JsonDiskCache(
+            type,
+            cacheFile = { File(cacheDir, "$keyWithoutForbiddenChars.json") }
+        )
+    }
+
+    override fun <T : Any> getAllCaches(cachePrefix: String?, type: KType): List<Cache<T>> {
         return cacheDir
             .listFiles { _, name ->
                 cachePrefix == null || name.startsWith(cachePrefix)
             }?.map { cacheFile ->
-                JsonDiskCache(moshi, type) { cacheFile }
+                JsonDiskCache(type) { cacheFile }
             } ?: emptyList()
     }
 }

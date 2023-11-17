@@ -3,23 +3,22 @@ package com.example.respolhpl.di
 import android.content.Context
 import com.example.respolhpl.BuildConfig
 import com.example.respolhpl.data.sources.remote.BasicAuthInterceptor
-import com.example.respolhpl.data.sources.remote.RemoteDataSource
 import com.example.respolhpl.data.sources.remote.WooCommerceApi
 import com.example.respolhpl.network.NetworkListener
 import com.example.respolhpl.network.NetworkListenerImpl
 import com.example.respolhpl.utils.log
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.moczul.ok2curl.CurlInterceptor
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.json.Json
 import okhttp3.Cache
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 import javax.inject.Singleton
 
@@ -32,9 +31,9 @@ object NetworkModule {
     fun provideNetworkListener(@ApplicationContext context: Context): NetworkListener =
         NetworkListenerImpl(context)
 
-    @Provides
-    @Singleton
-    fun provideMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+//    @Provides
+//    @Singleton
+//    fun provideMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
     @Provides
     @Singleton
@@ -52,12 +51,14 @@ object NetworkModule {
         }
     }
 
+    private val json = Json { ignoreUnknownKeys = true }
+
     @Provides
     @Singleton
-    fun provideRetrofit(client: OkHttpClient, moshi: Moshi): Retrofit =
+    fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(json.asConverterFactory(contentType))
             .client(client)
             .build()
 
@@ -73,10 +74,11 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRemoteDataSource(retrofit: Retrofit): RemoteDataSource =
+    fun provideRemoteDataSource(retrofit: Retrofit): WooCommerceApi =
         retrofit.create(WooCommerceApi::class.java)
 
 
     private const val BASE_URL = "https://respolhpl-sklep.pl"
+    val contentType = "application/json".toMediaType()
 
 }

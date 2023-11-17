@@ -1,9 +1,11 @@
 package com.example.respolhpl.data.model.remote
 
+import androidx.annotation.Keep
 import com.example.respolhpl.data.model.domain.Product
-import com.squareup.moshi.Json
+import kotlinx.serialization.Serializable
 
-@Json(name = "product")
+@Serializable
+@Keep
 data class RemoteProduct(
     val id: Int,
     val name: String,

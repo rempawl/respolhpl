@@ -6,23 +6,21 @@
     </plurals>
     <string name="app_name">RespolHPL</string>
     <string name="nav_header_title">RespolHPL</string>
-    <string name="nav_header_subtitle">www.respolhpl.pl</string>
 
-    <string name="action_settings">Ustawienia</string>
+    <string name="action_settings">Settings</string>
 
     <string name="menu_home">Main Page</string>
 
     <string name="image_desc">product Minimal image</string>
-    <string name="price"> %1$.2f zł</string>
-    <string name="buy_now">Kup teraz</string>
-    <string name="add_to_cart">Dodaj do koszyka</string>
-    <string name="product_image_desc">product_image</string>
-    <string name="product_max_quantity">z %1$d sztuk</string>
+    <string name="price">" %1$.2f PLN"</string>
+    <string name="buy_now">Buy now</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="product_max_quantity">from %1$d pcs</string>
 
     <string name="plus" translatable="false">+</string>
     <string name="minus" translatable="false">-</string>
 
-    <string name="an_error_occurred">Wystąpił błąd</string>
+    <string name="an_error_occurred">An error ocurred</string>
     <string name="not_found_error"> 404 - Not Found</string>
     <string name="bad_request_error">400 - Bad Request</string>
     <string name="forbidden_error">403 - Forbidden</string>
@@ -31,19 +29,20 @@
 
     <string name="connection_error">Connection Problem</string>
     <string name="timeout_error">The connection with server has timed out</string>
-    <string name="retry">Spróbuj ponownie</string>
-    <string name="cart">Koszyk</string>
+    <string name="retry">Retry</string>
+    <string name="cart">Cart</string>
 
-    <string name="quantity">Ilość: %1$d</string>
-    <string name="cost">Koszt: %1$.2f</string>
-    <string name="confirm">Potwierdz</string>
-    <string name="cancel">Anuluj</string>
-    <string name="deletion_confirmation_title">Czy na pewno chcesz usunąć produkt z koszyka?</string>
+    <string name="quantity">Quantity: %1$d</string>
+    <string name="cost">Cost: %1$.2f</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="deletion_confirmation_title">Are you sure you want to delete this item from cart?</string>
     <string name="product">Product</string>
     <string name="label_main">RespolHPL</string>
     <string name="confirm_clear_cart">Are you sure you want to clear the cart</string>
     <string name="cart_cost">Cart cost: %1$f</string>
     <string name="your_cart_is_empty">Your cart is empty.</string>
-    <string name="payment_and_shipping">Dostawa i płatność</string>
+    <string name="payment_and_shipping">Payment and shipping</string>
     <string name="connection_lost">No internet connection</string>
+    <string name="add_to_favs">Add to favourites</string>
 </resources>

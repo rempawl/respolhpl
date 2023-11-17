@@ -4,19 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.respolhpl.R
-import com.example.respolhpl.data.model.domain.CartItem
+import com.example.respolhpl.cart.CartViewModel.CartEffects.NavigateToCheckout
 import com.example.respolhpl.databinding.FragmentCartBinding
+import com.example.respolhpl.productDetails.observeOnStart
+import com.example.respolhpl.productDetails.showToast
 import com.example.respolhpl.utils.DispatchersProvider
 import com.example.respolhpl.utils.autoCleared
+import com.example.respolhpl.utils.getErrorMessage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,33 +44,65 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = CartProductAdapter(dispatchersProvider) { prod -> onDeleteBtnClick(prod) }
+        adapter = CartProductAdapter(viewModel::onBuyClick)
         binding.setupBinding()
         setupObservers()
     }
 
-    private fun onDeleteBtnClick(prod: CartItem.CartProduct) {
-        ConfirmDialog.newInstance(getString(R.string.deletion_confirmation_title)) {
-            viewModel.deleteFromCart(prod)
-        }.show(childFragmentManager, "")
-    }
+//    private fun onDeleteBtnClick(prod: CartItem.CartProduct) {
+//        ConfirmDialog.newInstance(getString(R.string.deletion_confirmation_title)) {
+//            viewModel.deleteFromCart(prod)
+//        }.show(childFragmentManager, "")
+//    }
 
 
     private fun setupObservers() {
-        this.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-
+        observeOnStart {
+            launch {
+                viewModel.effects.collect {
+                    when (it) {
+                        NavigateToCheckout -> showToast("Funkcjonalność w przygotowaniu")
+                    }
+                }
+            }
+            launch {
+                viewModel.mapStateDistinct { it.cartItems }
+                    .collectLatest {
+                        adapter.submitList(it)
+                    }
+            }
+            launch {
+                viewModel.mapStateDistinct { it.error }
+                    .collectLatest {error ->
+                        with(binding.errorView) {
+                            rootView.isVisible = error != null
+                            errorHeader.text = error?.getErrorMessage()
+                            retryButton.setOnClickListener { viewModel.retry() }
+                        }
+                    }
+            }
+            launch {
+                viewModel
+                    .mapStateDistinct { it.isEmptyPlaceholderVisible }
+                    .collectLatest {
+                        updateEmptyView(it)
+                    }
+            }
+            launch {
+                viewModel.mapStateDistinct { it.isLoading }
+                    .collectLatest {
+                        binding.loading.root.isVisible = it
+                    }
             }
         }
     }
 
 
-    private fun updateEmptyView(isEmpty: Boolean) {
+    private fun updateEmptyView(isEmptyPlaceholderVisible: Boolean) {
         binding.apply {
-            val vis = if (isEmpty) View.VISIBLE else View.GONE
-            emptyCartText.visibility = vis
-            emptyCartIcon.visibility = vis
-            clearBtn.visibility = if (isEmpty) View.GONE else View.VISIBLE
+            emptyCartText.isVisible = isEmptyPlaceholderVisible
+            emptyCartIcon.isVisible = isEmptyPlaceholderVisible
+            clearBtn.isVisible = !isEmptyPlaceholderVisible
         }
     }
 
@@ -88,9 +122,7 @@ class CartFragment : Fragment() {
         prodsList.apply {
             adapter = this@CartFragment.adapter
             layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
+            setHasFixedSize(false)
         }
     }
-
-
 }

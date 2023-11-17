@@ -11,10 +11,7 @@
     </style>
 
     <style name="CardProductBodyTextStyle" parent="TextAppearance.AppCompat.Body1">
-        <item name="android:layout_marginEnd">@dimen/def_margin</item>
-        <item name="android:layout_marginStart">@dimen/def_margin</item>
-        <item name="android:gravity">start</item>
-
+        <item name="android:layout_margin">@dimen/def_margin</item>
     </style>
 
     <style name="DescTextView" parent="TextAppearance.AppCompat.Body1">
