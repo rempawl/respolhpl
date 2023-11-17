@@ -118,9 +118,9 @@ class HomeFragment : Fragment() {
                     ),
                 painter = rememberAsyncImagePainter(
                     model = item.product.thumbnailSrc,
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.Crop
                 ), contentDescription = null,
-                contentScale = ContentScale.FillBounds
+                contentScale = ContentScale.Crop
             )
             Column(
                 Modifier

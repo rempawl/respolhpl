@@ -173,7 +173,9 @@ class ProductDetailsFragment : Fragment() {
         viewModel.setQuantityChangedListener(quantity.textChanges())
         addToCartButton.setOnClickListener { viewModel.onAddToCartClick() }
         errorRoot.retryButton.setOnClickListener { viewModel.retry() }
-
+        buyNowBtn.setOnClickListener {
+            showToast("Funkcjonalność w przygotowaniu")
+        }
         with(viewPager) {
             adapter = imagesAdapter
         }

@@ -4,8 +4,8 @@ package com.example.respolhpl.paging
 
 import app.cash.turbine.test
 import com.example.respolhpl.utils.BaseCoroutineTest
-import com.example.respolhpl.utils.cancelAndConsumeRemainingItems
 import com.example.respolhpl.utils.DefaultError
+import com.example.respolhpl.utils.cancelAndConsumeRemainingItems
 import com.example.respolhpl.utils.extensions.EitherResult
 import com.example.respolhpl.utils.extensions.lastButOne
 import com.example.respolhpl.utils.mockFlowError
@@ -71,8 +71,7 @@ internal class PagingManagerTest : BaseCoroutineTest() {
     fun `when load more triggered then second page loaded`() = runTest {
         val sut = createSUT()
         sut.pagingData.test {
-            advanceUntilIdle()
-
+            advanceTimeBy(TEST_DELAY + 1)
             loadMoreTrigger.emit(Unit)
             advanceUntilIdle()
 

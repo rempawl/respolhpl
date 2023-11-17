@@ -6,6 +6,7 @@ import com.example.respolhpl.utils.extensions.onError
 import com.example.respolhpl.utils.extensions.onSuccess
 import com.example.respolhpl.utils.extensions.refreshWhen
 import com.example.respolhpl.utils.extensions.throttleFirst
+import com.example.respolhpl.utils.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -81,6 +82,8 @@ class PagingManager<Item>(
                         }
                     }
                     .onError { error ->
+                        log { "kruci ${error.throwable?.localizedMessage}" }
+                        log { "kruci ${error.throwable?.stackTrace?.map { it.toString() }}" }
                         _pagingData.update { it.copy(loadState = getErrorState(phase, error)) }
                     }
             )

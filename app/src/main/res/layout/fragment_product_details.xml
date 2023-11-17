@@ -82,9 +82,9 @@
                     android:layout_width="@dimen/min_clickable_size"
                     android:layout_height="@dimen/min_clickable_size"
                     android:background="@drawable/bg_cart_qnt_btn"
-                    android:text="@string/minus"
                     android:clickable="true"
                     android:focusable="true"
+                    android:text="@string/minus"
                     android:textColor="@color/light_red"
                     android:textSize="@dimen/def_text_size"
                     app:backgroundTint="@null"
@@ -113,9 +113,9 @@
                     android:layout_width="@dimen/min_clickable_size"
                     android:layout_height="@dimen/min_clickable_size"
                     android:background="@drawable/bg_cart_qnt_btn"
-                    android:text="@string/plus"
                     android:clickable="true"
                     android:focusable="true"
+                    android:text="@string/plus"
                     android:textColor="@color/light_red"
                     android:textSize="@dimen/def_text_size"
                     app:backgroundTint="@null"
@@ -146,8 +146,7 @@
                 android:layout_marginVertical="12dp"
                 android:background="@color/white"
                 android:focusable="true"
-                android:padding="@dimen/def_padding"
-                tools:text="@string/tools_desc" />
+                android:padding="@dimen/def_padding" />
 
             <TextView
                 android:id="@+id/footer"

@@ -9,9 +9,13 @@
 
     <string name="app_name">RespolHPL</string>
     <string name="nav_header_title">RespolHPL</string>
-    <string name="nav_header_subtitle">www.respolhpl.pl</string>
+    <string name="product">Produkt</string>
+    <string name="label_main">RespolHPL</string>
+    <string name="confirm_clear_cart">Czy na pewno chcesz wyczyścić koszyk?</string>
+    <string name="cart_cost">Wartość koszyka: %1$f</string>
+    <string name="your_cart_is_empty">Twój koszyk jest pusty</string>
+    <string name="payment_and_shipping">Dostawa i płatność</string>
     <string name="connection_lost">Brak połączenia z internetem</string>
-    <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Ustawienia</string>
 
     <string name="menu_home">Strona Główna</string>
@@ -20,16 +24,15 @@
     <string name="price"> %1$.2f zł</string>
     <string name="buy_now">Kup teraz</string>
     <string name="add_to_cart">Dodaj do koszyka</string>
-    <string name="product_image_desc">product_image</string>
     <string name="product_max_quantity">z %1$d sztuk</string>
     <string name="an_error_occurred">Wystąpił błąd</string>
     <string name="not_found_error"> 404 - Not Found</string>
     <string name="bad_request_error">400 - Bad Request</string>
     <string name="forbidden_error">403 - Forbidden</string>
     <string name="server_error">500 - Server Error</string>
-    <string name="connection_error">Connection Problem</string>
-    <string name="timeout_error">The connection with server has timed out</string>
-    <string name="error_no_internet_connection_refresh">Please make sure your connection is stable and refresh the page to load the data.</string>
+    <string name="connection_error">Problem z internetem</string>
+    <string name="timeout_error">Zbyt długi czas oczekiwania na połączenie z serwerem.</string>
+    <string name="error_no_internet_connection_refresh">Upewnij się, że jesteś podłączony do itnernetu i spróbuj ponownie.</string>
 
     <string name="retry">Spróbuj ponownie</string>
     <string name="cart">Koszyk</string>
@@ -41,16 +44,4 @@
     <string name="cancel">Anuluj</string>
     <string name="deletion_confirmation_title">Czy na pewno chcesz usunąć produkt z koszyka?</string>
 
-    <string name="tools_desc"><h2>Właściwości:</h2>\n
-                    <ul>                    " \t<li>Wysoka odporność na ścieranie, zadrapania, uderzenia,zginanie</li>\n" +
-                    " \t<li>Odporne na temperaturę do 230°C</li>\n" +
-                    " \t<li>Łatwe do czyszczenia</li>\n" +
-                    " \t<li>Bezpieczne w bezpośrednim kontakcie z żywnością</li>\n" +
-                    " \t<li>Antybakteryjna w całym przekroju</li>\n" +
-                    " \t<li>Światłoodporna</li>\n" +
-                    " \t<li>Obustronny kolor</li>\n" +
-                    "</ul>\n" +
-                    "Deski do krojenia, które oferujemy Państwu są wykonane z najwyższej jakości płyt kompakt HPL marki Polyrey®.Materiał jest niezwykle sztywny i odporny mechanicznie,a dzięki zastosowaniu technologii Sanitized® są one antybakteryjne w całym przekroju przez co zwiększają bezpieczeństwo użytkowania.\n" +
-                    "\n" +
-                    " Są łatwe w czyszczenia, do ich wyczyszczenia wystarczy woda i gąbka lub woda z detergentem w przypadku silniejszych zabrudzeń. Nie potrzeba ich wyparzać w zmywarce, aby pozbyć  się bakterii z ich powierzchni."</string>
 </resources>

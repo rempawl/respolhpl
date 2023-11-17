@@ -39,8 +39,8 @@
             style="@style/DefaultBodyText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@id/thumbnail"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/thumbnail"
             app:layout_constraintTop_toBottomOf="@id/prod_name"
             tools:text="Cena: 42.99" />
 
@@ -52,7 +52,7 @@
             android:layout_margin="@dimen/def_margin"
             android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

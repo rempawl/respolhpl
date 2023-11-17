@@ -7,7 +7,7 @@ import com.example.respolhpl.data.model.domain.ProductMinimal
 import com.example.respolhpl.data.model.remote.RemoteProduct
 import com.example.respolhpl.data.model.remote.RemoteProductMinimal
 import com.example.respolhpl.data.model.remote.toDomain
-import com.example.respolhpl.data.sources.remote.RemoteDataSource
+import com.example.respolhpl.data.sources.remote.WooCommerceApi
 import com.example.respolhpl.data.store.ResponseStore
 import com.example.respolhpl.data.store.SOTFactory
 import com.example.respolhpl.paging.PagingParam
@@ -17,7 +17,7 @@ import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
 class ProductRepositoryImpl @Inject constructor(
-    private val remoteDataSource: RemoteDataSource,
+    private val remoteDataSource: WooCommerceApi,
     sotFactory: SOTFactory
 ) : ProductRepository {
 
@@ -32,7 +32,9 @@ class ProductRepositoryImpl @Inject constructor(
     override val productsDataStore: ResponseStore<PagingParam, List<RemoteProductMinimal>, List<ProductMinimal>> =
         ResponseStore(
             request = { remoteDataSource.getProducts(it.perPage, it.page) },
-            sourceOfTruth = sotFactory.create("products", mapper = { it.toDomain() })
+            sourceOfTruth = sotFactory.create("products", mapper = { it.toDomain() }),
+            cacheTimeout = 1,
+            timeUnit = TimeUnit.HOURS
         )
 
 }

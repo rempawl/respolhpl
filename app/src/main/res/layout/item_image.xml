@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_gray"
-        android:contentDescription="@string/product_image_desc"
         tools:layout_height="300dp"
-        tools:src="@drawable/natura" />
+        tools:src="@drawable/natura"
+        android:importantForAccessibility="no" />
 
     <TextView
         android:id="@+id/img_counter"

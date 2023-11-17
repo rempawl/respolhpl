@@ -1,9 +1,9 @@
 package com.example.respolhpl.data.model.remote
 
 import com.example.respolhpl.data.model.domain.Image
-import com.squareup.moshi.Json
+import kotlinx.serialization.Serializable
 
-@Json(name = "image")
+@Serializable
 data class ImageRemote(
     val src: String, val id: Int
 )

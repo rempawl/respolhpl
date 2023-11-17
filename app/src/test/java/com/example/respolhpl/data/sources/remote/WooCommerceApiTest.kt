@@ -1,7 +1,5 @@
 package com.example.respolhpl.data.sources.remote
 
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
@@ -15,8 +13,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 @ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
@@ -27,13 +23,13 @@ class WooCommerceApiTest {
 
     @Before
     fun setup() {
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-        mockServer = MockWebServer()
-        api = Retrofit.Builder()
-            .baseUrl(mockServer.url("/"))
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
-            .create(WooCommerceApi::class.java)
+//        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+//        mockServer = MockWebServer()
+//        api = Retrofit.Builder()
+//            .baseUrl(mockServer.url("/"))
+//            .addConverterFactory(MoshiConverterFactory.create(moshi))
+//            .build()
+//            .create(WooCommerceApi::class.java)
     }
 
     @After

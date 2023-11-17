@@ -6,22 +6,22 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface WooCommerceApi : RemoteDataSource {
+interface WooCommerceApi {
 
 
     @GET(PRODUCTS_PATH)
-    override suspend fun getProducts(
+    suspend fun getProducts(
         @Query("per_page") perPage: Int,
         @Query("page") page: Int,
-        @Query("status") status: String
+        @Query("status") status: String = DEFAULT_STATUS
     ): List<RemoteProductMinimal>
 
-    fun getProducts()
     @GET("$PRODUCTS_PATH/{id}")
-    override suspend fun getProductById(@Path(value = "id") id: Int): RemoteProduct
+    suspend fun getProductById(@Path(value = "id") id: Int): RemoteProduct
 
 
     companion object {
         const val PRODUCTS_PATH = "/wp-json/wc/v3/products"
+        const val DEFAULT_STATUS = "publish"
     }
 }

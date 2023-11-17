@@ -53,14 +53,9 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
             }
         }
     }
-
-    fun stream(request: StoreRequest<Key>): Flow<StoreResponse<Output>> =
-        store.stream(request).flowOn(dispatcher)
-
     suspend fun get(key: Key): EitherResult<Output> = withContext(dispatcher) {
         either { store.get(key) }
     }
-
     suspend fun fresh(key: Key): EitherResult<Output> = withContext(dispatcher) {
         either { store.fresh(key) }
     }
