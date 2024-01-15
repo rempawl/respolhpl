@@ -45,4 +45,8 @@
     <string name="payment_and_shipping">Payment and shipping</string>
     <string name="connection_lost">No internet connection</string>
     <string name="add_to_favs">Add to favourites</string>
+    <string name="checkout">Checkout</string>
+    <string name="select_product_variant_title">Select product variant</string>
+    <string name="current_variant_label">Current Variant</string>
+    <string name="work_in_progress">Work in progress</string>
 </resources>
