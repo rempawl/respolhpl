@@ -11,7 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rempawl.respolhpl.R
-import com.rempawl.respolhpl.cart.CartViewModel.CartEffects.NavigateToCheckout
+import com.rempawl.respolhpl.cart.CartViewModel.CartEffects
+import com.rempawl.respolhpl.cart.CartViewModel.CartEffects.*
 import com.rempawl.respolhpl.databinding.FragmentCartBinding
 import com.rempawl.respolhpl.productDetails.observeOnStart
 import com.rempawl.respolhpl.productDetails.showToast
@@ -51,7 +52,7 @@ class CartFragment : Fragment() {
 
 //    private fun onDeleteBtnClick(prod: CartItem.CartProduct) {
 //        ConfirmDialog.newInstance(getString(R.string.deletion_confirmation_title)) {
-//            viewModel.deleteFromCart(prod)
+//            viewModel.deleteFromCart(prod) todo
 //        }.show(childFragmentManager, "")
 //    }
 
@@ -65,10 +66,17 @@ class CartFragment : Fragment() {
                             getString(R.string.work_in_progress),
                             Toast.LENGTH_SHORT
                         )
-//                            findNavController() todo
-//                            .navigate(CartFragmentDirections.actionCartFragmentToCheckoutFragment())
+                        ShowClearCartConfirmationDialog ->
+                            showClearCartConfirmationDialog()
                     }
                 }
+            }
+            // todo one state observer
+            launch {
+                viewModel.mapStateDistinct { it.isClearCartBtnVisible }
+                    .collectLatest {
+                        binding.clearBtn.isVisible = it
+                    }
             }
             launch {
                 viewModel.mapStateDistinct { it.cartItems }
@@ -116,11 +124,15 @@ class CartFragment : Fragment() {
         setupProductsListAdapter()
         backBtn.setOnClickListener { findNavController().navigateUp() }
         clearBtn.setOnClickListener {
-            ConfirmDialog.newInstance(getString(R.string.confirm_clear_cart)) {
-                this@CartFragment.viewModel.clearCart()
-            }.show(childFragmentManager, "")
+            viewModel.onClearCartBtnClick()
         }
         label.setText(R.string.cart)
+    }
+
+    private fun showClearCartConfirmationDialog() {
+        ConfirmDialog.newInstance(getString(R.string.confirm_clear_cart)) {
+            this@CartFragment.viewModel.onClearCartClick()
+        }.show(childFragmentManager, "")
     }
 
     private fun FragmentCartBinding.setupProductsListAdapter() {

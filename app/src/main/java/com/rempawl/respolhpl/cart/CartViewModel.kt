@@ -6,12 +6,9 @@ import com.rempawl.respolhpl.cart.CartViewModel.CartState
 import com.rempawl.respolhpl.data.model.domain.CartProduct
 import com.rempawl.respolhpl.data.usecase.ClearCartUseCase
 import com.rempawl.respolhpl.data.usecase.GetCartProductsUseCase
-import com.rempawl.respolhpl.list.BaseListItem
-import com.rempawl.respolhpl.list.UniqueListItem
 import com.rempawl.respolhpl.utils.BaseViewModel
 import com.rempawl.respolhpl.utils.DefaultError
 import com.rempawl.respolhpl.utils.Effect
-import com.rempawl.respolhpl.utils.PriceFormatter
 import com.rempawl.respolhpl.utils.extensions.addItemIf
 import com.rempawl.respolhpl.utils.extensions.onError
 import com.rempawl.respolhpl.utils.extensions.onSuccess
@@ -21,10 +18,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// todo handling variants in cart
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val getCartProductsUseCase: GetCartProductsUseCase,
-    private val priceFormatter: PriceFormatter,
+    private val cartFormatter: CartFormatter,
     private val clearCartUseCase: ClearCartUseCase
 ) : BaseViewModel<CartState, CartEffects>(CartState()) {
 
@@ -33,6 +31,28 @@ class CartViewModel @Inject constructor(
             setState { copy(isLoading = it) }
         }
 
+        getCart()
+    }
+
+    fun onBuyClick() {
+        setEffect(CartEffects.NavigateToCheckout)
+    }
+
+    fun deleteFromCart() {
+        // todo
+    }
+
+    fun onClearCartBtnClick() {
+        setEffect(CartEffects.ShowClearCartConfirmationDialog)
+    }
+
+    fun onClearCartClick() {
+        viewModelScope.launch {
+            clearCartUseCase.call(Unit)
+        }
+    }
+
+    fun retry() {
         getCart()
     }
 
@@ -52,36 +72,17 @@ class CartViewModel @Inject constructor(
         CartItem.Product(
             id = it.product.id,
             quantity = it.quantity.toString(),
-            price = priceFormatter.format(it.product.price),
+            price = cartFormatter.formatPrice(it.product.price),
             thumbnailSrc = it.product.thumbnailSrc,
             name = it.product.name
         )
     }.addItemIf(
         predicate = { isNotEmpty() },
-        item = CartItem.Summary(cost = priceFormatter.format(getCartSum()))
+        item = CartItem.Summary(cost = cartFormatter.formatPrice(getCartSum()))
     )
 
     private fun List<CartProduct>.getCartSum() =
         this.sumOf { it.quantity * it.product.price }
-
-    fun onBuyClick() {
-        setEffect(CartEffects.NavigateToCheckout)
-    }
-
-    fun deleteFromCart() {
-        // todo
-    }
-
-    fun clearCart() {
-        viewModelScope.launch {
-            clearCartUseCase.call(Unit)
-        }
-        // todo test etcc..
-    }
-
-    fun retry() {
-        getCart()
-    }
 
     data class CartState(
         val cartItems: List<CartItem> = emptyList(),
@@ -90,25 +91,14 @@ class CartViewModel @Inject constructor(
     ) {
         val isEmptyPlaceholderVisible
             get() = cartItems.isEmpty() && !isLoading && error == null
-    }
 
-    sealed class CartItem : BaseListItem {
-        data class Product(
-            val quantity: String,
-            val id: Int,
-            val price: String,
-            val thumbnailSrc: String?,
-            val name: String,
-            override val itemId: Any = id
-        ) : CartItem(), BaseListItem
-
-        data class Summary(
-            val cost: String,
-        ) : CartItem(), BaseListItem by UniqueListItem()
+        val isClearCartBtnVisible
+            get() = !isEmptyPlaceholderVisible
     }
 
     sealed interface CartEffects : Effect {
         object NavigateToCheckout : CartEffects
+        object ShowClearCartConfirmationDialog : CartEffects
     }
 }
 

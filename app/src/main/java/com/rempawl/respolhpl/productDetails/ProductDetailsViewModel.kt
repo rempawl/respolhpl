@@ -160,17 +160,16 @@ class ProductDetailsViewModel @Inject constructor(
 
     private fun calculateQuantity(quantity: Int, maxQuantity: Int): Int = min(quantity, maxQuantity)
 
-
     companion object {
         const val KEY_PROD_ID = "productId"
     }
 }
 
 data class ProductDetailsState(
-    private val productQuantity: Int = 1,
+    private val productQuantity: Int = 0,
     val showProgress: Boolean = true,
     val productError: DefaultError? = null,
-    val cartQuantity: Int = 1,
+    val cartQuantity: Int = 0,
     val variants: List<VariantItem> = emptyList(),
     val currentVariant: VariantItem? = null,
     val descriptionFormatted: String = "",
@@ -194,6 +193,12 @@ data class ProductDetailsState(
 
     val isVariantCardVisible: Boolean
         get() = variants.isNotEmpty() && currentVariant != null
+
+    val isAddToCartBtnEnabled : Boolean
+        get() = cartQuantity > 0
+
+    val isBuyNowBtnEnabled : Boolean
+        get() = cartQuantity > 0
 }
 
 

@@ -48,18 +48,11 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
                 .build()
         )
         .build()
-
-    init {
-        log { "curl init ${cacheStartTime.values} ${hashCode()}" }
-    }
-
     private fun cacheAndFreshWrapped(key: Key): Flow<StoreReadResponse<Output>> {
         return store.stream(StoreReadRequest.cached(key = key, refresh = !isMemoryCacheValid(key)))
     }
 
     fun cacheAndFresh(key: Key): Flow<EitherResult<Output>> {
-//        log { "curl is memory cache valid ${isMemoryCacheValid(key = key)}" }
-//        log { "curl cacheandfresh values ${cacheStartTime.values}" }
         return cacheAndFreshWrapped(key).unwrap()
     }
 
@@ -87,18 +80,11 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
     private fun requestFlow(key: Key) =
         flow { emit(request(key)) }
             .onEach { cacheStartTime[key] = timeProvider.currentTimeMillis() }
-//            .onEach { log { "curl ${this.cacheStartTime[key]} hash = ${key.hashCode()}" } }
-//            .onEach { log { "curl requestFlow ${cacheStartTime.values}" } }
             .flowOn(dispatcher)
 
     private fun isMemoryCacheValid(key: Key): Boolean {
-
         val cacheStartTime = cacheStartTime[key] ?: 0
-
-//        log { "curl cacheStart $cacheStartTime ${this.cacheStartTime[key]} hash = ${key.hashCode()}" }
         val cacheTimeSoFar = timeProvider.currentTimeMillis() - cacheStartTime
-//        log { "curl cacheTime $cacheTimeSoFar" }
-
         return cacheStartTime > 0 && cacheTimeSoFar < timeUnit.toMillis(cacheTimeout.toLong())
     }
 

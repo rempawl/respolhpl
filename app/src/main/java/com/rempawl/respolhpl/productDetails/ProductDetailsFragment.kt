@@ -45,7 +45,7 @@ import com.rempawl.respolhpl.productDetails.imagesAdapter.ImagesAdapter
 import com.rempawl.respolhpl.utils.autoCleared
 import com.rempawl.respolhpl.utils.compose.BottomSheetPicker
 import com.rempawl.respolhpl.utils.compose.HeightSpacer
-import com.rempawl.respolhpl.utils.extensions.QuantityCounter
+import com.rempawl.respolhpl.utils.compose.QuantityCounter
 import com.rempawl.respolhpl.utils.extensions.dpToPx
 import com.rempawl.respolhpl.utils.getErrorMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -254,6 +254,8 @@ class ProductDetailsFragment : Fragment() {
         loading.root.isVisible = state.showProgress
         errorRoot.root.isVisible = state.productError != null
         imagesAdapter.submitList(state.images.images)
+        buyNowBtn.isEnabled = state.isBuyNowBtnEnabled
+        addToCartButton.isEnabled = state.isAddToCartBtnEnabled
     }
 
 
@@ -270,13 +272,11 @@ class ProductDetailsFragment : Fragment() {
                 findNavController().navigate(actionProductDetailsToCartFragment()) //todo some extension on base fragment
             }
             backBtn.setOnClickListener { findNavController().navigateUp() }
-            label.text = getString(R.string.product)
         }
         addToCartButton.setOnClickListener { viewModel.onAddToCartClick() }
         errorRoot.retryButton.setOnClickListener { viewModel.retry() }
         buyNowBtn.setOnClickListener {
-//            findNavController().navigate(ProductDetailsFragmentDirections.actionDetailsFragmentToCheckoutFragment())
-
+            // todo
             showToast(getString(R.string.work_in_progress))
         }
         with(imagesViewPager) {

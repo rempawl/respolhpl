@@ -14,6 +14,7 @@ import com.rempawl.respolhpl.fakes.FakeData
 import com.rempawl.respolhpl.utils.BaseCoroutineTest
 import com.rempawl.respolhpl.utils.DefaultError
 import com.rempawl.respolhpl.utils.HtmlParser
+import com.rempawl.respolhpl.utils.PriceFormatter
 import com.rempawl.respolhpl.utils.coVerifyNever
 import com.rempawl.respolhpl.utils.coVerifyOnce
 import com.rempawl.respolhpl.utils.mockFlowResult
@@ -53,7 +54,7 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
             savedStateHandle = handle,
             getProductDetailsUseCase = getProductUseCase,
             addToCartUseCase = addToCartUseCase,
-            productDetailsFormatter = ProductDetailsFormatter(htmlParser)
+            productDetailsFormatter = ProductDetailsFormatter(htmlParser, PriceFormatter())
         )
     }
 
@@ -128,7 +129,7 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
                         descriptionFormatted = "description",
                         productName = "Product",
                         toolbarLabel = "Product",
-                        priceFormatted = "10.0 PLN",
+                        priceFormatted = "10.00 PLN",
                         images = Images(
                             listOf(
                                 ProductImage(
@@ -219,7 +220,7 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
                             descriptionFormatted = "description",
                             productName = "Product",
                             toolbarLabel = "Product",
-                            priceFormatted = "10.0 PLN",
+                            priceFormatted = "10.00 PLN",
                             images = Images(
                                 listOf(
                                     ProductImage(
@@ -415,6 +416,53 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
             }
         }
 
+    @Test
+    fun `when cart quantity is 0, then add to cart and buy now buttons are disabled`() = runTest {
+        val sut = createSUT()
+        sut.state.test {
+            expectMostRecentItem().run {
+                assertEquals(0, cartQuantity)
+                assertFalse { isAddToCartBtnEnabled }
+                assertFalse { isBuyNowBtnEnabled }
+            }
+        }
+    }
+
+    @Test
+    fun `when cart quantity is greater than 0, then add to cart and buy now buttons are enabled`() =
+        runTest {
+            val sut = createSUT()
+            sut.state.test {
+                sut.onQuantityChanged("1")
+                expectMostRecentItem().run {
+                    assertEquals(1, cartQuantity)
+                    assertTrue { isAddToCartBtnEnabled }
+                    assertTrue { isBuyNowBtnEnabled }
+                }
+            }
+        }
+
+    @Test
+    fun `when cart quantity goes from greater than 0 to 0, then add to cart and buy now buttons are disabled`() =
+        runTest {
+            val sut = createSUT()
+            sut.state.test {
+                sut.onQuantityChanged("10")
+                expectMostRecentItem().run {
+                    assertEquals(10, cartQuantity)
+                    assertTrue { isAddToCartBtnEnabled }
+                    assertTrue { isBuyNowBtnEnabled }
+                }
+
+                sut.onQuantityChanged("0")
+
+                expectMostRecentItem().run {
+                    assertEquals(0, cartQuantity)
+                    assertFalse { isAddToCartBtnEnabled }
+                    assertFalse { isBuyNowBtnEnabled }
+                }
+            }
+        }
     @Test
     fun `when add to cart fails, then error is displayed`() = runTest {
         val sut = createSUT()

@@ -32,6 +32,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.compose.rememberAsyncImagePainter
@@ -68,7 +69,7 @@ class HomeFragment : Fragment() {
             setContent {
                 MaterialTheme {
                     val listState = rememberLazyListState()
-                    val state by viewModel.state.collectAsState() // todo collectAsStateWithLifecycle?
+                    val state by viewModel.state.collectAsStateWithLifecycle()
                     LoadMoreManager(
                         listState = listState,
                         onLoadMore = { viewModel.loadMore() }

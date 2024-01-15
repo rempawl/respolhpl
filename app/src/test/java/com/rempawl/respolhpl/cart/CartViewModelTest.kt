@@ -2,13 +2,17 @@ package com.rempawl.respolhpl.cart
 
 import app.cash.turbine.test
 import com.rempawl.respolhpl.cart.CartViewModel.CartEffects
+import com.rempawl.respolhpl.cart.CartViewModel.CartEffects.*
 import com.rempawl.respolhpl.data.model.domain.CartProduct
 import com.rempawl.respolhpl.data.model.domain.details.Product
 import com.rempawl.respolhpl.data.model.domain.details.ProductType
+import com.rempawl.respolhpl.data.usecase.ClearCartUseCase
 import com.rempawl.respolhpl.data.usecase.GetCartProductsUseCase
 import com.rempawl.respolhpl.utils.BaseCoroutineTest
 import com.rempawl.respolhpl.utils.DefaultError
 import com.rempawl.respolhpl.utils.PriceFormatter
+import com.rempawl.respolhpl.utils.coVerifyNever
+import com.rempawl.respolhpl.utils.coVerifyOnce
 import com.rempawl.respolhpl.utils.mockFlowResult
 import io.mockk.every
 import io.mockk.mockk
@@ -27,12 +31,13 @@ import kotlin.test.assertTrue
 class CartViewModelTest : BaseCoroutineTest() {
 
     private val getCartProductsUseCase = mockk<GetCartProductsUseCase>()
+    private val clearCartUseCase = mockk<ClearCartUseCase>(relaxed = true)
 
     private fun createSUT(): CartViewModel {
         return CartViewModel(
             getCartProductsUseCase = getCartProductsUseCase,
-            priceFormatter = PriceFormatter(),
-            clearCartUseCase = mockk(relaxed = true)
+            cartFormatter = CartFormatter(PriceFormatter()),
+            clearCartUseCase = clearCartUseCase
         )
     }
 
@@ -49,22 +54,24 @@ class CartViewModelTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun `when initialized, then state set`() = runTest {
+    fun `when initialized, then correct state set`() = runTest {
         getCartProductsUseCase.mock()
         createSUT().state.test {
             expectMostRecentItem().run {
                 assertEquals(2, cartItems.size)
                 cartItems[0].run {
-                    assertIs<CartViewModel.CartItem.Product>(this)
+                    assertIs<CartItem.Product>(this)
                     assertEquals(name, "name")
-                    assertEquals(price, "10.00")
+                    assertEquals(price, "10.00 PLN")
                     assertEquals(thumbnailSrc, "src")
                     assertEquals(quantity, "2")
                 }
                 cartItems[1].run {
-                    assertIs<CartViewModel.CartItem.Summary>(this)
-                    assertEquals(cost, "20.00")
+                    assertIs<CartItem.Summary>(this)
+                    assertEquals(cost, "20.00 PLN")
                 }
+                assertTrue { isClearCartBtnVisible }
+                assertFalse { isEmptyPlaceholderVisible }
             }
         }
     }
@@ -75,6 +82,7 @@ class CartViewModelTest : BaseCoroutineTest() {
         createSUT().state.test {
             awaitItem().run {
                 assertTrue { isEmptyPlaceholderVisible }
+                assertFalse { isClearCartBtnVisible }
             }
         }
     }
@@ -101,7 +109,7 @@ class CartViewModelTest : BaseCoroutineTest() {
 
             sut.onBuyClick()
 
-            assertIs<CartEffects.NavigateToCheckout>(expectMostRecentItem())
+            assertIs<NavigateToCheckout>(expectMostRecentItem())
         }
     }
 
@@ -138,22 +146,34 @@ class CartViewModelTest : BaseCoroutineTest() {
         }
     }
 
+    @Test
+    fun `when clear cart clicked, then confirm dialog shown`() = runTest {
+        getCartProductsUseCase.mock()
+        val sut = createSUT()
+        sut.effects.test {
+            expectNoEvents()
+
+            sut.onClearCartBtnClick()
+
+            assertIs<ShowClearCartConfirmationDialog>(expectMostRecentItem())
+        }
+    }
+
+    @Test
+    fun `when clear cart confirmed, then clear cart use case called`() = runTest {
+        getCartProductsUseCase.mock()
+        val sut = createSUT()
+        coVerifyNever { clearCartUseCase.call(Unit) }
+
+        sut.onClearCartClick()
+
+        coVerifyOnce { clearCartUseCase.call(Unit) }
+    }
 
     @Test
     fun `when item deleted from cart, then items updated`() = runTest {
         // todo
     }
-
-    @Test
-    fun `when clear cart clicked, then confirm dialog shown`() = runTest {
-        // todo
-    }
-
-    @Test
-    fun `when clear cart confirmed, then clear cart`() = runTest {
-        // todo
-    }
-
 
     private fun GetCartProductsUseCase.mock(
         delay: Long? = null,

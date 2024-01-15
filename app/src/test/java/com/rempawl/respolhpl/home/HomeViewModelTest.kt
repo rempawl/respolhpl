@@ -161,6 +161,5 @@ class HomeViewModelTest : BaseCoroutineTest() {
         const val TEST_DELAY = 2L
         const val PREFETCH = 2
         const val PAGE_SIZE = 1
-        val PRICE = SpannableString("price")
     }
 }

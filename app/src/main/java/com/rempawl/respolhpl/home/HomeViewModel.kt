@@ -33,7 +33,8 @@ class HomeViewModel @Inject constructor(
         loadMoreTrigger = loadMoreTrigger,
         idProducer = { it.itemId },
         dataSource = { pagingParam ->
-            flow { emit(getProductsUseCase.fresh(pagingParam)) }.mapSuccess { it.toListItems() }
+            flow { emit(getProductsUseCase.fresh(pagingParam)) }
+                .mapSuccess { it.toListItems() }
         }
     )
 

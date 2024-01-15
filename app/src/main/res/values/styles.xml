@@ -22,6 +22,4 @@
     <style name="cardStyle" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">@dimen/card_radius</item>
     </style>
-
-
 </resources>

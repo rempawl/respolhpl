@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.rempawl.respolhpl.cart.CartViewModel.CartItem
 import com.rempawl.respolhpl.databinding.ItemCartProductBinding
 import com.rempawl.respolhpl.databinding.ItemCartSummaryBinding
 import com.rempawl.respolhpl.utils.extensions.loadImage

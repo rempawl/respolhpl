@@ -97,17 +97,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/def_margin"
-            android:backgroundTint="@color/white"
+            app:backgroundTint="@color/bg_white_button"
             android:text="@string/add_to_cart"
-            android:textColor="@color/light_red" />
+            android:clickable="true"
+            android:textColor="@color/light_red"
+            android:focusable="true" />
 
         <com.google.android.material.button.MaterialButton
+            android:clickable="true"
             android:id="@+id/buy_now_btn"
+            app:backgroundTint="@color/bg_white_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/def_margin"
-            android:backgroundTint="@color/white"
             android:text="@string/buy_now"
-            android:textColor="@color/light_red" />
+            android:textColor="@color/light_red"
+            android:focusable="true" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,9 +28,4 @@ fun RemoteProduct.toDomain(): Product {
         description = description,
         productType = enumValueOf(type.uppercase()),
     )
-
 }
-
-//    val shipping_class_id: Int, todo
-//    val categories: List<RemoteCategory>,
-//    val tags : List<RemoteTag>,

@@ -16,51 +16,8 @@ import com.rempawl.respolhpl.list.paging.PagingParam
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.time.ExperimentalTime
 
-
-@Singleton
-class ResponseStoreFactory @Inject constructor(
-    private val remoteDataSource: WooCommerceApi,
-    private val sotFactory: SOTFactory
-) {
-    //    private val allStores = mutableListOf<ResponseStore<*, *, *>>()
-    //    todo save cache
-
-//
-//    fun <Key : Any, Response : Any, Output : Any> createStore(
-//        request: suspend (Key) -> Response,
-//        cacheTimeout: Duration = Duration.ZERO,
-//        dispatcher: CoroutineDispatcher = Dispatchers.IO,
-//        clock: Clock = Clock.System,
-//        sourceOfTruth: DiskSOTFactory.() -> SourceOfTruth<Key, Response, Output>,
-//    ): ResponseStore<Key, Response, Output> {
-//        return ResponseStore(
-//            request,
-//            sourceOfTruth(sotFactory),
-//            cacheTimeout,
-//            dispatcher,
-//            clock
-//        ).also {
-//            allStores.add(it)
-//        }
-//    }
-    val productDataStore = ResponseStore<Int, RemoteProduct, Product>(
-        request = { remoteDataSource.getProductById(it) },
-        sourceOfTruth = sotFactory.create("product", mapper = { it.toDomain() }),
-        cacheTimeout = 2,
-        timeUnit = TimeUnit.HOURS
-    )
-
-    val productsDataStore: ResponseStore<PagingParam, List<RemoteProductMinimal>, List<ProductMinimal>> by lazy {
-        ResponseStore(
-            request = { remoteDataSource.getProducts(it.perPage, it.page) },
-            sourceOfTruth = sotFactory.create("products", mapper = { it.toDomain() }),
-        )
-    }
-
-}
 
 class ProductRepositoryImpl @Inject constructor(
     private val remoteDataSource: WooCommerceApi,
@@ -86,11 +43,4 @@ class ProductRepositoryImpl @Inject constructor(
     override val productsDataStore: ResponseStore<PagingParam, List<RemoteProductMinimal>, List<ProductMinimal>> by lazy {
         responseStoreFactory.productsDataStore
     }
-//        ResponseStore(
-//            request = { remoteDataSource.getProducts(it.perPage, it.page) },
-//            sourceOfTruth = sotFactory.create("products", mapper = { it.toDomain() }),
-//            cacheTimeout = 2137,
-//            timeUnit = TimeUnit.DAYS
-//        )
-
 }

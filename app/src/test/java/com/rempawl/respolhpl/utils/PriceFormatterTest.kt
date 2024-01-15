@@ -9,14 +9,14 @@ class PriceFormatterTest {
     fun `when price equals 10, then formatted correctly `() = PriceFormatter().run {
         val result = this.format(10.0)
 
-        assertEquals("10.00", result)
+        assertEquals("10.00 PLN", result)
     }
 
     @Test
     fun `when price equals 10,99, then formatted correctly`() = PriceFormatter().run {
         val result = this.format(10.99)
 
-        assertEquals("10.99", result)
+        assertEquals("10.99 PLN", result)
     }
 
     @Test
@@ -24,7 +24,7 @@ class PriceFormatterTest {
         PriceFormatter().run {
             val result = this.format(10.2, "%.1f")
 
-            assertEquals("10.2", result)
+            assertEquals("10.2 PLN", result)
         }
 
 }

@@ -1,6 +1,7 @@
 package com.rempawl.respolhpl.productDetails
 
 import com.rempawl.respolhpl.data.model.domain.details.ProductAttribute
+import com.rempawl.respolhpl.utils.PriceFormatter
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
@@ -11,7 +12,8 @@ class ProductDetailsFormatterTest {
     private fun createFormatter() = ProductDetailsFormatter(
         mockk {
             every { parse(any()) } returns "parsed"
-        }
+        },
+        PriceFormatter()
     )
 
     @Test
@@ -25,7 +27,7 @@ class ProductDetailsFormatterTest {
     fun `when format price called, then return price with PLN`() {
         val result = createFormatter().formatPrice(10.0)
 
-        assertEquals("10.0 PLN", result)
+        assertEquals("10.00 PLN", result)
     }
 
     @Test

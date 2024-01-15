@@ -9,6 +9,7 @@ import com.rempawl.respolhpl.R
 class ConfirmDialog : DialogFragment() {
     private var title: String = ""
     private var onConfirm: (() -> Unit)? = null
+    // todo view model to not lose state on rotation
 
     companion object {
         fun newInstance(title: String, onConfirm: () -> Unit): ConfirmDialog {
