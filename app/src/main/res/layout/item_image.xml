@@ -12,21 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_gray"
+        android:importantForAccessibility="no"
         tools:layout_height="300dp"
-        tools:src="@drawable/natura"
-        android:importantForAccessibility="no" />
-
-    <TextView
-        android:id="@+id/img_counter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|top"
-        android:layout_margin="@dimen/def_margin"
-        android:background="@color/white"
-        android:fontFamily="sans-serif-black"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        tools:text="1/3" />
+        tools:src="@drawable/natura" />
 
 </androidx.cardview.widget.CardView>
 

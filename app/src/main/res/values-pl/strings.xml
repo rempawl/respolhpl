@@ -43,5 +43,10 @@
     <string name="confirm">Potwierdz</string>
     <string name="cancel">Anuluj</string>
     <string name="deletion_confirmation_title">Czy na pewno chcesz usunąć produkt z koszyka?</string>
+    <string name="checkout">koszyk</string>
+    <string name="select_product_variant_title">Wybierz wariant produktu z listy</string>
+    <string name="current_variant_label">Wybrany wariant</string>
+    <string name="work_in_progress">Funkcjonalność w przygotowaniu</string>
+
 
 </resources>

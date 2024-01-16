@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.respolhpl.home.HomeFragment"
+        android:name="com.rempawl.respolhpl.home.HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/navigation_home_to_product_details"
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/product_details"
-        android:name="com.example.respolhpl.productDetails.ProductDetailsFragment"
+        android:name="com.rempawl.respolhpl.productDetails.ProductDetailsFragment"
         android:label="">
         <argument
             android:name="productId"
@@ -30,10 +30,13 @@
         <action
             android:id="@+id/action_product_details_to_cart_fragment"
             app:destination="@id/cart_fragment" />
+        <action
+            android:id="@+id/action_details_fragment_to_checkout_fragment"
+            app:destination="@id/checkout_fragment" />
     </fragment>
     <fragment
         android:id="@+id/fullScreenImagesFragment"
-        android:name="com.example.respolhpl.productDetails.FullScreenImagesFragment"
+        android:name="com.rempawl.respolhpl.productDetails.FullScreenImagesFragment"
         android:label="">
         <argument
             android:name="productId"
@@ -43,11 +46,20 @@
             app:argType="java.lang.Integer" />
         <argument
             android:name="images"
-            app:argType="com.example.respolhpl.data.model.domain.Images" />
+            app:argType="com.rempawl.respolhpl.data.model.domain.Images" />
     </fragment>
 
     <fragment
         android:id="@+id/cart_fragment"
-        android:name="com.example.respolhpl.cart.CartFragment"
-        android:label="@string/cart" />
+        android:name="com.rempawl.respolhpl.cart.CartFragment"
+        android:label="@string/cart" >
+        <action
+            android:id="@+id/action_cart_fragment_to_checkout_fragment"
+            app:destination="@id/checkout_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/checkout_fragment"
+        android:name="com.rempawl.respolhpl.checkout.CheckoutFragment"
+        android:label="@string/checkout"/>
 </navigation>
