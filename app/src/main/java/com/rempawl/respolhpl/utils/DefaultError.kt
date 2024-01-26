@@ -30,5 +30,4 @@ fun Throwable.toDefaultError() = DefaultError(this)
 fun DefaultError.getErrorMessage() = when (this) {
     is NullProductIdError -> "Error: null product id"
     else -> "Something went wrong"
-
 }

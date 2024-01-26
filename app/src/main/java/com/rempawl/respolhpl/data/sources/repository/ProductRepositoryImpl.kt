@@ -27,7 +27,7 @@ class ProductRepositoryImpl @Inject constructor(
 
     override val productDataStore: ResponseStore<Int, RemoteProduct, Product> =
         ResponseStore(
-            request = { remoteDataSource.getProductById(it) },
+            request = { remoteDataSource.getProduct(it) },
             sourceOfTruth = sotFactory.create("product", mapper = { it.toDomain() }),
             cacheTimeout = 2,
             timeUnit = TimeUnit.HOURS

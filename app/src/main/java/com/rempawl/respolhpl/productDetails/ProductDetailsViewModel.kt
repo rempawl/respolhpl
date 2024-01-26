@@ -3,7 +3,9 @@ package com.rempawl.respolhpl.productDetails
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.rempawl.respolhpl.data.model.domain.CartProduct
 import com.rempawl.respolhpl.data.model.domain.Images
+import com.rempawl.respolhpl.data.model.domain.details.ProductType
 import com.rempawl.respolhpl.data.model.domain.details.ProductVariant
 import com.rempawl.respolhpl.data.usecase.AddToCartUseCase
 import com.rempawl.respolhpl.data.usecase.GetProductDetailsUseCase
@@ -48,24 +50,26 @@ class ProductDetailsViewModel @Inject constructor(
         setEffect(ProductDetailsEffect.NavigateToFullScreenImage(stateValue.images))
 
     fun onAddToCartClick() {
-        val quantity = stateValue.cartQuantity
-        addToCartUseCase.call(
-            AddToCartUseCase.Param(
-                id = productId,
-                quantity = quantity
+        with(stateValue) {
+            addToCartUseCase.call(
+                AddToCartUseCase.Param(
+                    id = productId,
+                    quantity = cartQuantity,
+                    type = productType,
+                    variantId  = currentVariant?.id
+                )
             )
-        )
-            .watchProgress(progress)
-            .onSuccess {
-                setEffect(ProductDetailsEffect.ItemAddedToCart(quantity))
-                setState { copy(cartQuantity = 0) }
-            }
-            .onError { error ->
-                addError(error)
-            }
-            .launchIn(viewModelScope)
+                .watchProgress(progress)
+                .onSuccess {
+                    setEffect(ProductDetailsEffect.ItemAddedToCart(cartQuantity))
+                    setState { copy(cartQuantity = 0) }
+                }
+                .onError { error ->
+                    addError(error)
+                }
+                .launchIn(viewModelScope)
+        }
     }
-
 
     fun onMinusBtnClick() {
         setState {
@@ -77,36 +81,6 @@ class ProductDetailsViewModel @Inject constructor(
         setState {
             copy(cartQuantity = cartQuantity + 1)
         }
-    }
-
-    private fun getProduct(id: Int) {
-        getProductDetailsUseCase.call(id)
-            .watchProgress(progress)
-            .onSuccess { (product, variants) ->
-                val variantItems = createVariantItems(variants)
-                val variantItem = variantItems.firstOrNull()
-                setState {
-                    copy(
-                        productError = null,
-                        variants = variantItems,
-                        currentVariant = variantItem,
-                        descriptionFormatted = productDetailsFormatter
-                            .formatDescription(product.description),
-                        productName = product.name,
-                        toolbarLabel = product.name,
-                        images = Images(product.images),
-                        productQuantity = product.quantity,
-                        cartQuantity = 0,
-                        priceFormatted = productDetailsFormatter
-                            .formatPrice(variantItem?.price ?: product.price),
-                    )
-                }
-
-            }
-            .onError { error ->
-                setState { copy(productError = error) }
-            }
-            .launchIn(viewModelScope)
     }
 
     fun onQuantityChanged(quantity: String) {
@@ -148,6 +122,42 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
+    fun onBuyNowClick() {
+        // todo set effect
+    }
+
+    private fun getProduct(id: Int) {
+        getProductDetailsUseCase.call(id)
+            .watchProgress(progress)
+            .onSuccess { (product, variants) ->
+                val variantItems = createVariantItems(variants)
+                val variantItem = variantItems.firstOrNull()
+                setState {
+                    copy(
+                        productError = null,
+                        variants = variantItems,
+                        currentVariant = variantItem,
+                        descriptionFormatted = productDetailsFormatter
+                            .formatDescription(product.description),
+                        productName = product.name,
+                        toolbarLabel = product.name,
+                        images = Images(product.images),
+                        productQuantity = product.quantity,
+                        cartQuantity = 0,
+                        priceFormatted = productDetailsFormatter
+                            .formatPrice(variantItem?.price ?: product.price),
+                        productType = product.productType
+                    )
+                }
+
+            }
+            .onError { error ->
+                setState { copy(productError = error) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+
     private fun createVariantItems(variants: List<ProductVariant>) =
         variants.map {
             VariantItem(
@@ -167,6 +177,7 @@ class ProductDetailsViewModel @Inject constructor(
 
 data class ProductDetailsState(
     private val productQuantity: Int = 0,
+    val productType: ProductType = ProductType.SIMPLE,
     val showProgress: Boolean = true,
     val productError: DefaultError? = null,
     val cartQuantity: Int = 0,
@@ -194,10 +205,10 @@ data class ProductDetailsState(
     val isVariantCardVisible: Boolean
         get() = variants.isNotEmpty() && currentVariant != null
 
-    val isAddToCartBtnEnabled : Boolean
+    val isAddToCartBtnEnabled: Boolean
         get() = cartQuantity > 0
 
-    val isBuyNowBtnEnabled : Boolean
+    val isBuyNowBtnEnabled: Boolean
         get() = cartQuantity > 0
 }
 
@@ -205,4 +216,5 @@ data class ProductDetailsState(
 sealed class ProductDetailsEffect : Effect {
     data class NavigateToFullScreenImage(val images: Images) : ProductDetailsEffect()
     data class ItemAddedToCart(val quantity: Int) : ProductDetailsEffect()
+    data class NavigateToCheckout(val product: CartProduct) : ProductDetailsEffect()
 }

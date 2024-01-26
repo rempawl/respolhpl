@@ -17,10 +17,16 @@ interface WooCommerceApi {
     ): List<RemoteProductMinimal>
 
     @GET("$PRODUCTS_PATH/{id}")
-    suspend fun getProductById(@Path(value = "id") id: Int): RemoteProduct
+    suspend fun getProduct(@Path(value = "id") id: Int): RemoteProduct
 
     @GET("$PRODUCTS_PATH/{id}/variations")
     suspend fun getProductVariations(@Path(value ="id") id : Int) : List<RemoteProductVariant>
+
+    @GET("${PRODUCTS_PATH}/{id}/variations/{variationId}")
+    suspend fun getProductVariant(
+        @Path(value = "id") id: Int,
+        @Path(value = "variationId") variantId: Int
+    ): RemoteProductVariant
 
     companion object {
         const val PRODUCTS_PATH = "/wp-json/wc/v3/products"

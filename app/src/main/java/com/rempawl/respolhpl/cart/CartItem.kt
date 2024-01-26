@@ -5,9 +5,11 @@ import com.rempawl.respolhpl.list.UniqueListItem
 
 sealed class CartItem : BaseListItem {
     data class Product(
-        val quantity: String,
+        private val price : Double,
+        val quantityFormatted: String,
         val id: Int,
-        val price: String,
+        val cost: String,
+        val priceFormatted: String,
         val thumbnailSrc: String?,
         val name: String,
         override val itemId: Any = id

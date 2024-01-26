@@ -6,9 +6,10 @@ import timber.log.Timber
 
 
 //todo order
-//todo cart select
+//todo cart delete item
+// todo compose theme
+// todo changing product quantity in cart
 
-//todo cart summary
 //todo shipping
 
 // todo tests

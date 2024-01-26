@@ -37,8 +37,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.rempawl.respolhpl.R
+import com.rempawl.respolhpl.data.model.domain.CartProduct
 import com.rempawl.respolhpl.data.model.domain.Images
 import com.rempawl.respolhpl.databinding.FragmentProductDetailsBinding
+import com.rempawl.respolhpl.productDetails.ProductDetailsEffect.*
 import com.rempawl.respolhpl.productDetails.ProductDetailsFragmentDirections.actionProductDetailsToCartFragment
 import com.rempawl.respolhpl.productDetails.ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment
 import com.rempawl.respolhpl.productDetails.imagesAdapter.ImagesAdapter
@@ -71,14 +73,13 @@ class ProductDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
-        return binding!!.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         binding!!.composeView.apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnLifecycleDestroyed(
+                    viewLifecycleOwner
+                )
+            )
             setContent {
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 if (state.showVariantPicker) {
@@ -98,25 +99,31 @@ class ProductDetailsFragment : Fragment() {
                 }
                 PriceQuantityAndVariantSection(state)
             }
-
-            imagesAdapter = ImagesAdapter(
-                bindingDecorator = {
-                    image.scaleType = ImageView.ScaleType.CENTER_CROP
-                    card.setOnClickListener { viewModel.onImageClicked() }
-
-                    card.updateLayoutParams<RecyclerView.LayoutParams> {
-                        updateMargins(
-                            left = 16.dpToPx(resources),
-                            top = 16.dpToPx(resources),
-                            right = 16.dpToPx(resources),
-                            bottom = 16.dpToPx(resources)
-                        )
-                    }
-                }
-            )
-            binding!!.setupBinding()
-            setupObservers()
         }
+
+        return binding!!.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        imagesAdapter = ImagesAdapter(
+            bindingDecorator = {
+                image.scaleType = ImageView.ScaleType.CENTER_CROP
+                card.setOnClickListener { viewModel.onImageClicked() }
+
+                card.updateLayoutParams<RecyclerView.LayoutParams> {
+                    updateMargins(
+                        left = 16.dpToPx(resources),
+                        top = 16.dpToPx(resources),
+                        right = 16.dpToPx(resources),
+                        bottom = 16.dpToPx(resources)
+                    )
+                }
+            }
+        )
+        binding!!.setupBinding()
+        setupObservers()
+
     }
 
     override fun onDestroyView() {
@@ -237,14 +244,18 @@ class ProductDetailsFragment : Fragment() {
             launch {
                 viewModel.effects.collectLatest { effect ->
                     when (effect) {
-                        is ProductDetailsEffect.ItemAddedToCart -> showAddToCartToast(effect.quantity)
-                        is ProductDetailsEffect.NavigateToFullScreenImage -> navigateToFullScreenImageFragment(
-                            effect.images
-                        )
+                        is ItemAddedToCart -> showAddToCartToast(effect.quantity)
+                        is NavigateToFullScreenImage ->
+                            navigateToFullScreenImageFragment(effect.images)
+                        is NavigateToCheckout -> navigateToCheckout(effect.product)
                     }
                 }
             }
         }
+    }
+
+    private fun navigateToCheckout(product: CartProduct) {
+//        findNavController().navigate(actionDetailsFragmentToCheckoutFragment(CheckoutArgs(product)))
     }
 
     private fun setupView(state: ProductDetailsState) = with(binding!!) {
@@ -276,8 +287,7 @@ class ProductDetailsFragment : Fragment() {
         addToCartButton.setOnClickListener { viewModel.onAddToCartClick() }
         errorRoot.retryButton.setOnClickListener { viewModel.retry() }
         buyNowBtn.setOnClickListener {
-            // todo
-            showToast(getString(R.string.work_in_progress))
+            viewModel.onBuyNowClick()
         }
         with(imagesViewPager) {
             adapter = imagesAdapter

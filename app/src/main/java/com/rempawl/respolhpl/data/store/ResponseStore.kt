@@ -1,13 +1,22 @@
 package com.rempawl.respolhpl.data.store
 
 import arrow.core.left
-import arrow.core.raise.either
+import arrow.core.raise.catch
 import arrow.core.right
 import com.rempawl.respolhpl.utils.DefaultError
 import com.rempawl.respolhpl.utils.extensions.EitherResult
-import com.rempawl.respolhpl.utils.log
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import com.rempawl.respolhpl.utils.extensions.toEitherResult
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.mobilenativefoundation.store.store5.ExperimentalStoreApi
 import org.mobilenativefoundation.store.store5.Fetcher
 import org.mobilenativefoundation.store.store5.MemoryPolicy
@@ -48,6 +57,7 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
                 .build()
         )
         .build()
+
     private fun cacheAndFreshWrapped(key: Key): Flow<StoreReadResponse<Output>> {
         return store.stream(StoreReadRequest.cached(key = key, refresh = !isMemoryCacheValid(key)))
     }
@@ -65,11 +75,18 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
     }
 
     suspend fun get(key: Key): EitherResult<Output> = withContext(dispatcher) {
-        either { store.get(key) }
+        catch(
+            block = { store.get(key).right() },
+            catch = { it.toEitherResult() }
+        )
+
     }
 
     suspend fun fresh(key: Key): EitherResult<Output> = withContext(dispatcher) {
-        either { store.fresh(key) }
+        catch(
+            block = { store.fresh(key).right() },
+            catch = { it.toEitherResult() }
+        )
     }
 
     suspend fun clear(key: Key): Unit = withContext(dispatcher) { store.clear(key) }

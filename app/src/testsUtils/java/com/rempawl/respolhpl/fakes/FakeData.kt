@@ -56,6 +56,7 @@ object FakeData {
             type = "simple"
         )
     )
+
     val products: List<Product> = remoteProducts.map {
         Product(
             id = it.id,
@@ -68,6 +69,7 @@ object FakeData {
             productType = enumValueOf(it.type.uppercase())
         )
     }
+
     val minimalProducts = products.map {
         ProductMinimal(
             id = it.id,
