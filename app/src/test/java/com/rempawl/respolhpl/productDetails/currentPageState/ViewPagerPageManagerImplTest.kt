@@ -13,17 +13,4 @@ class ViewPagerPageManagerImplTest : BaseCoroutineTest() {
         currentPageState = ViewPagerPageManagerImpl()
     }
 
-    // todo
-    @Test
-    fun init() {
-    }
-
-    @Test
-    fun saveStateTo5Then3() {
-
-        currentPageState.saveCurrentPage(5)
-
-        currentPageState.saveCurrentPage(3)
-
-    }
 }

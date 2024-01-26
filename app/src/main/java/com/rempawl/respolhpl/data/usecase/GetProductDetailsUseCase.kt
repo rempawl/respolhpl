@@ -12,8 +12,7 @@ import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
-// todo tests
-@OptIn(ExperimentalTime::class)
+@OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
 class GetProductDetailsUseCase @Inject constructor(private val productRepository: ProductRepository) :
     FlowResultUseCase<Int, ProductDetails> {
 

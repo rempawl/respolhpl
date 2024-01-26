@@ -3,10 +3,11 @@ package com.rempawl.respolhpl.productDetails
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import app.cash.turbine.turbineScope
-import com.rempawl.respolhpl.data.model.domain.ProductImage
 import com.rempawl.respolhpl.data.model.domain.Images
+import com.rempawl.respolhpl.data.model.domain.ProductImage
 import com.rempawl.respolhpl.data.model.domain.details.ProductAttribute
 import com.rempawl.respolhpl.data.model.domain.details.ProductDetails
+import com.rempawl.respolhpl.data.model.domain.details.ProductType
 import com.rempawl.respolhpl.data.model.domain.details.ProductVariant
 import com.rempawl.respolhpl.data.usecase.AddToCartUseCase
 import com.rempawl.respolhpl.data.usecase.GetProductDetailsUseCase
@@ -60,7 +61,12 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `given simple product, when init successful, then correct state set`() = runTest {
-        val sut = createSUT(product = TEST_PRODUCT.copy(variants = emptyList()))
+        val sut = createSUT(
+            product = TEST_PRODUCT.copy(
+                variants = emptyList(),
+                product = TEST_PRODUCT.product.copy(productType = ProductType.SIMPLE)
+            )
+        )
         sut.state.test {
             expectMostRecentItem().run {
                 assertEquals(
@@ -87,7 +93,8 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
                         showProgress = false,
                         cartQuantity = 0,
                         productError = null,
-                        showVariantPicker = false
+                        showVariantPicker = false,
+                        productType = ProductType.SIMPLE
                     ),
                     actual = this
                 )
@@ -145,7 +152,8 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
                         showProgress = false,
                         cartQuantity = 0,
                         productError = null,
-                        showVariantPicker = false
+                        showVariantPicker = false,
+                        productType = ProductType.VARIABLE
                     ),
                     actual = this
                 )
@@ -236,7 +244,8 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
                             showProgress = false,
                             cartQuantity = 0,
                             productError = null,
-                            showVariantPicker = false
+                            showVariantPicker = false,
+                            productType = ProductType.VARIABLE
                         ),
                         actual = this
                     )
@@ -412,7 +421,17 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
 
                 assertEquals(ProductDetailsEffect.ItemAddedToCart(2), effects.awaitItem())
                 assertEquals(0, state.expectMostRecentItem().cartQuantity)
-                coVerifyOnce { addToCartUseCase.call(AddToCartUseCase.Param(1, 2)) }
+                coVerifyOnce {
+                    addToCartUseCase
+                        .call(
+                            AddToCartUseCase.Param(
+                                id = 1,
+                                quantity = 2,
+                                type = ProductType.VARIABLE,
+                                variantId = 111
+                            )
+                        )
+                }
             }
         }
 
@@ -463,6 +482,7 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
                 }
             }
         }
+
     @Test
     fun `when add to cart fails, then error is displayed`() = runTest {
         val sut = createSUT()

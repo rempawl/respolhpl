@@ -88,11 +88,12 @@ class PagingManager<Item>(
         }
     }
 
+    // todo pass param into result, to add support for cache and fresh
     private fun getListWithoutDuplicates(
         items: List<Item>,
         newItems: List<Item>
     ) = (items + newItems)
-        .asReversed() // reversing so latest items are left in list if they are duplicates todo pass param into result
+        .asReversed() // reversing so latest items are left in list if they are duplicates
         .distinctBy(idProducer)
         .asReversed()
 

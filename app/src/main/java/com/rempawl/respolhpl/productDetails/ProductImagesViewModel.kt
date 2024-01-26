@@ -2,7 +2,9 @@ package com.rempawl.respolhpl.productDetails
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import arrow.core.raise.either
+import arrow.core.left
+import arrow.core.raise.catch
+import arrow.core.right
 import com.rempawl.respolhpl.data.model.domain.Images
 import com.rempawl.respolhpl.productDetails.ProductImagesViewModel.ProductImagesState
 import com.rempawl.respolhpl.productDetails.currentPageState.ViewPagerPageManager
@@ -12,6 +14,7 @@ import com.rempawl.respolhpl.utils.NoEffects
 import com.rempawl.respolhpl.utils.extensions.EitherResult
 import com.rempawl.respolhpl.utils.extensions.onError
 import com.rempawl.respolhpl.utils.extensions.onSuccess
+import com.rempawl.respolhpl.utils.extensions.toEitherResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +24,7 @@ import javax.inject.Inject
 class ProductImagesViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     viewPagerPageManager: ViewPagerPageManager
-) : BaseViewModel<ProductImagesState,NoEffects>(ProductImagesState()),
+) : BaseViewModel<ProductImagesState, NoEffects>(ProductImagesState()),
     ViewPagerPageManager by viewPagerPageManager {
 
     init {
@@ -42,10 +45,15 @@ class ProductImagesViewModel @Inject constructor(
         }
     }
 
-    private fun getImagesFromNavArg(): EitherResult<Images> = either {
-        savedStateHandle.get<Images>(KEY_IMAGES) ?: raise(NullProductIdError)
-    }
-
+    private fun getImagesFromNavArg(): EitherResult<Images> = catch(
+        block = { savedStateHandle.get<Images>(KEY_IMAGES)!!.right() },
+        catch = { throwable ->
+            when (throwable) {
+                is NullPointerException -> NullProductIdError.left()
+                else -> throwable.toEitherResult()
+            }
+        }
+    )
 
     fun retry() {
         getImages()

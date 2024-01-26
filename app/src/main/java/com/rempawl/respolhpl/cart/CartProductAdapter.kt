@@ -41,9 +41,10 @@ class CartProductAdapter(private val onBuyClick: () -> Unit) :
         ) {
             binding.apply {
 //                dele.setOnClickListener { item.onDeleteClick() } todo
-                price.text = "Cena za sztukę ${item.price} zł"
-                quantity.text = "Ilośc: ${item.quantity}" // todo extract
+                price.text = "Cena za sztukę ${item.priceFormatted} zł"
+                quantity.text = "Ilość: ${item.quantityFormatted}" // todo extract
                 prodName.text = item.name
+                productCost.text = "Koszt: ${item.cost}" // todo extract
                 thumbnail.loadImage(item.thumbnailSrc)
             }
         }

@@ -1,9 +1,9 @@
 package com.rempawl.respolhpl.data.usecase
 
-import arrow.core.raise.either
+import arrow.core.raise.catch
 import arrow.core.right
 import com.rempawl.respolhpl.utils.extensions.EitherResult
-import com.rempawl.respolhpl.utils.extensions.toResult
+import com.rempawl.respolhpl.utils.extensions.toEitherResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -15,9 +15,11 @@ interface AsyncUseCase<in Param, out Output> {
 interface ResultUseCase<in Param, out Output> : AsyncUseCase<Param, EitherResult<Output>>
 
 abstract class ActionResultUseCase<in Param, out Output> : ResultUseCase<Param, Output> {
-    override suspend fun call(parameter: Param): EitherResult<Output> = either {
-        doWork(parameter)
-    }
+
+    override suspend fun call(parameter: Param): EitherResult<Output> = catch(
+            block = { doWork(parameter).right() },
+            catch = { it.toEitherResult() }
+        )
 
     protected abstract suspend fun doWork(parameter: Param): Output
 }
@@ -33,7 +35,7 @@ interface FlowResultUseCase<in Param, out Output> : FlowUseCase<Param, EitherRes
 abstract class ActionFlowResultUseCase<in Param, out Output> : FlowResultUseCase<Param, Output> {
     override fun call(parameter: Param): Flow<EitherResult<Output>> {
         return flow { emit(doWork(parameter).right() as EitherResult<Output>) }
-            .catch { error -> emit(error.toResult()) }
+            .catch { error -> emit(error.toEitherResult()) }
     }
 
     protected abstract suspend fun doWork(parameter: Param): Output

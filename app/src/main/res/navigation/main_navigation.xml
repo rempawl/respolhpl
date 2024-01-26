@@ -31,6 +31,9 @@
             android:id="@+id/action_product_details_to_cart_fragment"
             app:destination="@id/cart_fragment" />
         <action
+            android:id="@+id/action_product_details_to_checkout_fragment"
+            app:destination="@id/checkout_fragment" />
+        <action
             android:id="@+id/action_details_fragment_to_checkout_fragment"
             app:destination="@id/checkout_fragment" />
     </fragment>
@@ -61,5 +64,11 @@
     <fragment
         android:id="@+id/checkout_fragment"
         android:name="com.rempawl.respolhpl.checkout.CheckoutFragment"
-        android:label="@string/checkout"/>
+        android:label="@string/checkout">
+        <argument
+            android:name="checkoutArgs"
+            app:argType="com.rempawl.respolhpl.checkout.CheckoutArgs"
+            app:nullable="true"
+            />
+    </fragment>
 </navigation>

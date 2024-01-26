@@ -12,13 +12,13 @@ import com.rempawl.respolhpl.utils.Effect
 import com.rempawl.respolhpl.utils.extensions.addItemIf
 import com.rempawl.respolhpl.utils.extensions.onError
 import com.rempawl.respolhpl.utils.extensions.onSuccess
+import com.rempawl.respolhpl.utils.log
 import com.rempawl.respolhpl.utils.watchProgress
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-// todo handling variants in cart
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val getCartProductsUseCase: GetCartProductsUseCase,
@@ -42,6 +42,10 @@ class CartViewModel @Inject constructor(
         // todo
     }
 
+    fun updateQuantity() {
+        // todo
+    }
+
     fun onClearCartBtnClick() {
         setEffect(CartEffects.ShowClearCartConfirmationDialog)
     }
@@ -49,6 +53,9 @@ class CartViewModel @Inject constructor(
     fun onClearCartClick() {
         viewModelScope.launch {
             clearCartUseCase.call(Unit)
+                .onError {
+                    log { "kruci error ocurred" } // todo show error
+                }
         }
     }
 
@@ -71,10 +78,12 @@ class CartViewModel @Inject constructor(
     private fun List<CartProduct>.toListItems() = map {
         CartItem.Product(
             id = it.product.id,
-            quantity = it.quantity.toString(),
-            price = cartFormatter.formatPrice(it.product.price),
+            quantityFormatted = it.quantity.toString(),
+            priceFormatted = cartFormatter.formatPrice(it.product.price),
             thumbnailSrc = it.product.thumbnailSrc,
-            name = it.product.name
+            name = it.product.name,
+            price = it.product.price,
+            cost = cartFormatter.formatPrice(it.product.price * it.quantity)
         )
     }.addItemIf(
         predicate = { isNotEmpty() },

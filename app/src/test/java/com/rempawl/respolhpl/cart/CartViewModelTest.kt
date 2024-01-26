@@ -1,7 +1,6 @@
 package com.rempawl.respolhpl.cart
 
 import app.cash.turbine.test
-import com.rempawl.respolhpl.cart.CartViewModel.CartEffects
 import com.rempawl.respolhpl.cart.CartViewModel.CartEffects.*
 import com.rempawl.respolhpl.data.model.domain.CartProduct
 import com.rempawl.respolhpl.data.model.domain.details.Product
@@ -62,9 +61,10 @@ class CartViewModelTest : BaseCoroutineTest() {
                 cartItems[0].run {
                     assertIs<CartItem.Product>(this)
                     assertEquals(name, "name")
-                    assertEquals(price, "10.00 PLN")
+                    assertEquals(priceFormatted, "10.00 PLN")
                     assertEquals(thumbnailSrc, "src")
-                    assertEquals(quantity, "2")
+                    assertEquals(quantityFormatted, "2")
+                    assertEquals(cost, "20.00 PLN")
                 }
                 cartItems[1].run {
                     assertIs<CartItem.Summary>(this)
@@ -201,7 +201,8 @@ class CartViewModelTest : BaseCoroutineTest() {
                     description = "desc",
                     productType = ProductType.SIMPLE
                 ),
-                quantity = 2
+                quantity = 2,
+                null
             )
         )
     }
