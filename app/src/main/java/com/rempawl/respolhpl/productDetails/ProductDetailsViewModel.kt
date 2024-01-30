@@ -37,6 +37,7 @@ class ProductDetailsViewModel @Inject constructor(
     private val productId
         get() = (savedStateHandle.get<Int>(KEY_PROD_ID)
             ?: throw java.lang.IllegalStateException("productId is null"))
+    // todo handle error
 
     init {
         getProduct(productId)

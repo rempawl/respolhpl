@@ -21,15 +21,14 @@ class ConfirmDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let {
-            AlertDialog.Builder(requireContext())
-                .setTitle(title)
-                .setPositiveButton(getString(R.string.confirm)) { _, _ ->
-                    onConfirm?.invoke()
-                    dismissAllowingStateLoss()
-                }
-                .setNegativeButton(getString(R.string.cancel)) { _, _ -> dismissAllowingStateLoss() }
-                .create()
-        } ?: throw IllegalStateException()
+        return AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setPositiveButton(getString(R.string.confirm)) { _, _ ->
+                onConfirm?.invoke()
+                dismissAllowingStateLoss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { _, _ -> dismissAllowingStateLoss() }
+            .create()
+
     }
 }
