@@ -41,6 +41,7 @@ import com.rempawl.respolhpl.home.HomeEffect.NavigateToProductDetails
 import com.rempawl.respolhpl.list.paging.LoadMoreManager
 import com.rempawl.respolhpl.list.paging.PagedLazyColumn
 import com.rempawl.respolhpl.list.paging.pagedContent
+import com.rempawl.respolhpl.productDetails.navigate
 import com.rempawl.respolhpl.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -156,8 +157,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToProductDetails(id: Int) {
-        findNavController().navigate(
-            HomeFragmentDirections.navigationHomeToProductDetails(id)
-        )
+        this.navigate(HomeFragmentDirections.navigationHomeToProductDetails(id))
     }
 }
