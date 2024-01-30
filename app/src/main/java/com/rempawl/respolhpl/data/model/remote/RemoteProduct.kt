@@ -1,11 +1,9 @@
 package com.rempawl.respolhpl.data.model.remote
 
-import androidx.annotation.Keep
 import com.rempawl.respolhpl.data.model.domain.details.Product
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Keep
 data class RemoteProduct(
     val id: Int,
     val name: String,

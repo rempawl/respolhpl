@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-// todo double click navigation
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -73,7 +72,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    companion object{
+
+    companion object {
         const val KEY_PRODUCT_ID = "productId"
     }
 }

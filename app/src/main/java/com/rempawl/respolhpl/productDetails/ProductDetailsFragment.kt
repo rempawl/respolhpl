@@ -40,7 +40,9 @@ import com.rempawl.respolhpl.R
 import com.rempawl.respolhpl.data.model.domain.CartProduct
 import com.rempawl.respolhpl.data.model.domain.Images
 import com.rempawl.respolhpl.databinding.FragmentProductDetailsBinding
-import com.rempawl.respolhpl.productDetails.ProductDetailsEffect.*
+import com.rempawl.respolhpl.productDetails.ProductDetailsEffect.ItemAddedToCart
+import com.rempawl.respolhpl.productDetails.ProductDetailsEffect.NavigateToCheckout
+import com.rempawl.respolhpl.productDetails.ProductDetailsEffect.NavigateToFullScreenImage
 import com.rempawl.respolhpl.productDetails.ProductDetailsFragmentDirections.actionProductDetailsToCartFragment
 import com.rempawl.respolhpl.productDetails.ProductDetailsFragmentDirections.navigationProductDetailsToFullScreenImagesFragment
 import com.rempawl.respolhpl.productDetails.imagesAdapter.ImagesAdapter
@@ -123,7 +125,6 @@ class ProductDetailsFragment : Fragment() {
         )
         binding!!.setupBinding()
         setupObservers()
-
     }
 
     override fun onDestroyView() {
@@ -221,7 +222,7 @@ class ProductDetailsFragment : Fragment() {
     private fun navigateToFullScreenImageFragment(images: Images) {
         val currentItem = binding!!.imagesViewPager.currentItem
 
-        findNavController().navigate(
+        this.navigate(
             navigationProductDetailsToFullScreenImagesFragment(
                 /* productId = */ args.productId,
                 /* currentPage = */currentItem,
@@ -247,6 +248,7 @@ class ProductDetailsFragment : Fragment() {
                         is ItemAddedToCart -> showAddToCartToast(effect.quantity)
                         is NavigateToFullScreenImage ->
                             navigateToFullScreenImageFragment(effect.images)
+
                         is NavigateToCheckout -> navigateToCheckout(effect.product)
                     }
                 }
@@ -258,7 +260,7 @@ class ProductDetailsFragment : Fragment() {
 //        findNavController().navigate(actionDetailsFragmentToCheckoutFragment(CheckoutArgs(product)))
     }
 
-    private fun setupView(state: ProductDetailsState) = with(binding!!) {
+    private fun setupView(state: ProductDetailsState) = binding?.run {
         toolbar.label.text = state.toolbarLabel
         prodDesc.text = state.descriptionFormatted
         productDetails.isVisible = state.isSuccess
@@ -280,7 +282,7 @@ class ProductDetailsFragment : Fragment() {
     private fun FragmentProductDetailsBinding.setupBinding() {
         with(toolbar) {
             cartBtn.setOnClickListener {
-                findNavController().navigate(actionProductDetailsToCartFragment()) //todo some extension on base fragment
+                this@ProductDetailsFragment.navigate(actionProductDetailsToCartFragment())
             }
             backBtn.setOnClickListener { findNavController().navigateUp() }
         }
