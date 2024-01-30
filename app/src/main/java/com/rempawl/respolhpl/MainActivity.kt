@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// todo double click navigation
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 

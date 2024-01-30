@@ -65,10 +65,5 @@
         android:id="@+id/checkout_fragment"
         android:name="com.rempawl.respolhpl.checkout.CheckoutFragment"
         android:label="@string/checkout">
-        <argument
-            android:name="checkoutArgs"
-            app:argType="com.rempawl.respolhpl.checkout.CheckoutArgs"
-            app:nullable="true"
-            />
     </fragment>
 </navigation>
