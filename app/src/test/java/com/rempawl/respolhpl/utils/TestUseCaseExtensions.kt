@@ -48,7 +48,7 @@ inline fun <FlowType, reified T : Flow<FlowType>, B : Flow<FlowType>> MockKStubS
 inline fun <FlowType, reified T : Flow<FlowType>, B : Flow<FlowType>> MockKStubScope<T, B>.mockFlowResult(
     delayMillis: Long? = null,
     response: FlowType,
-    error: DefaultError? = null,
+    error: AppError? = null,
 ) = answers {
     flow {
         if (delayMillis != null) delay(delayMillis)
@@ -63,7 +63,7 @@ inline fun <FlowType, reified T : Flow<FlowType>, B : Flow<FlowType>> MockKStubS
 inline fun <FlowType, reified T : Flow<FlowType>, B : Flow<FlowType>> mockFlowResultUseCase(
     delayMillis: Long? = null,
     response: FlowType,
-    error: DefaultError? = null,
+    error: AppError? = null,
     crossinline useCaseBlock: MockKMatcherScope.() -> Flow<FlowType>
 ) = every { this.useCaseBlock() } answers {
     flow {
@@ -83,7 +83,7 @@ inline fun <ResultType, reified T : Flow<EitherResult<ResultType>>, B : Flow<Eit
 
 inline fun <ResultType, reified T : Flow<EitherResult<ResultType>>, B : Flow<EitherResult<ResultType>>> MockKStubScope<T, B>.mockFlowError(
     delayMillis: Long? = null,
-    crossinline error: () -> DefaultError
+    crossinline error: () -> AppError
 ) = mockFlow(delayMillis) {
     error().left()
 }
@@ -91,7 +91,7 @@ inline fun <ResultType, reified T : Flow<EitherResult<ResultType>>, B : Flow<Eit
 
 inline fun <reified Param : Any, Result, T : StoreUseCase<Param, Result>> T.mockCacheAndFresh(
     delayMillis: Long = 0,
-    error: DefaultError? = null,
+    error: AppError? = null,
     value: Result,
     param: Param? = null
 ) {

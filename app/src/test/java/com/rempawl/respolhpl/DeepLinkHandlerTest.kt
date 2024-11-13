@@ -44,7 +44,7 @@ class DeepLinkHandlerTest {
         val intent = mockNotificationIntent(payload)
 
         val sut = createSUT()
-        val result = sut.checkIntent(intent)
+        val result = sut.getDeeplinkFrom(intent)
 
         result.run {
             assertIs<DeepLinkHandler.DeepLink.Product>(result)

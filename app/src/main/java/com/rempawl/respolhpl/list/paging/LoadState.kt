@@ -1,6 +1,6 @@
 package com.rempawl.respolhpl.list.paging
 
-import com.rempawl.respolhpl.utils.DefaultError
+import com.rempawl.respolhpl.utils.AppError
 
 sealed class LoadState {
     object Success : LoadState()
@@ -11,7 +11,7 @@ sealed class LoadState {
     }
 
     sealed class Error : LoadState() {
-        data class LoadMoreError(val defaultError: DefaultError) : Error()
-        data class InitError(val defaultError: DefaultError) : Error()
+        data class LoadMoreError(val appError: AppError) : Error()
+        data class InitError(val appError: AppError) : Error()
     }
 }
