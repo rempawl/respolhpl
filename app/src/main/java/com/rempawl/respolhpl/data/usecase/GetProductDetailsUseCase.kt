@@ -5,12 +5,15 @@ package com.rempawl.respolhpl.data.usecase
 import arrow.core.raise.either
 import com.rempawl.respolhpl.data.model.domain.details.ProductDetails
 import com.rempawl.respolhpl.data.sources.repository.ProductRepository
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.extensions.EitherResult
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 import kotlin.time.ExperimentalTime
+
+class ProductDetailsError(error: AppError) : AppError(error)
 
 @OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
 class GetProductDetailsUseCase @Inject constructor(private val productRepository: ProductRepository) :
@@ -27,7 +30,7 @@ class GetProductDetailsUseCase @Inject constructor(private val productRepository
                         product = product.bind(),
                         variants = variants.bind()
                     )
-                }
+                }.mapLeft { ProductDetailsError(it) }
             }
     }
 }

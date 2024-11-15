@@ -14,8 +14,8 @@ import com.rempawl.respolhpl.data.store.ResponseStore
 import com.rempawl.respolhpl.data.store.SOTFactory
 import com.rempawl.respolhpl.list.paging.PagingParam
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
 
 
@@ -25,20 +25,20 @@ class ProductRepositoryImpl @Inject constructor(
     sotFactory: SOTFactory
 ) : ProductRepository {
 
-    override val productDataStore: ResponseStore<Int, RemoteProduct, Product> =
+    override val productDataStore: ResponseStore<Int, RemoteProduct, Product> by lazy {
         ResponseStore(
             request = { remoteDataSource.getProduct(it) },
             sourceOfTruth = sotFactory.create("product", mapper = { it.toDomain() }),
-            cacheTimeout = 2,
-            timeUnit = TimeUnit.HOURS
+            cacheTimeout = 2.hours
         )
-    override val productVariantsStore: ResponseStore<Int, List<RemoteProductVariant>, List<ProductVariant>> =
+    }
+    override val productVariantsStore: ResponseStore<Int, List<RemoteProductVariant>, List<ProductVariant>> by lazy {
         ResponseStore(
             request = { remoteDataSource.getProductVariations(it) },
             sourceOfTruth = sotFactory.create("variations", mapper = { it.toDomain() }),
-            cacheTimeout = 2,
-            timeUnit = TimeUnit.HOURS
+            cacheTimeout = 2.hours,
         )
+    }
 
     override val productsDataStore: ResponseStore<PagingParam, List<RemoteProductMinimal>, List<ProductMinimal>> by lazy {
         responseStoreFactory.productsDataStore

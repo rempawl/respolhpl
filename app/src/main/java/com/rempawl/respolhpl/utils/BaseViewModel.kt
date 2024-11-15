@@ -15,14 +15,13 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-interface Effect
-object NoEffects : Effect
+abstract class BaseViewModel<State, Effects : Effect>(
+    initialState: State,
+    protected val progress: ProgressSemaphore
+) : ViewModel() {
 
-abstract class BaseViewModel<State, Effects : Effect>(initialState: State) : ViewModel() {
 
-    val progress = ProgressCounter()
-
-    private val _showError = MutableSharedFlow<DefaultError>()
+    private val _showError = MutableSharedFlow<AppError>()
     val showError = _showError.asSharedFlow()
 
     private val _effects = MutableSharedFlow<Effects>(
@@ -34,7 +33,7 @@ abstract class BaseViewModel<State, Effects : Effect>(initialState: State) : Vie
 
     private val _state = MutableStateFlow(initialState)
     val state = _state.asStateFlow()
-    val stateValue get() =  state.value
+    val stateValue get() = state.value
 
     protected fun setState(update: State.() -> State) {
         _state.update { it.update() }
@@ -46,32 +45,32 @@ abstract class BaseViewModel<State, Effects : Effect>(initialState: State) : Vie
         }
     }
 
-    protected fun addError(error: DefaultError) {
+    protected fun addError(error: AppError) {
         viewModelScope.launch {
             _showError.emit(error)
         }
     }
 
     fun observeProgress(
-        progressCounter: ProgressCounter = progress,
-        block: suspend CoroutineScope.(showProgress: Boolean) -> Unit
+        progressSemaphore: ProgressSemaphore? = null,
+        block: suspend CoroutineScope.(showProgress: Boolean) -> Unit,
     ) {
         viewModelScope.launch {
-            progressCounter.observeState.collect { showProgress ->
-                block(showProgress)
-            }
+            (progressSemaphore ?: progress)
+                .hasProgress
+                .collect { showProgress -> block(showProgress) }
         }
     }
 
     suspend fun <T> withProgress(
-        progressCounter: ProgressCounter,
-        block: suspend () -> T
+        block: suspend () -> T,
+        progressSemaphore: ProgressSemaphore? = null,
     ): T {
-        progressCounter.addProgress()
+        val progress = (progressSemaphore ?: progress).apply { addProgress() }
         try {
             return block()
         } finally {
-            progressCounter.removeProgress()
+            progress.removeProgress()
         }
     }
 

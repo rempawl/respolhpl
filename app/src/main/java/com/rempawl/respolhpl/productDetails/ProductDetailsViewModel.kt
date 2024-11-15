@@ -6,32 +6,35 @@ import androidx.lifecycle.viewModelScope
 import com.rempawl.respolhpl.data.model.domain.CartProduct
 import com.rempawl.respolhpl.data.model.domain.Images
 import com.rempawl.respolhpl.data.model.domain.details.ProductType
-import com.rempawl.respolhpl.data.model.domain.details.ProductVariant
 import com.rempawl.respolhpl.data.usecase.AddToCartUseCase
-import com.rempawl.respolhpl.data.usecase.GetProductDetailsUseCase
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.BaseViewModel
-import com.rempawl.respolhpl.utils.DefaultError
 import com.rempawl.respolhpl.utils.Effect
+import com.rempawl.respolhpl.utils.ProgressSemaphore
 import com.rempawl.respolhpl.utils.extensions.onError
 import com.rempawl.respolhpl.utils.extensions.onSuccess
 import com.rempawl.respolhpl.utils.watchProgress
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 import kotlin.math.min
+
 
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val getProductDetailsUseCase: GetProductDetailsUseCase,
     private val addToCartUseCase: AddToCartUseCase,
-    private val productDetailsFormatter: ProductDetailsFormatter
-) : BaseViewModel<ProductDetailsState, ProductDetailsEffect>(ProductDetailsState()) {
+    private val productDetailsFormatter: ProductDetailsFormatter,
+    private val productDetailsStateCase: ProductDetailsStateCase,
+    progressSemaphore: ProgressSemaphore
+) : BaseViewModel<ProductDetailsState, ProductDetailsEffect>(
+    ProductDetailsState(),
+    progressSemaphore
+) {
 
     init {
-        observeProgress { isLoading ->
-            setState { copy(showProgress = isLoading) }
-        }
+        observeProgress(block = { isLoading -> setState { copy(showProgress = isLoading) } })
     }
 
     private val productId
@@ -57,7 +60,7 @@ class ProductDetailsViewModel @Inject constructor(
                     id = productId,
                     quantity = cartQuantity,
                     type = productType,
-                    variantId  = currentVariant?.id
+                    variantId = currentVariant?.id
                 )
             )
                 .watchProgress(progress)
@@ -110,6 +113,7 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     fun onVariantClicked(variant: VariantItem) {
+        // todo stateCase
         setState {
             copy(
                 currentVariant = variant,
@@ -128,48 +132,16 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private fun getProduct(id: Int) {
-        getProductDetailsUseCase.call(id)
-            .watchProgress(progress)
-            .onSuccess { (product, variants) ->
-                val variantItems = createVariantItems(variants)
-                val variantItem = variantItems.firstOrNull()
-                setState {
-                    copy(
-                        productError = null,
-                        variants = variantItems,
-                        currentVariant = variantItem,
-                        descriptionFormatted = productDetailsFormatter
-                            .formatDescription(product.description),
-                        productName = product.name,
-                        toolbarLabel = product.name,
-                        images = Images(product.images),
-                        productQuantity = product.quantity,
-                        cartQuantity = 0,
-                        priceFormatted = productDetailsFormatter
-                            .formatPrice(variantItem?.price ?: product.price),
-                        productType = product.productType
-                    )
-                }
-
-            }
-            .onError { error ->
-                setState { copy(productError = error) }
-            }
+        productDetailsStateCase.call(
+            param = id,
+            stateProvider = ::stateValue
+        )
+            .onEach { setState { it } }
             .launchIn(viewModelScope)
     }
 
-
-    private fun createVariantItems(variants: List<ProductVariant>) =
-        variants.map {
-            VariantItem(
-                id = it.id,
-                quantity = it.quantity,
-                price = it.price,
-                attributesFormatted = productDetailsFormatter.formatAttributes(it.productAttributes)
-            )
-        }
-
-    private fun calculateQuantity(quantity: Int, maxQuantity: Int): Int = min(quantity, maxQuantity)
+    private fun calculateQuantity(quantity: Int, maxQuantity: Int): Int =
+        min(quantity, maxQuantity)
 
     companion object {
         const val KEY_PROD_ID = "productId"
@@ -180,7 +152,7 @@ data class ProductDetailsState(
     private val productQuantity: Int = 0,
     val productType: ProductType = ProductType.SIMPLE,
     val showProgress: Boolean = true,
-    val productError: DefaultError? = null,
+    val productError: AppError? = null,
     val cartQuantity: Int = 0,
     val variants: List<VariantItem> = emptyList(),
     val currentVariant: VariantItem? = null,

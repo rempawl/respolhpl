@@ -8,7 +8,7 @@ import com.rempawl.respolhpl.data.model.domain.details.ProductDetails
 import com.rempawl.respolhpl.data.model.domain.details.ProductVariant
 import com.rempawl.respolhpl.data.sources.repository.ProductRepository
 import com.rempawl.respolhpl.fakes.FakeData
-import com.rempawl.respolhpl.utils.DefaultError
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.assertItemEquals
 import com.rempawl.respolhpl.utils.coVerifyOnce
 import com.rempawl.respolhpl.utils.mockFlowResult
@@ -83,7 +83,7 @@ class GetProductDetailsUseCaseTest {
     @Test
     fun `when variants call fails, then correct error returned `() = runTest {
         productRepository.mockProduct()
-        val error = DefaultError()
+        val error = AppError()
         productRepository.mockVariants(error = error)
         createSUT()
             .call(911)
@@ -95,7 +95,7 @@ class GetProductDetailsUseCaseTest {
 
     @Test
     fun `when product call fails, then correct error returned `() = runTest {
-        val error = DefaultError()
+        val error = AppError()
         productRepository.mockProduct(error = error)
         productRepository.mockVariants()
         createSUT()
@@ -108,7 +108,7 @@ class GetProductDetailsUseCaseTest {
 
 
 
-    private fun ProductRepository.mockProduct(error: DefaultError? = null) {
+    private fun ProductRepository.mockProduct(error: AppError? = null) {
         every { productDataStore.cacheAndFresh(any()) }.mockFlowResult(
             response = FakeData.products.first(),
             error = error
@@ -117,7 +117,7 @@ class GetProductDetailsUseCaseTest {
 
     private fun ProductRepository.mockVariants(
         variants: List<ProductVariant> = VARIANTS,
-        error: DefaultError? = null
+        error: AppError? = null
     ) {
         every { productVariantsStore.cacheAndFresh(any()) }.mockFlowResult(
             response = variants,

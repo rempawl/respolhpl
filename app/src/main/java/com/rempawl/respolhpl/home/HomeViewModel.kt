@@ -9,6 +9,7 @@ import com.rempawl.respolhpl.list.paging.PagingManager
 import com.rempawl.respolhpl.utils.BaseViewModel
 import com.rempawl.respolhpl.utils.Effect
 import com.rempawl.respolhpl.utils.HtmlParser
+import com.rempawl.respolhpl.utils.ProgressSemaphore
 import com.rempawl.respolhpl.utils.extensions.mapSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,8 +23,9 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
     private val htmlParser: HtmlParser,
-    pagingConfig: PagingConfig
-) : BaseViewModel<HomeState, HomeEffect>(HomeState()) {
+    pagingConfig: PagingConfig,
+    progressSemaphore: ProgressSemaphore
+) : BaseViewModel<HomeState, HomeEffect>(HomeState(), progressSemaphore) {
 
     private val loadMoreTrigger = MutableSharedFlow<Unit>()
 

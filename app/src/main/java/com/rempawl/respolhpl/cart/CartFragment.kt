@@ -27,9 +27,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CartFragment : Fragment() {
 
-    @Inject
-    lateinit var dispatchersProvider: DispatchersProvider
-
     private val viewModel: CartViewModel by viewModels()
     private var adapter by autoCleared<CartProductAdapter>()
     private var binding by autoCleared<FragmentCartBinding>()
@@ -50,12 +47,6 @@ class CartFragment : Fragment() {
         setupObservers()
     }
 
-//    private fun onDeleteBtnClick(prod: CartItem.CartProduct) {
-//        ConfirmDialog.newInstance(getString(R.string.deletion_confirmation_title)) {
-//            viewModel.deleteFromCart(prod) todo
-//        }.show(childFragmentManager, "")
-//    }
-
 
     private fun setupObservers() {
         observeOnStart {
@@ -71,7 +62,6 @@ class CartFragment : Fragment() {
                     }
                 }
             }
-            // todo one state observer
             launch {
                 viewModel.mapStateDistinct { it.isClearCartBtnVisible }
                     .collectLatest {

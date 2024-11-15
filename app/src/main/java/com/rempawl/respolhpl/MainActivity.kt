@@ -8,6 +8,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -39,13 +40,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkIntentForDeepLinks() {
-        deepLinkHandler.checkIntent(intent)?.let { deepLink ->
+        deepLinkHandler.getDeeplinkFrom(intent)?.let { deepLink ->
             when (deepLink) {
                 is DeepLinkHandler.DeepLink.Product -> {
                     findNavController(R.id.nav_host_fragment)
                         .navigate(
                             R.id.product_details,
-                            Bundle().apply { putInt("productId", deepLink.id) }
+                            bundleOf(KEY_PRODUCT_ID to deepLink.id)
                         )
                 }
             }
@@ -58,10 +59,9 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
+            && VERSION.SDK_INT >= VERSION_CODES.TIRAMISU
         ) {
-            if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
-                requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1237)
-            }
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1237)
         }
     }
 

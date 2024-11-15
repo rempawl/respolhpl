@@ -6,6 +6,7 @@ import com.rempawl.respolhpl.data.model.domain.Images
 import com.rempawl.respolhpl.fakes.FakeData
 import com.rempawl.respolhpl.productDetails.currentPageState.ViewPagerPageManagerImpl
 import com.rempawl.respolhpl.utils.BaseCoroutineTest
+import com.rempawl.respolhpl.utils.ProgressSemaphoreImpl
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,7 +23,11 @@ class ProductImagesViewModelTest : BaseCoroutineTest() {
 
     private fun createSUT(images: Images? = TEST_IMAGES): ProductImagesViewModel {
         mockSavedStateHandle(images)
-        return ProductImagesViewModel(stateHandle, ViewPagerPageManagerImpl())
+        return ProductImagesViewModel(
+            stateHandle,
+            ViewPagerPageManagerImpl(),
+            ProgressSemaphoreImpl()
+        )
     }
 
     private fun mockSavedStateHandle(images: Images? = TEST_IMAGES) {

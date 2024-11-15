@@ -1,12 +1,11 @@
 package com.rempawl.respolhpl.list.paging
 
-import com.rempawl.respolhpl.utils.DefaultError
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.extensions.EitherResult
 import com.rempawl.respolhpl.utils.extensions.onError
 import com.rempawl.respolhpl.utils.extensions.onSuccess
 import com.rempawl.respolhpl.utils.extensions.refreshWhen
 import com.rempawl.respolhpl.utils.extensions.throttleFirst
-import com.rempawl.respolhpl.utils.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +21,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.yield
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PagingManager<Item>(
@@ -71,6 +71,7 @@ class PagingManager<Item>(
     private fun loadItems(phase: LoadMorePhase): Flow<EitherResult<List<Item>>> {
         return flow {
             updateLoadingState(phase)
+            yield()
             emitAll(
                 dataSource(PagingParam(currentPageToLoad(), getPageSize(phase)))
                     .onSuccess { newItems ->
@@ -127,7 +128,7 @@ class PagingManager<Item>(
         }
     }
 
-    private fun getErrorState(phase: LoadMorePhase, error: DefaultError) =
+    private fun getErrorState(phase: LoadMorePhase, error: AppError) =
         when (phase) {
             LoadMorePhase.Init -> LoadState.Error.InitError(error)
             LoadMorePhase.LoadingMore -> LoadState.Error.LoadMoreError(error)

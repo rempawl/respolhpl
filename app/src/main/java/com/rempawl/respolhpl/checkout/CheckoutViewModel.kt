@@ -13,9 +13,10 @@ import com.rempawl.respolhpl.checkout.CheckoutAction.ShipmentClick
 import com.rempawl.respolhpl.data.usecase.GetCartProductsUseCase
 import com.rempawl.respolhpl.list.BaseListItem
 import com.rempawl.respolhpl.utils.BaseViewModel
-import com.rempawl.respolhpl.utils.DefaultError
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.Effect
 import com.rempawl.respolhpl.utils.PriceFormatter
+import com.rempawl.respolhpl.utils.ProgressSemaphoreImpl
 import com.rempawl.respolhpl.utils.extensions.onError
 import com.rempawl.respolhpl.utils.extensions.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,8 +27,9 @@ import javax.inject.Inject
 class CheckoutViewModel @Inject constructor(
 //    private val getShipmentUseCase: GetShipmentUseCase,
     private val getCartProductsUseCase: GetCartProductsUseCase,
-    private val priceFormatter: PriceFormatter
-) : BaseViewModel<CheckoutState, CheckoutEffect>(CheckoutState()) {
+    private val priceFormatter: PriceFormatter,
+    progressSemaphore: ProgressSemaphoreImpl
+) : BaseViewModel<CheckoutState, CheckoutEffect>(CheckoutState(), progressSemaphore) {
 
     // todo nav args
     // differ checkout and cart
@@ -120,7 +122,7 @@ sealed class CheckoutEffect : Effect {
 
 data class CheckoutState(
     val productItems: List<CheckoutProductItem> = emptyList(),
-    val error: DefaultError? = null,
+    val error: AppError? = null,
 //    val shipment: Shipment,
 //    val invoice: Invoice,
 //    val payment: Payment,

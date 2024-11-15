@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.rempawl.respolhpl.list.BaseListItem
 import com.rempawl.respolhpl.list.listItems
 import com.rempawl.respolhpl.list.paging.LoadState.*
-import com.rempawl.respolhpl.utils.DefaultError
+import com.rempawl.respolhpl.utils.AppError
 
 internal object PagerPreviewDataCreator {
     data class FakeItem(val id: String, override val itemId: Any = id) : BaseListItem
@@ -32,8 +32,8 @@ internal object PagerPreviewDataCreator {
     val loadingData = PagingData<FakeItem>(emptyList(), Loading.InitialLoading)
     val successData = PagingData(items, Success)
     val loadMoreData = PagingData(items, Loading.LoadingMore)
-    val loadMoreErrorData = PagingData(items, Error.LoadMoreError(DefaultError()))
-    val errorData = PagingData<FakeItem>(emptyList(), Error.InitError(DefaultError()))
+    val loadMoreErrorData = PagingData(items, Error.LoadMoreError(AppError()))
+    val errorData = PagingData<FakeItem>(emptyList(), Error.InitError(AppError()))
 }
 
 @Preview(showBackground = true)

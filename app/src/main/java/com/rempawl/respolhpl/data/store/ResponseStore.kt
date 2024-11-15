@@ -3,7 +3,7 @@ package com.rempawl.respolhpl.data.store
 import arrow.core.left
 import arrow.core.raise.catch
 import arrow.core.right
-import com.rempawl.respolhpl.utils.DefaultError
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.extensions.EitherResult
 import com.rempawl.respolhpl.utils.extensions.toEitherResult
 import kotlinx.coroutines.CoroutineDispatcher
@@ -28,21 +28,17 @@ import org.mobilenativefoundation.store.store5.StoreReadResponse
 import org.mobilenativefoundation.store.store5.impl.extensions.fresh
 import org.mobilenativefoundation.store.store5.impl.extensions.get
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
-import kotlin.time.toDuration
-import kotlin.time.toDurationUnit
 
 @ExperimentalCoroutinesApi
 @ExperimentalTime
 class ResponseStore<Key : Any, Response : Any, Output : Any>(
     private val request: suspend (Key) -> Response,
-    sourceOfTruth: SourceOfTruth<Key, Response, Output>,
-    private val cacheTimeout: Int = 0,
-    private val timeUnit: TimeUnit = TimeUnit.MINUTES,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val timeProvider: TimeProvider = SystemTimeProvider()
+    private val timeProvider: TimeProvider = SystemTimeProvider(),
+    sourceOfTruth: SourceOfTruth<Key, Response, Output>,
+    cacheTimeout: Duration,
 ) {
     private val cacheStartTime = ConcurrentHashMap<Key, Long>()
 
@@ -53,13 +49,13 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
         )
         .cachePolicy(
             MemoryPolicy.builder<Key, Output>()
-                .setExpireAfterWrite(getCacheDuration())
+                .setExpireAfterWrite(cacheTimeout)
                 .build()
         )
         .build()
 
     private fun cacheAndFreshWrapped(key: Key): Flow<StoreReadResponse<Output>> {
-        return store.stream(StoreReadRequest.cached(key = key, refresh = !isMemoryCacheValid(key)))
+        return store.stream(StoreReadRequest.cached(key = key, refresh = true))
     }
 
     fun cacheAndFresh(key: Key): Flow<EitherResult<Output>> {
@@ -99,16 +95,6 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
             .onEach { cacheStartTime[key] = timeProvider.currentTimeMillis() }
             .flowOn(dispatcher)
 
-    private fun isMemoryCacheValid(key: Key): Boolean {
-        val cacheStartTime = cacheStartTime[key] ?: 0
-        val cacheTimeSoFar = timeProvider.currentTimeMillis() - cacheStartTime
-        return cacheStartTime > 0 && cacheTimeSoFar < timeUnit.toMillis(cacheTimeout.toLong())
-    }
-
-    private fun getCacheDuration(): Duration {
-        return cacheTimeout.toDuration(timeUnit.toDurationUnit())
-    }
-
     private fun Flow<StoreReadResponse<Output>>.unwrap(): Flow<EitherResult<Output>> {
         return map { response ->
             when (response) {
@@ -130,7 +116,7 @@ class ResponseStore<Key : Any, Response : Any, Output : Any>(
     }
 }
 
-sealed class StoreError : DefaultError() {
+sealed class StoreError : AppError() {
     data class Exception(override val throwable: Throwable) : StoreError()
     data class Message(override val message: String) : StoreError()
 }

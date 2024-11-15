@@ -2,7 +2,9 @@ package com.rempawl.respolhpl.utils
 
 import com.rempawl.respolhpl.productDetails.NullProductIdError
 
-open class DefaultError(open val throwable: Throwable? = null, open val message: String? = null) {
+open class AppError(open val throwable: Throwable? = null, open val message: String? = null) {
+
+    constructor(error: AppError) : this(error.throwable,error.message)
 
     override fun toString(): String {
         return "${this.javaClass.simpleName} (throwable=$throwable). Message ${throwable?.message} $message"
@@ -12,7 +14,7 @@ open class DefaultError(open val throwable: Throwable? = null, open val message:
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as DefaultError
+        other as AppError
 
         if (throwable != other.throwable) return false
         return message == other.message
@@ -25,9 +27,9 @@ open class DefaultError(open val throwable: Throwable? = null, open val message:
     }
 }
 
-fun Throwable.toDefaultError() = DefaultError(this)
+fun Throwable.toDefaultAppError() = AppError(this)
 
-fun DefaultError.getErrorMessage() = when (this) {
+fun AppError.getErrorMessage() = when (this) {
     is NullProductIdError -> "Error: null product id"
     else -> "Something went wrong"
 }
