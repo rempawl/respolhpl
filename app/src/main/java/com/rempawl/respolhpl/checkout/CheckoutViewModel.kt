@@ -68,7 +68,6 @@ class CheckoutViewModel @Inject constructor(
             }
         }
             .onError {
-
                 //todo
             }
             .launchIn(viewModelScope)

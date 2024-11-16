@@ -48,3 +48,11 @@ fun Modifier.clearFocusOnClick(): Modifier = this.composed {
         indication = null
     ) { focusManager.clearFocus() }
 }
+
+inline fun Modifier.conditional(condition: Boolean, modifier: Modifier.() -> Modifier): Modifier {
+    return if (condition) {
+        modifier()
+    } else {
+        this
+    }
+}

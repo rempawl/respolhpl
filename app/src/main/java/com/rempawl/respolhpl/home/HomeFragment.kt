@@ -1,5 +1,6 @@
 package com.rempawl.respolhpl.home
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -43,10 +45,11 @@ import com.rempawl.respolhpl.list.paging.PagedLazyColumn
 import com.rempawl.respolhpl.list.paging.pagedContent
 import com.rempawl.respolhpl.productDetails.navigate
 import com.rempawl.respolhpl.utils.autoCleared
+import com.rempawl.respolhpl.utils.extensions.addStatusBarPaddingForAndroid15
+import com.rempawl.respolhpl.utils.extensions.conditional
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -61,7 +64,9 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater)
-
+        binding.toolbar.root.setOnApplyWindowInsetsListener { view, windowInsets ->
+            view.addStatusBarPaddingForAndroid15(windowInsets)
+        }
         binding.composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
@@ -72,12 +77,13 @@ class HomeFragment : Fragment() {
                         listState = listState,
                         onLoadMore = { viewModel.loadMore() }
                     )
-
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .systemBarsPadding()
-                            .padding(top = 56.dp) // todo move toolbar from xml to compose
+                            .conditional(Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                                statusBarsPadding()
+                            }
+                            .padding(top = dimensionResource(R.dimen.toolbar_height)) // todo put toolbar in compose
                     ) {
                         PagedLazyColumn(
                             listState = listState,
