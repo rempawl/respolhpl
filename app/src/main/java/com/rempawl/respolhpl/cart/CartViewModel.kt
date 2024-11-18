@@ -7,8 +7,9 @@ import com.rempawl.respolhpl.data.model.domain.CartProduct
 import com.rempawl.respolhpl.data.usecase.ClearCartUseCase
 import com.rempawl.respolhpl.data.usecase.GetCartProductsUseCase
 import com.rempawl.respolhpl.utils.BaseViewModel
-import com.rempawl.respolhpl.utils.DefaultError
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.Effect
+import com.rempawl.respolhpl.utils.ProgressSemaphore
 import com.rempawl.respolhpl.utils.extensions.addItemIf
 import com.rempawl.respolhpl.utils.extensions.onError
 import com.rempawl.respolhpl.utils.extensions.onSuccess
@@ -23,14 +24,14 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
     private val getCartProductsUseCase: GetCartProductsUseCase,
     private val cartFormatter: CartFormatter,
-    private val clearCartUseCase: ClearCartUseCase
-) : BaseViewModel<CartState, CartEffects>(CartState()) {
+    private val clearCartUseCase: ClearCartUseCase,
+    progressSemaphore: ProgressSemaphore
+) : BaseViewModel<CartState, CartEffects>(CartState(), progressSemaphore) {
 
     init {
         observeProgress {
             setState { copy(isLoading = it) }
         }
-
         getCart()
     }
 
@@ -96,7 +97,7 @@ class CartViewModel @Inject constructor(
     data class CartState(
         val cartItems: List<CartItem> = emptyList(),
         val isLoading: Boolean = false,
-        val error: DefaultError? = null
+        val error: AppError? = null
     ) {
         val isEmptyPlaceholderVisible
             get() = cartItems.isEmpty() && !isLoading && error == null

@@ -1,6 +1,5 @@
 package com.rempawl.respolhpl.home
 
-import android.text.SpannableString
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -9,8 +8,9 @@ import com.rempawl.respolhpl.fakes.FakeData.minimalProducts
 import com.rempawl.respolhpl.home.HomeEffect.NavigateToProductDetails
 import com.rempawl.respolhpl.list.paging.LoadState
 import com.rempawl.respolhpl.list.paging.PagingConfig
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.BaseCoroutineTest
-import com.rempawl.respolhpl.utils.DefaultError
+import com.rempawl.respolhpl.utils.ProgressSemaphoreImpl
 import com.rempawl.respolhpl.utils.mockFreshWithInputParameters
 import io.mockk.every
 import io.mockk.mockk
@@ -29,11 +29,11 @@ class HomeViewModelTest : BaseCoroutineTest() {
 
     private fun mockProducts(fetchDelay: Long = TEST_DELAY, isSuccess: Boolean = true) {
         getProductsUseCase.mockFreshWithInputParameters(fetchDelay) { param ->
-            if (!isSuccess) return@mockFreshWithInputParameters DefaultError().left()
+            if (!isSuccess) return@mockFreshWithInputParameters AppError().left()
             when (param.page) {
                 1 -> minimalProducts.take(PREFETCH).right()
                 3 -> minimalProducts.drop(PREFETCH).take(param.perPage).right()
-                else -> DefaultError().left()
+                else -> AppError().left()
             }
         }
     }
@@ -44,7 +44,8 @@ class HomeViewModelTest : BaseCoroutineTest() {
         return HomeViewModel(
             getProductsUseCase = getProductsUseCase,
             htmlParser = mockk { every { parse(any()) } returns "price" },
-            pagingConfig = PagingConfig(PREFETCH, PAGE_SIZE)
+            pagingConfig = PagingConfig(PREFETCH, PAGE_SIZE),
+            progressSemaphore = ProgressSemaphoreImpl()
         )
     }
 

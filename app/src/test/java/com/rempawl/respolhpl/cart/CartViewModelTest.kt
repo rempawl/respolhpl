@@ -1,15 +1,17 @@
 package com.rempawl.respolhpl.cart
 
 import app.cash.turbine.test
-import com.rempawl.respolhpl.cart.CartViewModel.CartEffects.*
+import com.rempawl.respolhpl.cart.CartViewModel.CartEffects.NavigateToCheckout
+import com.rempawl.respolhpl.cart.CartViewModel.CartEffects.ShowClearCartConfirmationDialog
 import com.rempawl.respolhpl.data.model.domain.CartProduct
 import com.rempawl.respolhpl.data.model.domain.details.Product
 import com.rempawl.respolhpl.data.model.domain.details.ProductType
 import com.rempawl.respolhpl.data.usecase.ClearCartUseCase
 import com.rempawl.respolhpl.data.usecase.GetCartProductsUseCase
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.BaseCoroutineTest
-import com.rempawl.respolhpl.utils.DefaultError
 import com.rempawl.respolhpl.utils.PriceFormatter
+import com.rempawl.respolhpl.utils.ProgressSemaphoreImpl
 import com.rempawl.respolhpl.utils.coVerifyNever
 import com.rempawl.respolhpl.utils.coVerifyOnce
 import com.rempawl.respolhpl.utils.mockFlowResult
@@ -36,7 +38,8 @@ class CartViewModelTest : BaseCoroutineTest() {
         return CartViewModel(
             getCartProductsUseCase = getCartProductsUseCase,
             cartFormatter = CartFormatter(PriceFormatter()),
-            clearCartUseCase = clearCartUseCase
+            clearCartUseCase = clearCartUseCase,
+            ProgressSemaphoreImpl()
         )
     }
 
@@ -177,7 +180,7 @@ class CartViewModelTest : BaseCoroutineTest() {
 
     private fun GetCartProductsUseCase.mock(
         delay: Long? = null,
-        error: DefaultError? = null,
+        error: AppError? = null,
         response: List<CartProduct> = ITEMS
     ) =
         every { call(Unit) }.mockFlowResult(
@@ -188,7 +191,7 @@ class CartViewModelTest : BaseCoroutineTest() {
 
     private companion object {
         const val DELAY = 2L
-        val TEST_ERROR = DefaultError()
+        val TEST_ERROR = AppError()
         val ITEMS = listOf(
             CartProduct(
                 product = Product(

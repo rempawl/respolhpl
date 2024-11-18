@@ -12,10 +12,11 @@ import com.rempawl.respolhpl.data.model.domain.details.ProductVariant
 import com.rempawl.respolhpl.data.usecase.AddToCartUseCase
 import com.rempawl.respolhpl.data.usecase.GetProductDetailsUseCase
 import com.rempawl.respolhpl.fakes.FakeData
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.BaseCoroutineTest
-import com.rempawl.respolhpl.utils.DefaultError
 import com.rempawl.respolhpl.utils.HtmlParser
 import com.rempawl.respolhpl.utils.PriceFormatter
+import com.rempawl.respolhpl.utils.ProgressSemaphoreImpl
 import com.rempawl.respolhpl.utils.coVerifyNever
 import com.rempawl.respolhpl.utils.coVerifyOnce
 import com.rempawl.respolhpl.utils.mockFlowResult
@@ -45,17 +46,23 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
     }
 
     private fun createSUT(
-        productError: DefaultError? = null,
+        productError: AppError? = null,
         delay: Long = 0L,
         product: ProductDetails = TEST_PRODUCT,
     ): ProductDetailsViewModel {
         mockProduct(product = product, error = productError, delay = delay)
 
+        val progressSemaphore = ProgressSemaphoreImpl()
+        val productDetailsFormatter = ProductDetailsFormatter(htmlParser, PriceFormatter())
+
         return ProductDetailsViewModel(
             savedStateHandle = handle,
-            getProductDetailsUseCase = getProductUseCase,
+            productDetailsStateCase = ProductDetailsStateCase(
+                productDetailsFormatter, getProductUseCase, progressSemaphore
+            ),
             addToCartUseCase = addToCartUseCase,
-            productDetailsFormatter = ProductDetailsFormatter(htmlParser, PriceFormatter())
+            productDetailsFormatter = productDetailsFormatter,
+            progressSemaphore = progressSemaphore
         )
     }
 
@@ -177,7 +184,7 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `when init fails, then error set`() = runTest {
-        createSUT(DefaultError(), TEST_DELAY).state.test {
+        createSUT(AppError(), TEST_DELAY).state.test {
             assertNull(awaitItem().productError)
 
             advanceTimeBy(TEST_DELAY + 1)
@@ -190,7 +197,7 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
     @Test
     fun `given init fails, when retry clicked and request succeeds, then correct state set`() =
         runTest {
-            val sut = createSUT(DefaultError(), TEST_DELAY)
+            val sut = createSUT(AppError(), TEST_DELAY)
             sut.state.test {
                 assertNull(awaitItem().productError)
                 advanceTimeBy(TEST_DELAY + 1)
@@ -486,7 +493,7 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
     @Test
     fun `when add to cart fails, then error is displayed`() = runTest {
         val sut = createSUT()
-        val error = DefaultError(message = "error occurred when adding to cart")
+        val error = AppError(message = "error occurred when adding to cart")
         mockAddToCart(error)
 
         sut.showError.test {
@@ -631,7 +638,7 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
     }
 
 
-    private fun mockProduct(product: ProductDetails, error: DefaultError? = null, delay: Long) {
+    private fun mockProduct(product: ProductDetails, error: AppError? = null, delay: Long) {
         mockFlowResultUseCase(
             delayMillis = delay,
             error = error,
@@ -640,7 +647,7 @@ class ProductDetailsViewModelTest : BaseCoroutineTest() {
         )
     }
 
-    private fun mockAddToCart(error: DefaultError? = null) {
+    private fun mockAddToCart(error: AppError? = null) {
         every { addToCartUseCase.call(any()) }.mockFlowResult(
             delayMillis = TEST_DELAY,
             response = Unit,

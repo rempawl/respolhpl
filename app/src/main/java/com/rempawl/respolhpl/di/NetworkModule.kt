@@ -25,15 +25,13 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
+    private const val BASE_URL = "https://respolhpl-sklep.pl"
+    private val contentType = "application/json".toMediaType()
 
     @Provides
     @Singleton
     fun provideNetworkListener(@ApplicationContext context: Context): NetworkListener =
         NetworkListenerImpl(context)
-
-//    @Provides
-//    @Singleton
-//    fun provideMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
     @Provides
     @Singleton
@@ -76,9 +74,5 @@ object NetworkModule {
     @Provides
     fun provideRemoteDataSource(retrofit: Retrofit): WooCommerceApi =
         retrofit.create(WooCommerceApi::class.java)
-
-
-    private const val BASE_URL = "https://respolhpl-sklep.pl"
-    val contentType = "application/json".toMediaType()
 
 }

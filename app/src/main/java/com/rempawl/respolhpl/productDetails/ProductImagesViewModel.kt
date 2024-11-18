@@ -8,9 +8,10 @@ import arrow.core.right
 import com.rempawl.respolhpl.data.model.domain.Images
 import com.rempawl.respolhpl.productDetails.ProductImagesViewModel.ProductImagesState
 import com.rempawl.respolhpl.productDetails.currentPageState.ViewPagerPageManager
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.BaseViewModel
-import com.rempawl.respolhpl.utils.DefaultError
 import com.rempawl.respolhpl.utils.NoEffects
+import com.rempawl.respolhpl.utils.ProgressSemaphore
 import com.rempawl.respolhpl.utils.extensions.EitherResult
 import com.rempawl.respolhpl.utils.extensions.onError
 import com.rempawl.respolhpl.utils.extensions.onSuccess
@@ -23,8 +24,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductImagesViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    viewPagerPageManager: ViewPagerPageManager
-) : BaseViewModel<ProductImagesState, NoEffects>(ProductImagesState()),
+    viewPagerPageManager: ViewPagerPageManager,
+    progressSemaphore: ProgressSemaphore
+) : BaseViewModel<ProductImagesState, NoEffects>(ProductImagesState(), progressSemaphore),
     ViewPagerPageManager by viewPagerPageManager {
 
     init {
@@ -60,7 +62,7 @@ class ProductImagesViewModel @Inject constructor(
     }
 
     data class ProductImagesState(
-        val error: DefaultError? = null,
+        val error: AppError? = null,
         val images: Images = Images(emptyList())
     )
 
@@ -69,4 +71,4 @@ class ProductImagesViewModel @Inject constructor(
     }
 }
 
-object NullProductIdError : DefaultError()
+object NullProductIdError : AppError()

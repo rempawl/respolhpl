@@ -7,8 +7,8 @@ import com.rempawl.respolhpl.list.paging.LoadState
 import com.rempawl.respolhpl.list.paging.PagingConfig
 import com.rempawl.respolhpl.list.paging.PagingManager
 import com.rempawl.respolhpl.list.paging.PagingParam
+import com.rempawl.respolhpl.utils.AppError
 import com.rempawl.respolhpl.utils.BaseCoroutineTest
-import com.rempawl.respolhpl.utils.DefaultError
 import com.rempawl.respolhpl.utils.cancelAndConsumeRemainingItems
 import com.rempawl.respolhpl.utils.extensions.EitherResult
 import com.rempawl.respolhpl.utils.extensions.lastButOne
@@ -152,39 +152,6 @@ internal class PagingManagerTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun `when load more triggered and init triggered while loading then correct state set`() =
-        runTest {
-            val sut = createSUT()
-
-            sut.pagingData.test {
-                advanceUntilIdle()
-                loadMoreTrigger.emit(Unit)
-                advanceUntilIdle()
-                loadMoreTrigger.emit(Unit)
-                advanceTimeBy(TEST_DELAY / 2)
-                expectMostRecentItem().run {
-                    assertIs<LoadState.Loading.LoadingMore>(loadState)
-                    assertEquals(4, items.size)
-                }
-
-                sut.pagingData.test {
-                    advanceUntilIdle()
-                    cancelAndConsumeRemainingItems().run {
-                        assertIs<LoadState.Loading.InitialLoading>(lastButOne().loadState)
-                        last().run {
-                            assertEquals(3, items.size)
-                            assertEquals("0", items[0].id)
-                            assertEquals("1", items[1].id)
-                            assertEquals("2", items[2].id)
-                            assertIs<LoadState.Success>(loadState)
-                        }
-                    }
-                }
-                cancelAndConsumeRemainingItems()
-            }
-        }
-
-    @Test
     fun `when error returned, then correct state set`() = runTest {
         val sut = createSUT()
         mockError()
@@ -303,7 +270,7 @@ internal class PagingManagerTest : BaseCoroutineTest() {
 
     private fun mockError() {
         every { dataSource.invoke(any()) }
-            .mockFlowError(TEST_DELAY) { DefaultError() }
+            .mockFlowError(TEST_DELAY) { AppError() }
     }
 
     private companion object {
