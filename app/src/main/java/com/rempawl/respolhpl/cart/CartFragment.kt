@@ -18,6 +18,7 @@ import com.rempawl.respolhpl.productDetails.observeOnStart
 import com.rempawl.respolhpl.productDetails.showToast
 import com.rempawl.respolhpl.utils.DispatchersProvider
 import com.rempawl.respolhpl.utils.autoCleared
+import com.rempawl.respolhpl.utils.extensions.addStatusBarPaddingForAndroid15
 import com.rempawl.respolhpl.utils.getErrorMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -43,6 +44,9 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = CartProductAdapter(viewModel::onBuyClick)
+        binding.toolbar.setOnApplyWindowInsetsListener { view, windowInsets ->
+            view.addStatusBarPaddingForAndroid15(windowInsets)
+        }
         binding.setupBinding()
         setupObservers()
     }

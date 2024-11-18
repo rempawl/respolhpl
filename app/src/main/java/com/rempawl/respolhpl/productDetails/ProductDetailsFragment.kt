@@ -50,6 +50,7 @@ import com.rempawl.respolhpl.utils.autoCleared
 import com.rempawl.respolhpl.utils.compose.BottomSheetPicker
 import com.rempawl.respolhpl.utils.compose.HeightSpacer
 import com.rempawl.respolhpl.utils.compose.QuantityCounter
+import com.rempawl.respolhpl.utils.extensions.addStatusBarPaddingForAndroid15
 import com.rempawl.respolhpl.utils.extensions.dpToPx
 import com.rempawl.respolhpl.utils.getErrorMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -76,11 +77,13 @@ class ProductDetailsFragment : Fragment() {
     ): View {
         binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
 
+        binding!!.toolbar.root.setOnApplyWindowInsetsListener { view, windowInsets ->
+            view.addStatusBarPaddingForAndroid15(windowInsets)
+        }
+
         binding!!.composeView.apply {
             setViewCompositionStrategy(
-                ViewCompositionStrategy.DisposeOnLifecycleDestroyed(
-                    viewLifecycleOwner
-                )
+                ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)
             )
             setContent {
                 val state by viewModel.state.collectAsStateWithLifecycle()
@@ -105,6 +108,7 @@ class ProductDetailsFragment : Fragment() {
 
         return binding!!.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

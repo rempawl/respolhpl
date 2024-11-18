@@ -36,8 +36,8 @@ android {
             applicationId "com.rempawl.respolhpl"
             minSdkVersion 24
             targetSdkVersion 35
-            versionCode 11
-            versionName "0.47"
+            versionCode 12
+            versionName "0.48"
 
             testInstrumentationRunner "com.example.respolhpl.CustomTestRunner"
             kapt {
