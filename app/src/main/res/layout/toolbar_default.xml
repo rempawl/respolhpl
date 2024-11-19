@@ -27,13 +27,13 @@
         android:textColor="@color/white"
         android:textSize="@dimen/def_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/cart_btn"
+        app:layout_constraintEnd_toStartOf="@id/action_btn"
         app:layout_constraintStart_toEndOf="@id/back_btn"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Label" />
 
     <ImageView
-        android:id="@+id/cart_btn"
+        android:id="@+id/action_btn"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
         android:background="?selectableItemBackground"
@@ -41,4 +41,6 @@
         android:src="@drawable/ic_baseline_shopping_cart_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

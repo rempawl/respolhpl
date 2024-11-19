@@ -19,7 +19,7 @@
         tools:text="Label" />
 
     <ImageView
-        android:id="@+id/cart_btn"
+        android:id="@+id/action_btn"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
         android:background="?selectableItemBackground"

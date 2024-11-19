@@ -11,19 +11,17 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rempawl.respolhpl.R
-import com.rempawl.respolhpl.cart.CartViewModel.CartEffects
-import com.rempawl.respolhpl.cart.CartViewModel.CartEffects.*
+import com.rempawl.respolhpl.cart.CartViewModel.CartEffects.NavigateToCheckout
+import com.rempawl.respolhpl.cart.CartViewModel.CartEffects.ShowClearCartConfirmationDialog
 import com.rempawl.respolhpl.databinding.FragmentCartBinding
 import com.rempawl.respolhpl.productDetails.observeOnStart
 import com.rempawl.respolhpl.productDetails.showToast
-import com.rempawl.respolhpl.utils.DispatchersProvider
 import com.rempawl.respolhpl.utils.autoCleared
 import com.rempawl.respolhpl.utils.extensions.addStatusBarPaddingForAndroid15
 import com.rempawl.respolhpl.utils.getErrorMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CartFragment : Fragment() {
@@ -44,8 +42,8 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = CartProductAdapter(viewModel::onBuyClick)
-        binding.toolbar.setOnApplyWindowInsetsListener { view, windowInsets ->
-            view.addStatusBarPaddingForAndroid15(windowInsets)
+        binding.toolbar.root.setOnApplyWindowInsetsListener { v, windowInsets ->
+            v.addStatusBarPaddingForAndroid15(windowInsets)
         }
         binding.setupBinding()
         setupObservers()
@@ -61,15 +59,15 @@ class CartFragment : Fragment() {
                             getString(R.string.work_in_progress),
                             Toast.LENGTH_SHORT
                         )
-                        ShowClearCartConfirmationDialog ->
-                            showClearCartConfirmationDialog()
+
+                        ShowClearCartConfirmationDialog -> showClearCartConfirmationDialog()
                     }
                 }
             }
             launch {
                 viewModel.mapStateDistinct { it.isClearCartBtnVisible }
                     .collectLatest {
-                        binding.clearBtn.isVisible = it
+                        binding.toolbar.actionBtn.isVisible = it
                     }
             }
             launch {
@@ -109,18 +107,20 @@ class CartFragment : Fragment() {
         binding.apply {
             emptyCartText.isVisible = isEmptyPlaceholderVisible
             emptyCartIcon.isVisible = isEmptyPlaceholderVisible
-            clearBtn.isVisible = !isEmptyPlaceholderVisible
         }
     }
 
 
     private fun FragmentCartBinding.setupBinding() {
         setupProductsListAdapter()
-        backBtn.setOnClickListener { findNavController().navigateUp() }
-        clearBtn.setOnClickListener {
-            viewModel.onClearCartBtnClick()
+        with(toolbar) {
+            backBtn.setOnClickListener { findNavController().navigateUp() }
+            actionBtn.setImageResource(R.drawable.ic_clear)
+            actionBtn.setOnClickListener {
+                viewModel.onClearCartBtnClick()
+            }
+            label.setText(R.string.cart)
         }
-        label.setText(R.string.cart)
     }
 
     private fun showClearCartConfirmationDialog() {
