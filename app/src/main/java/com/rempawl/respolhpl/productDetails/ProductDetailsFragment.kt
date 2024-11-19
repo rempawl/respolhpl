@@ -285,7 +285,7 @@ class ProductDetailsFragment : Fragment() {
 
     private fun FragmentProductDetailsBinding.setupBinding() {
         with(toolbar) {
-            cartBtn.setOnClickListener {
+            actionBtn.setOnClickListener {
                 this@ProductDetailsFragment.navigate(actionProductDetailsToCartFragment())
             }
             backBtn.setOnClickListener { findNavController().navigateUp() }

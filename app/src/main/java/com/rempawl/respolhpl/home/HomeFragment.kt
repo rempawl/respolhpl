@@ -158,7 +158,7 @@ class HomeFragment : Fragment() {
     private fun FragmentHomeBinding.setupBinding() {
         toolbar.apply {
             label.text = getString(R.string.label_main)
-            cartBtn.setOnClickListener { findNavController().navigate(HomeFragmentDirections.actionNavHomeToCartFragment()) }
+            actionBtn.setOnClickListener { findNavController().navigate(HomeFragmentDirections.actionNavHomeToCartFragment()) }
         }
     }
 
