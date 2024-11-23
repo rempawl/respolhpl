@@ -4,6 +4,7 @@ plugins {
     id("de.mannodermaus.android-junit5") version "1.9.3.0"
     id 'com.google.gms.google-services'
     id("com.google.firebase.crashlytics")
+    id "org.jlleitschuh.gradle.ktlint" version "11.1.0"
 }
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -75,6 +76,15 @@ android {
             jvmTarget = '17'
         }
         namespace 'com.rempawl.respolhpl'
+    }
+    ktlint {
+        android = true
+        ignoreFailures = true
+        disabledRules = ["no-wildcard-imports","final-newline"]
+        reporters {
+            reporter("plain")
+            reporter("html")
+        }
     }
 }
 

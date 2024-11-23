@@ -18,7 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rempawl.respolhpl.list.BaseListItem
 import com.rempawl.respolhpl.list.listItems
-import com.rempawl.respolhpl.list.paging.LoadState.*
+import com.rempawl.respolhpl.list.paging.LoadState.Error
+import com.rempawl.respolhpl.list.paging.LoadState.Loading
+import com.rempawl.respolhpl.list.paging.LoadState.Success
 import com.rempawl.respolhpl.utils.AppError
 
 internal object PagerPreviewDataCreator {
@@ -150,5 +152,3 @@ fun <T : BaseListItem> LazyListScope.pagedContent(
         else -> Unit // handled above
     }
 }
-
-

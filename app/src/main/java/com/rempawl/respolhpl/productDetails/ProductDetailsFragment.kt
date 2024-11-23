@@ -72,7 +72,8 @@ class ProductDetailsFragment : Fragment() {
     private val viewModel: ProductDetailsViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
@@ -109,7 +110,6 @@ class ProductDetailsFragment : Fragment() {
         return binding!!.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         imagesAdapter = ImagesAdapter(
@@ -135,7 +135,6 @@ class ProductDetailsFragment : Fragment() {
         binding = null
         super.onDestroyView()
     }
-
 
     @Composable
     private fun PriceQuantityAndVariantSection(state: ProductDetailsState) {
@@ -217,11 +216,9 @@ class ProductDetailsFragment : Fragment() {
                         .fillMaxWidth()
                         .padding(16.dp)
                 )
-
             }
         }
     }
-
 
     private fun navigateToFullScreenImageFragment(images: Images) {
         val currentItem = binding!!.imagesViewPager.currentItem
@@ -275,7 +272,6 @@ class ProductDetailsFragment : Fragment() {
         addToCartButton.isEnabled = state.isAddToCartBtnEnabled
     }
 
-
     private fun showAddToCartToast(count: Int) {
         showToast(
             resources.getQuantityString(R.plurals.add_to_cart_quantity, count, count),
@@ -305,7 +301,3 @@ class ProductDetailsFragment : Fragment() {
         const val CURRENT_VIEW_PAGER_ITEM = "currentItem"
     }
 }
-
-
-
-

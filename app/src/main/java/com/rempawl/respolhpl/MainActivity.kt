@@ -58,8 +58,7 @@ class MainActivity : AppCompatActivity() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-            && VERSION.SDK_INT >= VERSION_CODES.TIRAMISU
+            ) != PackageManager.PERMISSION_GRANTED && VERSION.SDK_INT >= VERSION_CODES.TIRAMISU
         ) {
             requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1237)
         }

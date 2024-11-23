@@ -24,7 +24,6 @@ import com.rempawl.respolhpl.R
 import com.rempawl.respolhpl.utils.extensions.clearFocusOnClick
 import com.rempawl.respolhpl.utils.extensions.clearFocusOnKeyboardDismiss
 
-
 @Preview(showBackground = true)
 @Composable
 fun QuantityIndicatorPreview() {
@@ -100,4 +99,3 @@ fun QuantityCounter(
         )
     }
 }
-

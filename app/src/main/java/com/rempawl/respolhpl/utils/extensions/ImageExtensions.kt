@@ -15,4 +15,3 @@ fun ImageView.loadImage(imgSrc: String?) {
         .load(imgSrc)
         .into(this)
 }
-

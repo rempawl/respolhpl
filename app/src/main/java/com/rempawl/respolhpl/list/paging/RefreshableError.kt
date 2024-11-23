@@ -67,7 +67,9 @@ fun RefreshableError(
         OutlinedButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = onRefreshClick,
-            colors = ButtonDefaults.outlinedButtonColors(containerColor = MaterialTheme.colorScheme.errorContainer)
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer
+            )
         ) {
             Text(text = stringResource(R.string.retry))
         }

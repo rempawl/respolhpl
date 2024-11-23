@@ -20,7 +20,6 @@ abstract class BaseViewModel<State, Effects : Effect>(
     protected val progress: ProgressSemaphore
 ) : ViewModel() {
 
-
     private val _showError = MutableSharedFlow<AppError>()
     val showError = _showError.asSharedFlow()
 
@@ -76,4 +75,3 @@ abstract class BaseViewModel<State, Effects : Effect>(
 
     fun <R> mapStateDistinct(mapper: (State) -> R) = state.map(mapper).distinctUntilChanged()
 }
-

@@ -35,7 +35,6 @@ class DeepLinkHandler @Inject constructor() {
         else -> null
     }
 
-
     sealed interface DeepLink {
         data class Product(val id: Int) : DeepLink
     }

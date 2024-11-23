@@ -30,5 +30,3 @@ fun View.addStatusBarPaddingForAndroid15(insets: WindowInsets): WindowInsets {
     }
     return insets
 }
-
-

@@ -11,7 +11,9 @@ import javax.inject.Inject
 
 class NetworkListenerImpl @Inject constructor(context: Context) : NetworkListener {
 
-    private val connectivityManager by lazy { context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager }
+    private val connectivityManager by lazy {
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
 
     override val isConnected: Flow<Boolean> = callbackFlow {
         val connectivityCallback = object : ConnectivityManager.NetworkCallback() {
@@ -26,7 +28,6 @@ class NetworkListenerImpl @Inject constructor(context: Context) : NetworkListene
             override fun onLost(network: Network) {
                 trySend(false)
             }
-
         }
 
         connectivityManager.registerDefaultNetworkCallback(connectivityCallback)
@@ -37,4 +38,3 @@ class NetworkListenerImpl @Inject constructor(context: Context) : NetworkListene
     }
         .distinctUntilChanged()
 }
-

@@ -4,10 +4,11 @@ import com.rempawl.respolhpl.productDetails.NullProductIdError
 
 open class AppError(open val throwable: Throwable? = null, open val message: String? = null) {
 
-    constructor(error: AppError) : this(error.throwable,error.message)
+    constructor(error: AppError) : this(error.throwable, error.message)
 
     override fun toString(): String {
-        return "${this.javaClass.simpleName} (throwable=$throwable). Message ${throwable?.message} $message"
+        return """${this.javaClass.simpleName} (throwable=$throwable). 
+            |Message ${throwable?.message} $message""".trimMargin()
     }
 
     override fun equals(other: Any?): Boolean {

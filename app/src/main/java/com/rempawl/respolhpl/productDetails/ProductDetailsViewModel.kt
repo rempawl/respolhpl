@@ -1,6 +1,5 @@
 package com.rempawl.respolhpl.productDetails
 
-
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.rempawl.respolhpl.data.model.domain.CartProduct
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 import kotlin.math.min
 
-
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
@@ -38,8 +36,8 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
     private val productId
-        get() = (savedStateHandle.get<Int>(KEY_PROD_ID)
-            ?: throw java.lang.IllegalStateException("productId is null"))
+        get() = savedStateHandle.get<Int>(KEY_PROD_ID)
+            ?: throw java.lang.IllegalStateException("productId is null")
     // todo handle error
 
     init {
@@ -184,7 +182,6 @@ data class ProductDetailsState(
     val isBuyNowBtnEnabled: Boolean
         get() = cartQuantity > 0
 }
-
 
 sealed class ProductDetailsEffect : Effect {
     data class NavigateToFullScreenImage(val images: Images) : ProductDetailsEffect()

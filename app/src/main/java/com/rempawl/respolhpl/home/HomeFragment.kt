@@ -91,7 +91,7 @@ class HomeFragment : Fragment() {
                             pagedContent(
                                 data = state.pagingData,
                                 retry = { viewModel.retry() },
-                                emptyPlaceholder = { Text(text = "empty data") }, //todo empty placeholder
+                                emptyPlaceholder = { Text(text = "empty data") }, // todo empty placeholder
                                 itemView = { ProductItem(it) }
                             )
                         }
@@ -124,7 +124,8 @@ class HomeFragment : Fragment() {
                 painter = rememberAsyncImagePainter(
                     model = item.thumbnailSrc,
                     contentScale = ContentScale.Crop
-                ), contentDescription = null,
+                ),
+                contentDescription = null,
                 contentScale = ContentScale.Crop
             )
             Column(
@@ -158,7 +159,9 @@ class HomeFragment : Fragment() {
     private fun FragmentHomeBinding.setupBinding() {
         toolbar.apply {
             label.text = getString(R.string.label_main)
-            actionBtn.setOnClickListener { findNavController().navigate(HomeFragmentDirections.actionNavHomeToCartFragment()) }
+            actionBtn.setOnClickListener {
+                findNavController().navigate(HomeFragmentDirections.actionNavHomeToCartFragment())
+            }
         }
     }
 

@@ -15,7 +15,6 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 
-
 @OptIn(ExperimentalLayoutApi::class)
 fun Modifier.clearFocusOnKeyboardDismiss(): Modifier = this.composed {
     var isCurrentFocused by remember { mutableStateOf(false) }
@@ -39,7 +38,6 @@ fun Modifier.clearFocusOnKeyboardDismiss(): Modifier = this.composed {
         }
     }
 }
-
 
 fun Modifier.clearFocusOnClick(): Modifier = this.composed {
     val focusManager = LocalFocusManager.current

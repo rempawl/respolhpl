@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.update
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
-
 interface ProgressSemaphore {
     val hasProgress: Flow<Boolean>
     fun addProgress()
