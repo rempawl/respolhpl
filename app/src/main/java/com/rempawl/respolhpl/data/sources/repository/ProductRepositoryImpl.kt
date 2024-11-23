@@ -18,7 +18,6 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
 
-
 class ProductRepositoryImpl @Inject constructor(
     private val remoteDataSource: WooCommerceApi,
     private val responseStoreFactory: ResponseStoreFactory,
@@ -32,6 +31,7 @@ class ProductRepositoryImpl @Inject constructor(
             cacheTimeout = 2.hours
         )
     }
+
     override val productVariantsStore: ResponseStore<Int, List<RemoteProductVariant>, List<ProductVariant>> by lazy {
         ResponseStore(
             request = { remoteDataSource.getProductVariations(it) },

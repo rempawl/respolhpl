@@ -17,7 +17,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class NotificationHelper @Inject constructor(@ApplicationContext private val context: Context) {
-    //TODO extract strings
+    // TODO extract strings
     private val notificationManager by lazy {
         NotificationManagerCompat.from(context)
     }

@@ -9,7 +9,7 @@ inline fun log(message: () -> String) {
 }
 
 inline fun debugMessage(message: () -> String): String {
-    return if (BuildConfig.DEBUG ) {
+    return if (BuildConfig.DEBUG) {
         return message()
     } else {
         "debug message hidden"

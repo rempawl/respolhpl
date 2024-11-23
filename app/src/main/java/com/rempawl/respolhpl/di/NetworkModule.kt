@@ -1,14 +1,14 @@
 package com.rempawl.respolhpl.di
 
 import android.content.Context
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.moczul.ok2curl.CurlInterceptor
 import com.rempawl.respolhpl.BuildConfig
 import com.rempawl.respolhpl.data.sources.remote.BasicAuthInterceptor
 import com.rempawl.respolhpl.data.sources.remote.WooCommerceApi
 import com.rempawl.respolhpl.network.NetworkListener
 import com.rempawl.respolhpl.network.NetworkListenerImpl
 import com.rempawl.respolhpl.utils.log
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.moczul.ok2curl.CurlInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -74,5 +74,4 @@ object NetworkModule {
     @Provides
     fun provideRemoteDataSource(retrofit: Retrofit): WooCommerceApi =
         retrofit.create(WooCommerceApi::class.java)
-
 }

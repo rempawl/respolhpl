@@ -8,4 +8,4 @@ import javax.inject.Singleton
 @Singleton
 class ApiCacheProvider @Inject constructor(
     @ApplicationContext private val context: Context,
-) : DiskCacheProvider(context,  "api_responses")
+) : DiskCacheProvider(context, "api_responses")

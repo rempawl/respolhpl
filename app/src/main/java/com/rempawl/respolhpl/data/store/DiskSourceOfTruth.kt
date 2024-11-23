@@ -19,7 +19,7 @@ class SOTFactory @Inject constructor(
 
 open class DiskSOTFactory(val cacheProvider: CacheProvider) {
 
-    inline fun <Key: Any, reified WriteData : Any, ReadData : Any> create(
+    inline fun <Key : Any, reified WriteData : Any, ReadData : Any> create(
         cacheKeyPrefix: String,
         noinline mapper: suspend (WriteData) -> ReadData
     ) = DiskSourceOfTruth<Key, WriteData, ReadData>(
@@ -29,7 +29,7 @@ open class DiskSOTFactory(val cacheProvider: CacheProvider) {
         mapper
     )
 
-    inline fun <Key: Any, reified WriteData : Any> create(
+    inline fun <Key : Any, reified WriteData : Any> create(
         cacheKeyPrefix: String,
     ) = DiskSourceOfTruth<Key, WriteData, WriteData>(
         cacheProvider,
@@ -39,7 +39,7 @@ open class DiskSOTFactory(val cacheProvider: CacheProvider) {
     )
 }
 
-class DiskSourceOfTruth<Key: Any, CacheModel : Any, OutputModel : Any>(
+class DiskSourceOfTruth<Key : Any, CacheModel : Any, OutputModel : Any>(
     private val cacheProvider: CacheProvider,
     private val cacheKeyPrefix: String,
     private val type: KType,

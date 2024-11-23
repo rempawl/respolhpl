@@ -14,7 +14,6 @@ import javax.inject.Singleton
 @Module
 abstract class RepositoryModule {
 
-
     @Singleton
     @Binds
     abstract fun provideProductRepository(repository: ProductRepositoryImpl): ProductRepository
@@ -22,5 +21,4 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun provideCartRepository(repositoryImpl: CartRepositoryImpl): CartRepository
-
 }

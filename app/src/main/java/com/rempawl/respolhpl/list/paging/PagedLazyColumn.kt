@@ -23,7 +23,7 @@ fun PagedLazyColumn(
             .fillMaxSize()
             .then(modifier),
         state = listState,
-        contentPadding = PaddingValues(16.dp)  ,
+        contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(verticalSpacing)
     ) {
         content()

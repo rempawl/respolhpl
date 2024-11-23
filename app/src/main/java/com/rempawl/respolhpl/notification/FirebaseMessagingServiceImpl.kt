@@ -1,8 +1,8 @@
 package com.rempawl.respolhpl.notification
 
-import com.rempawl.respolhpl.utils.log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.rempawl.respolhpl.utils.log
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

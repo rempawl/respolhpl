@@ -96,7 +96,6 @@ class FullScreenImagesFragment : Fragment() {
         backBtn.setOnClickListener { findNavController().navigateUp() }
     }
 
-
     private fun Window.disableFullScreenMode() {
         WindowCompat.setDecorFitsSystemWindows(this, true)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
@@ -106,5 +105,4 @@ class FullScreenImagesFragment : Fragment() {
                 .show(WindowInsetsCompat.Type.systemBars())
         }
     }
-
 }

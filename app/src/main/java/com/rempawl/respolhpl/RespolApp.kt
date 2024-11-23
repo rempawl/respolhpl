@@ -4,15 +4,11 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
-
-//todo order
-//todo cart delete item
+// todo order
+// todo cart delete item
 // todo compose theme
 // todo changing product quantity in cart
-
-//todo shipping
-
-// todo tests
+// todo shipping
 // todo ui tests
 // todo category filters on home screen
 // todo feature modules

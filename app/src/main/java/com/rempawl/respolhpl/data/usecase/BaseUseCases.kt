@@ -17,9 +17,9 @@ interface ResultUseCase<in Param, out Output> : AsyncUseCase<Param, EitherResult
 abstract class ActionResultUseCase<in Param, out Output> : ResultUseCase<Param, Output> {
 
     override suspend fun call(parameter: Param): EitherResult<Output> = catch(
-            block = { doWork(parameter).right() },
-            catch = { it.toEitherResult() }
-        )
+        block = { doWork(parameter).right() },
+        catch = { it.toEitherResult() }
+    )
 
     protected abstract suspend fun doWork(parameter: Param): Output
 }

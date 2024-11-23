@@ -16,9 +16,9 @@ import kotlin.time.ExperimentalTime
 class ProductDetailsError(error: AppError) : AppError(error)
 
 @OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
-class GetProductDetailsUseCase @Inject constructor(private val productRepository: ProductRepository) :
-    FlowResultUseCase<Int, ProductDetails> {
-
+class GetProductDetailsUseCase @Inject constructor(
+    private val productRepository: ProductRepository
+) : FlowResultUseCase<Int, ProductDetails> {
 
     override fun call(parameter: Int): Flow<EitherResult<ProductDetails>> {
         return productRepository.productDataStore.cacheAndFresh(parameter)

@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
@@ -85,8 +84,6 @@ class HomeViewModel @Inject constructor(
                 priceFormatted = htmlParser.parse(it.priceHtml)
             )
         }
-
-
 }
 
 data class HomeState(val pagingData: PagingData<ProductMinimalListItem> = PagingData())

@@ -1,6 +1,5 @@
 package com.rempawl.respolhpl.productDetails.imagesAdapter
 
-
 import androidx.recyclerview.widget.DiffUtil
 import com.rempawl.respolhpl.data.model.domain.ProductImage
 

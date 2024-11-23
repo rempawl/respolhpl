@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.yield
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PagingManager<Item>(
@@ -71,7 +70,6 @@ class PagingManager<Item>(
     private fun loadItems(phase: LoadMorePhase): Flow<EitherResult<List<Item>>> {
         return flow {
             updateLoadingState(phase)
-            yield()
             emitAll(
                 dataSource(PagingParam(currentPageToLoad(), getPageSize(phase)))
                     .onSuccess { newItems ->
@@ -140,4 +138,3 @@ class PagingManager<Item>(
             LoadMorePhase.LoadingMore -> config.perPage
         }
 }
-
